@@ -85,3 +85,4 @@ examples/cpp/testbed/projects/BCB/testbed_cpp.dsv
 !lib/*
 !tools/*
 tools/LMEngine.dll.txt
+bin/config.json
