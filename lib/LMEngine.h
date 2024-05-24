@@ -409,11 +409,6 @@ Returns:
 extern int Speech_GetVoice();
 
 /*
-
-*/
-extern void Speech_SetVolume(float AVolume);
-
-/*
 Summary:
   Set the voice volume (0-1).
 Description:
@@ -423,7 +418,7 @@ Parameters:
 Returns:
   None.
 */
-extern float Speech_GetVolume();
+extern void Speech_SetVolume(float AVolume);
 
 /*
 Summary:
@@ -435,7 +430,7 @@ Parameters:
 Returns:
   The volume level as a single (0-1).
 */
-extern void Speech_SetRate(float ARate);
+extern float Speech_GetVolume();
 
 /*
 Summary:
@@ -446,6 +441,18 @@ Parameters:
   ARate - The speaking rate to set.
 Returns:
   None.
+*/
+extern void Speech_SetRate(float ARate);
+
+/*
+Summary:
+  Get the voice speaking rate.
+Description:
+  This function retrieves the current speaking rate of the voice.
+Parameters:
+  None.
+Returns:
+  The speaking rate as a single.
 */
 extern float Speech_GetRate();
 
