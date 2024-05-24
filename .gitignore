@@ -82,3 +82,4 @@ examples/pas/testbed/projects/Delphi/testbed_pas.dsv
 !bin/LMEngine.dll
 !src/LMEngine/cpp/vulkan/lib/*
 examples/cpp/testbed/projects/BCB/testbed_cpp.dsv
+!lib/*
