@@ -3,7 +3,11 @@
 [![Chat on Discord](https://img.shields.io/discord/754884471324672040.svg?logo=discord)](https://discord.gg/tPWjMwK) [![Twitter Follow](https://img.shields.io/twitter/follow/tinyBigGAMES?style=social)](https://twitter.com/tinyBigGAMES)
 # LMEngine
 ### <img src="media\Analyze.png" alt="Overview" width="20" height="20"/> Overview
-Welcome to LMEngine. We are pleased to introduce you to our versatile and user-friendly library, designed to facilitate local LLM inference across various programming languages. Whether you are a seasoned developer or just beginning your journey, LMEngine offers a         straightforward solution to integrate advanced language model capabilities into your applications with ease.
+Welcome to LMEngine. We are pleased to introduce you to our versatile and user-friendly library, designed to facilitate local LLM inference across various programming languages. Whether you are a seasoned developer or just beginning your journey, LMEngine offers a straightforward solution to integrate advanced language model capabilities into your applications with ease. 
+
+The library maintains a minimal overhead of approximately 2MB. The API is highly flexible, enabling inference execution through the `Inference_Run` function, which completes the process and returns the results. Users can define callbacks for customization or implement their own inference loop for finer control.
+
+LMEngine provides out-of-the-box bindings for Pascal and C/C++, featuring a straightforward procedural API that facilitates the creation of bindings for additional languages.
 
 This library efficiently loads LLMs in [GGUF format](https://huggingface.co/docs/hub/gguf) into CPU or GPU memory, utilizing a [Vulkan backend](https://en.wikipedia.org/wiki/Vulkan) for enhanced processing speed.
 

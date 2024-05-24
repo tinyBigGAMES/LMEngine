@@ -238,7 +238,7 @@ begin
 
   Model_Define('phi-3-mini-4k-instruct.Q4_K_M.gguf', 'phi-3-mini-4k-instruct.Q4_K_M', 4000, '<|{role}|>{content}<|end|>', '<|assistant|>');
   Model_Define('phi-3-mini-128k-instruct.Q4_K_M.gguf', 'phi-3-mini-128k-instruct.Q4_K_M', 8000, '<|{role}|>{content}<|end|>', '<|assistant|>');
-  Model_Define('meta-llama-3-8b-instruct.Q4_K_M.gguf','meta-llama-3-8b-instruct.Q4_K_MM', 8000, '<|begin_of_text|><|start_header_id|>{role}<|end_header_id|>{content}<|eot_id|>', '<|start_header_id|>assistant<|end_header_id|>');
+  Model_Define('meta-llama-3-8b-instruct.Q4_K_M.gguf','meta-llama-3-8b-instruct.Q4_K_M', 8000, '<|begin_of_text|><|start_header_id|>{role}<|end_header_id|>{content}<|eot_id|>', '<|start_header_id|>assistant<|end_header_id|>');
   Model_Define('hermes-2-pro-llama-3-8b.Q4_K_M.gguf','hermes-2-pro-llama-3-8b.Q4_K_M', 8000, '<|im_start|>{role}\n{content}<|im_end|>\n', '<|im_start|>assistant');
   Model_Define('dolphin-2.9.1-llama-3-8b.Q4_K_M.gguf','dolphin-2.9.1-llama-3-8b.Q4_K_M', 8000, '<|im_start|>{role}\n{content}<|im_end|>\n', '<|im_start|>assistant');
   Model_SaveDefines('models.json');
