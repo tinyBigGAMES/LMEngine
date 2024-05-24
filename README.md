@@ -120,6 +120,7 @@ Our development motto:
 ### <img src="media\Link.png" alt="Links" width="20" height="20"/> Links
 - <a href="https://github.com/tinyBigGAMES/LMEngine/issues" target="_blank">Issues</a>
 - <a href="https://github.com/tinyBigGAMES/LMEngine/discussions" target="_blank">Discussions</a>
+- <a href="https://www.facebook.com/groups/lmengine" target="_blank">Facebook Group</a>
 - <a href="https://discord.gg/tPWjMwK" target="_blank">Discord</a>
 - <a href="https://www.reddit.com/r/LMEngine/" target="_blank">Reddit</a>
 - <a href="https://youtube.com/tinyBigGAMES" target="_blank">YouTube</a>
