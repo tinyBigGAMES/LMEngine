@@ -67,3 +67,18 @@ __recovery/
 
 # Boss dependency manager vendor folder https://github.com/HashLoad/boss
 modules/
+docs/LMEngine_html_alias.h
+docs/LMEngine_html_map.h
+docs/LMEngine_html_map.inc
+docs/LMEngine_html_mapfunc.c
+docs/LMEngine_html_mapfunc.inc
+docs/LMEngine_map.h
+docs/LMEngine_map.inc
+src/LMEngine/cpp/misc/utf8.c
+src/LMEngine/LMEngine.dsv
+src/LMEngine/Win64x/*
+examples/cpp/testbed/projects/BCB/Win64x/*
+examples/pas/testbed/projects/Delphi/testbed_pas.dsv
+!bin/LMEngine.dll
+!src/LMEngine/cpp/vulkan/lib/*
+examples/cpp/testbed/projects/BCB/testbed_cpp.dsv

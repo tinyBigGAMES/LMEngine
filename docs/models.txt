@@ -1,0 +1,2 @@
+Vetted models compatible with LMEngine can be downloaded from our Hugging Face account:
+https://huggingface.co/tinybiggames

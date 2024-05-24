@@ -1,0 +1,44 @@
+﻿{
+    "models": [
+        {
+            "filename": "dolphin-2.9.1-llama-3-8b.Q4_K_M.gguf",
+            "name": "dolphin-2.9.1-llama-3-8b.Q4_K_M",
+            "max_context": 8000,
+            "template": "<|im_start|>{role}\n{content}<|im_end|>\\n",
+            "template_end": "<|im_start|>assistant",
+            "add_assistant": false
+        },
+        {
+            "filename": "phi-3-mini-128k-instruct.Q4_K_M.gguf",
+            "name": "phi-3-mini-128k-instruct.Q4_K_M",
+            "max_context": 8000,
+            "template": "<|{role}|>{content}<|end|>",
+            "template_end": "<|assistant|>",
+            "add_assistant": false
+        },
+        {
+            "filename": "hermes-2-pro-llama-3-8b.Q4_K_M.gguf",
+            "name": "hermes-2-pro-llama-3-8b.Q4_K_M",
+            "max_context": 8000,
+            "template": "<|im_start|>{role}\n{content}<|im_end|>\\n",
+            "template_end": "<|im_start|>assistant",
+            "add_assistant": false
+        },
+        {
+            "filename": "meta-llama-3-8b-instruct.Q4_K_M.gguf",
+            "name": "meta-llama-3-8b-instruct.Q4_K_M",
+            "max_context": 8000,
+            "template": "<|begin_of_text|><|start_header_id|>{role}<|end_header_id|>{content}<|eot_id|>",
+            "template_end": "<|start_header_id|>assistant<|end_header_id|>",
+            "add_assistant": false
+        },
+        {
+            "filename": "phi-3-mini-4k-instruct.Q4_K_M.gguf",
+            "name": "phi-3-mini-4k-instruct.Q4_K_M",
+            "max_context": 4000,
+            "template": "<|{role}|>{content}<|end|>",
+            "template_end": "<|assistant|>",
+            "add_assistant": false
+        }
+    ]
+}

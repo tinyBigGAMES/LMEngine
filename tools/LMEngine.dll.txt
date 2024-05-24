@@ -1,0 +1,2137 @@
+Turbo Dump  Version 6.6.2.0 Copyright (c) 1988-2022 Embarcadero Technologies, Inc.
+                Display of File ..\bin\lmengine.dll
+
+Old Executable Header
+
+DOS File Size                                     ACEE00h  (11333120. )
+Load Image Size                                       38h  (    56. )
+Relocation Table entry count                          0000h  (     0. )
+Relocation Table address                              0040h  (    64. )
+Size of header record      (in paragraphs)            0004h  (     4. )
+Minimum Memory Requirement (in paragraphs)            0000h  (     0. )
+Maximum Memory Requirement (in paragraphs)            0000h  (     0. )
+File load checksum                                    0000h  (     0. )
+Overlay Number                                        0000h  (     0. )
+
+Initial Stack Segment  (SS:SP)			  0000:0000
+Program Entry Point    (CS:IP)			  0000:0000
+
+
+Portable Executable (PE) File
+
+Header base: 00000078
+
+CPU type                 AMD64
+Flags                    2022 [ executable linenumbers symbols largeaddr backwards library ]
+DLL flags                0160 [ DynamicBase NXCompat HighEntropyVA ]
+Linker Version           E.0
+Time stamp               664406DE : Tue May 14 20:50:38 2024
+O/S Version              6.0
+User Version             0.0
+Subsystem Version        6.0
+Subsystem                0002 [ Windows GUI ]
+Object count             0000000B
+Symbols offset           00000000
+Symbols count            00000000
+Optional header size     00F0
+Magic #                  20B
+Code size                00653C00
+Init Data size           0047AE00
+Uninit Data size         00000000
+Entry RVA                00001280
+Image base               0000000180000000
+Code base                00001000
+Object/File align        00001000/00000200
+Reserved                 00000000
+Image size               00BBD000
+Header size              00000400
+Checksum                 00000000
+Stack reserve/commit     0000000000100000/0000000000001000
+Heap reserve/commit      0000000000100000/0000000000001000
+Number interesting RVAs  00000010
+Name                   RVA       Size  
+------------------  --------  --------
+Exports             0086E218  00004611
+Imports             00872829  00000244
+Resources           00B79000  0000AF70
+Exceptions          00AF2000  00080CF4
+Security            00000000  00000000
+Fixups              00B84000  00038EC4
+Debug               00919000  0000001C
+Description         00000000  00000000
+Global Ptr          00000000  00000000
+TLS                 0068D2B0  00000028
+Callbacks           00000000  00000000
+Bound Imports       00000000  00000000
+Import Addr Table   00874280  00001810
+Delayed Imports     0086D7B0  00000160
+COM Runtime         00000000  00000000
+reserved            00000000  00000000
+
+Object table:
+#   Name              VirtSize    RVA     PhysSize  Phys off  Flags   
+--  --------          --------  --------  --------  --------  --------
+01  .text             00653BB0  00001000  00653C00  00000400  60000020 [CER]
+02  .rdata            002C3FC0  00655000  002C4000  00654000  40000040 [IR]
+03  .buildid          00000082  00919000  00000200  00918000  40000040 [IR]
+04  .data             001D7B00  0091A000  000ED800  00918200  C0000040 [IRW]
+05  .pdata            00080CF4  00AF2000  00080E00  00A05A00  40000040 [IR]
+06  .embtexi          00000B64  00B73000  00000C00  00A86800  40000040 [IR]
+07  .embtini          00000B64  00B74000  00000C00  00A87400  40000040 [IR]
+08  .embtini          000028D8  00B75000  00002A00  00A88000  C0000040 [IRW]
+09  .tls              000002A9  00B78000  00000400  00A8AA00  C0000040 [IRW]
+0a  .rsrc             0000AF70  00B79000  0000B000  00A8AE00  40000040 [IR]
+0b  .reloc            00038EC4  00B84000  00039000  00A95E00  42000040 [DIR]
+
+Key to section flags:
+  C - contains code
+  D - discardable
+  E - executable
+  I - contains initialized data
+  R - readable
+  W - writeable
+
+******************************************************************************
+Section:             Import
+File Offset:         00654000 (6635520)
+  ImportLookUpTblRVA:00872A70
+  Time Stamp:        00000000
+  Forwarder Chain:   00000000 (index of first forwarder reference)
+
+Imports from vulkan-1.dll
+    (hint = 0002) vkAllocateCommandBuffers
+    (hint = 0003) vkAllocateDescriptorSets
+    (hint = 0004) vkAllocateMemory
+    (hint = 0005) vkBeginCommandBuffer
+    (hint = 0006) vkBindBufferMemory
+    (hint = 000E) vkCmdBindDescriptorSets
+    (hint = 0010) vkCmdBindPipeline
+    (hint = 0018) vkCmdCopyBuffer
+    (hint = 0021) vkCmdDispatch
+    (hint = 002F) vkCmdFillBuffer
+    (hint = 0032) vkCmdPipelineBarrier
+    (hint = 0034) vkCmdPushConstants
+    (hint = 0059) vkCreateBuffer
+    (hint = 005B) vkCreateCommandPool
+    (hint = 005C) vkCreateComputePipelines
+    (hint = 005D) vkCreateDescriptorPool
+    (hint = 005E) vkCreateDescriptorSetLayout
+    (hint = 0060) vkCreateDevice
+    (hint = 0064) vkCreateFence
+    (hint = 006A) vkCreateInstance
+    (hint = 006C) vkCreatePipelineLayout
+    (hint = 0074) vkCreateShaderModule
+    (hint = 0078) vkDestroyBuffer
+    (hint = 007A) vkDestroyCommandPool
+    (hint = 007B) vkDestroyDescriptorPool
+    (hint = 007C) vkDestroyDescriptorSetLayout
+    (hint = 007E) vkDestroyDevice
+    (hint = 007F) vkDestroyEvent
+    (hint = 0080) vkDestroyFence
+    (hint = 0085) vkDestroyPipeline
+    (hint = 0087) vkDestroyPipelineLayout
+    (hint = 008D) vkDestroySemaphore
+    (hint = 008E) vkDestroyShaderModule
+    (hint = 0092) vkEndCommandBuffer
+    (hint = 0093) vkEnumerateDeviceExtensionProperties
+    (hint = 0095) vkEnumerateInstanceExtensionProperties
+    (hint = 0099) vkEnumeratePhysicalDevices
+    (hint = 009D) vkFreeMemory
+    (hint = 009F) vkGetBufferMemoryRequirements
+    (hint = 00AC) vkGetDeviceQueue
+    (hint = 00C2) vkGetPhysicalDeviceFeatures
+    (hint = 00C3) vkGetPhysicalDeviceFeatures2
+    (hint = 00C8) vkGetPhysicalDeviceMemoryProperties
+    (hint = 00CB) vkGetPhysicalDeviceProperties
+    (hint = 00CC) vkGetPhysicalDeviceProperties2
+    (hint = 00CD) vkGetPhysicalDeviceQueueFamilyProperties
+    (hint = 00E0) vkMapMemory
+    (hint = 00E4) vkQueueSubmit
+    (hint = 00E8) vkResetCommandPool
+    (hint = 00EA) vkResetEvent
+    (hint = 00EB) vkResetFences
+    (hint = 00F3) vkUpdateDescriptorSets
+    (hint = 00F4) vkWaitForFences
+
+Imports from api-ms-win-crt-convert-l1-1-0.dll
+                  _strtod_l
+                  _strtoi64_l
+                  _strtoui64_l
+                  atoi
+                  mbrtowc
+                  mbsrtowcs
+                  strtof
+                  strtol
+                  strtoll
+                  strtoul
+                  strtoull
+                  wcrtomb
+                  wcrtomb_s
+
+Imports from api-ms-win-crt-environment-l1-1-0.dll
+                  __p__environ
+                  __p__wenviron
+                  getenv
+
+Imports from api-ms-win-crt-heap-l1-1-0.dll
+                  _aligned_free
+                  _aligned_malloc
+                  _set_new_mode
+                  calloc
+                  free
+                  malloc
+                  realloc
+
+Imports from api-ms-win-crt-math-l1-1-0.dll
+                  __setusermatherr
+                  ceilf
+                  cosf
+                  exp
+                  expf
+                  floor
+                  floorf
+                  log1pf
+                  log2
+                  log2f
+                  logf
+                  powf
+                  roundf
+                  sinf
+                  tanhf
+
+Imports from api-ms-win-crt-private-l1-1-0.dll
+                  memchr
+                  memcmp
+                  memcpy
+                  memmove
+                  strchr
+
+Imports from api-ms-win-crt-runtime-l1-1-0.dll
+                  __p___argc
+                  __p___argv
+                  __p___wargv
+                  __sys_nerr
+                  _assert
+                  _beginthreadex
+                  _configure_narrow_argv
+                  _configure_wide_argv
+                  _crt_at_quick_exit
+                  _crt_atexit
+                  _errno
+                  _execute_onexit_table
+                  _exit
+                  _initialize_narrow_environment
+                  _initialize_onexit_table
+                  _initialize_wide_environment
+                  _initterm
+                  _register_onexit_function
+                  _wassert
+                  abort
+                  exit
+                  strerror
+                  strerror_s
+
+Imports from api-ms-win-crt-stdio-l1-1-0.dll
+                  __acrt_iob_func
+                  __stdio_common_vfprintf
+                  __stdio_common_vfwprintf
+                  __stdio_common_vsprintf
+                  __stdio_common_vsscanf
+                  _fileno
+                  _fseeki64
+                  _ftelli64
+                  _get_osfhandle
+                  _wfopen
+                  fclose
+                  ferror
+                  fflush
+                  fopen
+                  fputc
+                  fputs
+                  fread
+                  fseek
+                  ftell
+                  fwrite
+                  getc
+                  ungetc
+
+Imports from api-ms-win-crt-string-l1-1-0.dll
+                  _isctype_l
+                  _iswlower_l
+                  _strdup
+                  isdigit
+                  isspace
+                  isxdigit
+                  mbrlen
+                  memset
+                  strcmp
+                  strlen
+                  strncmp
+                  strncpy
+                  tolower
+                  toupper
+                  wcslen
+
+Imports from api-ms-win-crt-time-l1-1-0.dll
+                  __daylight
+                  __timezone
+                  __tzname
+                  _strftime_l
+                  _time64
+                  _tzset
+                  clock
+
+Imports from api-ms-win-crt-utility-l1-1-0.dll
+                  qsort
+
+Imports from ADVAPI32.dll
+                  GetUserNameW
+                  RegCloseKey
+                  RegConnectRegistryW
+                  RegCreateKeyExW
+                  RegDeleteKeyExW
+                  RegDeleteKeyW
+                  RegDeleteValueW
+                  RegEnumKeyExW
+                  RegEnumValueW
+                  RegFlushKey
+                  RegLoadKeyW
+                  RegOpenKeyExW
+                  RegQueryInfoKeyW
+                  RegQueryValueExW
+                  RegReplaceKeyW
+                  RegRestoreKeyW
+                  RegSaveKeyW
+                  RegSetValueExW
+                  RegUnLoadKeyW
+
+Imports from KERNEL32.dll
+                  CloseHandle
+                  CompareStringW
+                  CreateEventW
+                  CreateFileMappingA
+                  CreateFileW
+                  CreateThread
+                  DeleteCriticalSection
+                  EnterCriticalSection
+                  EnumCalendarInfoW
+                  EnumResourceNamesW
+                  EnumSystemLocalesW
+                  ExitProcess
+                  ExitThread
+                  FileTimeToSystemTime
+                  FillConsoleOutputAttribute
+                  FillConsoleOutputCharacterW
+                  FindClose
+                  FindFirstFileW
+                  FindResourceW
+                  FlsAlloc
+                  FlsGetValue
+                  FlsSetValue
+                  FlushConsoleInputBuffer
+                  FormatMessageA
+                  FormatMessageW
+                  FreeLibrary
+                  FreeResource
+                  GetACP
+                  GetCPInfo
+                  GetCPInfoExW
+                  GetCommandLineW
+                  GetComputerNameW
+                  GetConsoleCP
+                  GetConsoleMode
+                  GetConsoleOutputCP
+                  GetConsoleScreenBufferInfo
+                  GetCurrentProcess
+                  GetCurrentProcessId
+                  GetCurrentThread
+                  GetCurrentThreadId
+                  GetDateFormatW
+                  GetDiskFreeSpaceExW
+                  GetDiskFreeSpaceW
+                  GetEnvironmentVariableW
+                  GetExitCodeThread
+                  GetFileAttributesW
+                  GetFileSize
+                  GetFileType
+                  GetFullPathNameW
+                  GetLastError
+                  GetLocalTime
+                  GetLocaleInfoW
+                  GetModuleFileNameW
+                  GetModuleHandleA
+                  GetModuleHandleW
+                  GetNumberOfConsoleInputEvents
+                  GetProcAddress
+                  GetProcessHeap
+                  GetProcessWorkingSetSize
+                  GetStartupInfoW
+                  GetStdHandle
+                  GetSystemDefaultUILanguage
+                  GetSystemInfo
+                  GetSystemTimeAsFileTime
+                  GetThreadLocale
+                  GetThreadPriority
+                  GetTickCount
+                  GetTimeZoneInformation
+                  GetUserDefaultUILanguage
+                  GetVersion
+                  GetVersionExW
+                  GlobalAddAtomW
+                  GlobalAlloc
+                  GlobalDeleteAtom
+                  GlobalFindAtomW
+                  GlobalFree
+                  GlobalLock
+                  GlobalMemoryStatusEx
+                  GlobalUnlock
+                  HeapAlloc
+                  HeapCreate
+                  HeapDestroy
+                  HeapFree
+                  InitOnceExecuteOnce
+                  InitializeCriticalSection
+                  IsDBCSLeadByteEx
+                  IsDebuggerPresent
+                  IsValidLocale
+                  LCMapStringW
+                  LeaveCriticalSection
+                  LoadLibraryA
+                  LoadLibraryExW
+                  LoadLibraryW
+                  LoadResource
+                  LocalAlloc
+                  LocalFree
+                  LockResource
+                  MapViewOfFile
+                  MulDiv
+                  MultiByteToWideChar
+                  PeekConsoleInputW
+                  QueryPerformanceCounter
+                  QueryPerformanceFrequency
+                  RaiseException
+                  ReadConsoleInputW
+                  ReadFile
+                  ResetEvent
+                  ResumeThread
+                  RtlCaptureContext
+                  RtlLookupFunctionEntry
+                  RtlRestoreContext
+                  RtlUnwind
+                  RtlUnwindEx
+                  RtlVirtualUnwind
+                  SetConsoleCP
+                  SetConsoleCursorInfo
+                  SetConsoleCursorPosition
+                  SetConsoleMode
+                  SetConsoleOutputCP
+                  SetConsoleTextAttribute
+                  SetConsoleTitleW
+                  SetEndOfFile
+                  SetErrorMode
+                  SetEvent
+                  SetFilePointer
+                  SetLastError
+                  SetProcessWorkingSetSize
+                  SetThreadLocale
+                  SetThreadPriority
+                  SizeofResource
+                  Sleep
+                  SleepConditionVariableSRW
+                  SuspendThread
+                  SwitchToThread
+                  TerminateThread
+                  TlsGetValue
+                  TlsSetValue
+                  TryEnterCriticalSection
+                  UnhandledExceptionFilter
+                  UnmapViewOfFile
+                  VerSetConditionMask
+                  VerifyVersionInfoW
+                  VirtualAlloc
+                  VirtualFree
+                  VirtualLock
+                  VirtualProtect
+                  VirtualQuery
+                  VirtualQueryEx
+                  VirtualUnlock
+                  WaitForMultipleObjectsEx
+                  WaitForSingleObject
+                  WaitForSingleObjectEx
+                  WakeAllConditionVariable
+                  WideCharToMultiByte
+                  WriteFile
+                  lstrcmpW
+                  lstrlenW
+
+Imports from ole32.dll
+                  CLSIDFromProgID
+                  CoCreateInstance
+                  CoInitialize
+                  CoInitializeEx
+                  CoTaskMemAlloc
+                  CoTaskMemFree
+                  CoUninitialize
+                  GetErrorInfo
+                  IsEqualGUID
+                  OleInitialize
+                  OleUninitialize
+                  ProgIDFromCLSID
+                  StringFromCLSID
+
+Imports from SHELL32.dll
+                  SHAppBarMessage
+                  ShellExecuteW
+                  Shell_NotifyIconW
+
+Imports from USER32.dll
+                  ActivateKeyboardLayout
+                  AdjustWindowRectEx
+                  BeginPaint
+                  BringWindowToTop
+                  CallNextHookEx
+                  CallWindowProcW
+                  CharLowerBuffW
+                  CharLowerW
+                  CharNextW
+                  CharUpperBuffW
+                  CharUpperW
+                  CheckMenuItem
+                  ChildWindowFromPoint
+                  ClientToScreen
+                  CloseClipboard
+                  CopyIcon
+                  CopyImage
+                  CreateAcceleratorTableW
+                  CreateIcon
+                  CreateIconIndirect
+                  CreateMenu
+                  CreatePopupMenu
+                  CreateWindowExW
+                  DefFrameProcW
+                  DefMDIChildProcW
+                  DefWindowProcW
+                  DeleteMenu
+                  DestroyCursor
+                  DestroyIcon
+                  DestroyMenu
+                  DestroyWindow
+                  DispatchMessageA
+                  DispatchMessageW
+                  DrawEdge
+                  DrawFocusRect
+                  DrawFrameControl
+                  DrawIcon
+                  DrawIconEx
+                  DrawMenuBar
+                  DrawTextExW
+                  DrawTextW
+                  EmptyClipboard
+                  EnableMenuItem
+                  EnableScrollBar
+                  EnableWindow
+                  EndMenu
+                  EndPaint
+                  EnumChildWindows
+                  EnumDisplayMonitors
+                  EnumThreadWindows
+                  EnumWindows
+                  FillRect
+                  FindWindowExW
+                  FindWindowW
+                  FrameRect
+                  GetActiveWindow
+                  GetAsyncKeyState
+                  GetCapture
+                  GetClassInfoW
+                  GetClassLongPtrW
+                  GetClassNameW
+                  GetClientRect
+                  GetClipboardData
+                  GetCursor
+                  GetCursorPos
+                  GetDC
+                  GetDCEx
+                  GetDesktopWindow
+                  GetDlgCtrlID
+                  GetFocus
+                  GetForegroundWindow
+                  GetIconInfo
+                  GetKeyNameTextW
+                  GetKeyState
+                  GetKeyboardLayout
+                  GetKeyboardLayoutList
+                  GetKeyboardLayoutNameW
+                  GetKeyboardState
+                  GetLastActivePopup
+                  GetMenu
+                  GetMenuItemCount
+                  GetMenuItemID
+                  GetMenuItemInfoW
+                  GetMenuState
+                  GetMenuStringW
+                  GetMessageExtraInfo
+                  GetMessagePos
+                  GetMonitorInfoW
+                  GetParent
+                  GetPropW
+                  GetScrollBarInfo
+                  GetScrollInfo
+                  GetScrollPos
+                  GetScrollRange
+                  GetSubMenu
+                  GetSysColor
+                  GetSysColorBrush
+                  GetSystemMenu
+                  GetSystemMetrics
+                  GetTopWindow
+                  GetUpdateRect
+                  GetWindow
+                  GetWindowDC
+                  GetWindowLongPtrW
+                  GetWindowPlacement
+                  GetWindowRect
+                  GetWindowTextW
+                  GetWindowThreadProcessId
+                  HideCaret
+                  InsertMenuItemW
+                  InsertMenuW
+                  InvalidateRect
+                  IsChild
+                  IsDialogMessageA
+                  IsDialogMessageW
+                  IsIconic
+                  IsWindow
+                  IsWindowEnabled
+                  IsWindowUnicode
+                  IsWindowVisible
+                  IsZoomed
+                  KillTimer
+                  LoadBitmapW
+                  LoadCursorW
+                  LoadIconW
+                  LoadKeyboardLayoutW
+                  LoadStringW
+                  LockWindowUpdate
+                  MapVirtualKeyW
+                  MapWindowPoints
+                  MessageBeep
+                  MessageBoxW
+                  MonitorFromPoint
+                  MonitorFromRect
+                  MonitorFromWindow
+                  MoveWindow
+                  MsgWaitForMultipleObjects
+                  MsgWaitForMultipleObjectsEx
+                  OpenClipboard
+                  PeekMessageA
+                  PeekMessageW
+                  PostMessageW
+                  PostQuitMessage
+                  RedrawWindow
+                  RegisterClassW
+                  RegisterClipboardFormatW
+                  RegisterWindowMessageW
+                  ReleaseCapture
+                  ReleaseDC
+                  RemoveMenu
+                  RemovePropW
+                  ScreenToClient
+                  ScrollWindow
+                  SendMessageA
+                  SendMessageW
+                  SetActiveWindow
+                  SetCapture
+                  SetClassLongPtrW
+                  SetClipboardData
+                  SetCursor
+                  SetCursorPos
+                  SetFocus
+                  SetForegroundWindow
+                  SetMenu
+                  SetMenuItemInfoW
+                  SetParent
+                  SetPropW
+                  SetRect
+                  SetScrollInfo
+                  SetScrollPos
+                  SetScrollRange
+                  SetTimer
+                  SetWindowLongPtrW
+                  SetWindowPlacement
+                  SetWindowPos
+                  SetWindowRgn
+                  SetWindowTextW
+                  SetWindowsHookExW
+                  ShowCaret
+                  ShowOwnedPopups
+                  ShowScrollBar
+                  ShowWindow
+                  SystemParametersInfoW
+                  TrackPopupMenu
+                  TranslateMDISysAccel
+                  TranslateMessage
+                  UnhookWindowsHookEx
+                  UnregisterClassW
+                  UpdateWindow
+                  ValidateRect
+                  WaitMessage
+                  WindowFromPoint
+
+Imports from VERSION.dll
+                  GetFileVersionInfoSizeW
+                  GetFileVersionInfoW
+                  VerQueryValueW
+
+Imports from WINMM.dll
+                  timeBeginPeriod
+
+Imports from api-ms-win-crt-filesystem-l1-1-0.dll
+                  _lock_file
+                  _unlock_file
+
+Imports from api-ms-win-crt-locale-l1-1-0.dll
+                  ___lc_codepage_func
+                  ___mb_cur_max_func
+                  __pctype_func
+                  _configthreadlocale
+                  _create_locale
+                  _free_locale
+                  localeconv
+                  setlocale
+
+Imports from api-ms-win-crt-multibyte-l1-1-0.dll
+                  _mbtowc_l
+
+Imports from OLEAUT32.dll
+                  GetActiveObject
+                  SafeArrayAccessData
+                  SafeArrayCreate
+                  SafeArrayGetElement
+                  SafeArrayGetLBound
+                  SafeArrayGetUBound
+                  SafeArrayPtrOfIndex
+                  SafeArrayPutElement
+                  SafeArrayUnaccessData
+                  SysAllocStringLen
+                  SysFreeString
+                  SysReAllocStringLen
+                  VariantChangeType
+                  VariantClear
+                  VariantCopy
+                  VariantInit
+
+Imports from GDI32.dll
+                  AbortDoc
+                  AngleArc
+                  Arc
+                  ArcTo
+                  BitBlt
+                  Chord
+                  CombineRgn
+                  CopyEnhMetaFileW
+                  CreateBitmap
+                  CreateBrushIndirect
+                  CreateCompatibleBitmap
+                  CreateCompatibleDC
+                  CreateDCW
+                  CreateDIBSection
+                  CreateDIBitmap
+                  CreateFontIndirectW
+                  CreateHalftonePalette
+                  CreateICW
+                  CreatePalette
+                  CreatePenIndirect
+                  CreateRectRgn
+                  CreateSolidBrush
+                  DeleteDC
+                  DeleteEnhMetaFile
+                  DeleteObject
+                  Ellipse
+                  EndDoc
+                  EndPage
+                  EnumFontFamiliesExW
+                  EnumFontsW
+                  ExcludeClipRect
+                  ExtFloodFill
+                  ExtTextOutW
+                  FrameRgn
+                  GdiFlush
+                  GetBitmapBits
+                  GetBrushOrgEx
+                  GetClipBox
+                  GetCurrentPositionEx
+                  GetDIBColorTable
+                  GetDIBits
+                  GetDeviceCaps
+                  GetEnhMetaFileBits
+                  GetEnhMetaFileDescriptionW
+                  GetEnhMetaFileHeader
+                  GetEnhMetaFilePaletteEntries
+                  GetObjectW
+                  GetPaletteEntries
+                  GetPixel
+                  GetRgnBox
+                  GetStockObject
+                  GetStretchBltMode
+                  GetSystemPaletteEntries
+                  GetTextExtentPoint32W
+                  GetTextExtentPointW
+                  GetTextMetricsW
+                  GetWinMetaFileBits
+                  GetWindowOrgEx
+                  IntersectClipRect
+                  LineTo
+                  MaskBlt
+                  MoveToEx
+                  PatBlt
+                  Pie
+                  PlayEnhMetaFile
+                  PolyBezier
+                  PolyBezierTo
+                  Polygon
+                  Polyline
+                  RealizePalette
+                  RectVisible
+                  Rectangle
+                  RestoreDC
+                  RoundRect
+                  SaveDC
+                  SelectClipRgn
+                  SelectObject
+                  SelectPalette
+                  SetAbortProc
+                  SetBkColor
+                  SetBkMode
+                  SetBrushOrgEx
+                  SetDIBColorTable
+                  SetDIBits
+                  SetEnhMetaFileBits
+                  SetMapMode
+                  SetPixel
+                  SetROP2
+                  SetRectRgn
+                  SetStretchBltMode
+                  SetTextColor
+                  SetViewportOrgEx
+                  SetWinMetaFileBits
+                  SetWindowOrgEx
+                  StartDocW
+                  StartPage
+                  StretchBlt
+                  StretchDIBits
+                  UnrealizeObject
+
+Imports from WINHTTP.dll
+                  WinHttpAddRequestHeaders
+                  WinHttpCloseHandle
+                  WinHttpConnect
+                  WinHttpGetIEProxyConfigForCurrentUser
+                  WinHttpGetProxyForUrl
+                  WinHttpOpen
+                  WinHttpOpenRequest
+                  WinHttpQueryAuthSchemes
+                  WinHttpQueryDataAvailable
+                  WinHttpQueryHeaders
+                  WinHttpQueryOption
+                  WinHttpReadData
+                  WinHttpReceiveResponse
+                  WinHttpSendRequest
+                  WinHttpSetCredentials
+                  WinHttpSetOption
+                  WinHttpSetStatusCallback
+                  WinHttpSetTimeouts
+                  WinHttpWriteData
+
+Imports from COMCTL32.dll
+                  FlatSB_GetScrollInfo
+                  FlatSB_GetScrollPos
+                  FlatSB_SetScrollInfo
+                  FlatSB_SetScrollPos
+                  FlatSB_SetScrollProp
+                  ImageList_Add
+                  ImageList_BeginDrag
+                  ImageList_Copy
+                  ImageList_Create
+                  ImageList_Destroy
+                  ImageList_DragEnter
+                  ImageList_DragLeave
+                  ImageList_DragMove
+                  ImageList_DragShowNolock
+                  ImageList_Draw
+                  ImageList_DrawEx
+                  ImageList_DrawIndirect
+                  ImageList_EndDrag
+                  ImageList_GetBkColor
+                  ImageList_GetDragImage
+                  ImageList_GetIcon
+                  ImageList_GetIconSize
+                  ImageList_GetImageCount
+                  ImageList_GetImageInfo
+                  ImageList_LoadImageW
+                  ImageList_Read
+                  ImageList_Remove
+                  ImageList_Replace
+                  ImageList_ReplaceIcon
+                  ImageList_SetBkColor
+                  ImageList_SetIconSize
+                  ImageList_SetImageCount
+                  ImageList_SetOverlayImage
+                  ImageList_Write
+                  InitCommonControls
+                  InitializeFlatSB
+                  _TrackMouseEvent
+
+Imports from WTSAPI32.dll
+                  WTSRegisterSessionNotification
+                  WTSUnRegisterSessionNotification
+
+Imports from comdlg32.dll
+                  FindTextW
+
+Imports from WINSPOOL.DRV
+                  ClosePrinter
+                  DocumentPropertiesW
+                  EnumPrintersW
+                  GetDefaultPrinterW
+                  OpenPrinterW
+
+Delayed Load Import Table
+
+Delayed Imports from KERNEL32.dll
+  Attributes:                 00000001
+  Address of HMODULE          80A074A8
+  Import Address Table        80A074F8
+  Import Name Table           8086D910
+  Bound Import Name Table     80000000
+  Unload Import Name Table    80000000
+  Time Stamp:                 00000000
+
+              AcquireSRWLockExclusive
+              GetLogicalProcessorInformation
+              GetNativeSystemInfo
+              GetSystemTimes
+              GetTimeZoneInformationForYear
+              IsWow64Process
+              LocaleNameToLCID
+              ProcessIdToSessionId
+              ReleaseSRWLockExclusive
+
+Delayed Imports from SHELL32.dll
+  Attributes:                 00000001
+  Address of HMODULE          80A074B0
+  Import Address Table        80A07548
+  Import Name Table           8086D960
+  Bound Import Name Table     80000000
+  Unload Import Name Table    80000000
+  Time Stamp:                 00000000
+
+              SHCreateItemFromParsingName
+
+Delayed Imports from USER32.dll
+  Attributes:                 00000001
+  Address of HMODULE          80A074B8
+  Import Address Table        80A07558
+  Import Name Table           8086D970
+  Bound Import Name Table     80000000
+  Unload Import Name Table    80000000
+  Time Stamp:                 00000000
+
+              AdjustWindowRectExForDpi
+              AreDpiAwarenessContextsEqual
+              CloseGestureInfoHandle
+              GetAwarenessFromDpiAwarenessContext
+              GetDpiForWindow
+              GetGestureInfo
+              GetSystemMetricsForDpi
+              GetThreadDpiAwarenessContext
+              GetWindowDpiAwarenessContext
+              MessageBoxA
+              PhysicalToLogicalPoint
+              SetGestureConfig
+              SetThreadDpiAwarenessContext
+              SystemParametersInfoForDpi
+
+Delayed Imports from CRYPT32.dll
+  Attributes:                 00000001
+  Address of HMODULE          80A074C0
+  Import Address Table        80A075D0
+  Import Name Table           8086D9E8
+  Bound Import Name Table     80000000
+  Unload Import Name Table    80000000
+  Time Stamp:                 00000000
+
+              CertCloseStore
+              CertDuplicateCertificateContext
+              CertFindCertificateInStore
+              CertFindChainInStore
+              CertFreeCertificateContext
+              CertGetNameStringW
+              CertNameToStrW
+              CertOpenStore
+              CertOpenSystemStoreW
+              CryptDecodeObject
+              PFXImportCertStore
+
+Delayed Imports from UxTheme.dll
+  Attributes:                 00000001
+  Address of HMODULE          80A074C8
+  Import Address Table        80A07630
+  Import Name Table           8086DA48
+  Bound Import Name Table     80000000
+  Unload Import Name Table    80000000
+  Time Stamp:                 00000000
+
+              BeginBufferedAnimation
+              BeginBufferedPaint
+              BufferedPaintInit
+              BufferedPaintRenderAnimation
+              BufferedPaintSetAlpha
+              BufferedPaintStopAllAnimations
+              BufferedPaintUnInit
+              DrawThemeTextEx
+              EndBufferedAnimation
+              EndBufferedPaint
+              OpenThemeDataForDpi
+
+Delayed Imports from IMM32.dll
+  Attributes:                 00000001
+  Address of HMODULE          80A074D0
+  Import Address Table        80A07690
+  Import Name Table           8086DAA8
+  Bound Import Name Table     80000000
+  Unload Import Name Table    80000000
+  Time Stamp:                 00000000
+
+              ImmAssociateContextEx
+              ImmGetContext
+              ImmGetConversionStatus
+              ImmIsIME
+              ImmReleaseContext
+              ImmSetConversionStatus
+              ImmSetOpenStatus
+
+Delayed Imports from MSIMG32.dll
+  Attributes:                 00000001
+  Address of HMODULE          80A074D8
+  Import Address Table        80A076D0
+  Import Name Table           8086DAE8
+  Bound Import Name Table     80000000
+  Unload Import Name Table    80000000
+  Time Stamp:                 00000000
+
+              AlphaBlend
+              GradientFill
+
+Delayed Imports from dwmapi.dll
+  Attributes:                 00000001
+  Address of HMODULE          80A074E0
+  Import Address Table        80A076E8
+  Import Name Table           8086DB00
+  Bound Import Name Table     80000000
+  Unload Import Name Table    80000000
+  Time Stamp:                 00000000
+
+              DwmDefWindowProc
+              DwmExtendFrameIntoClientArea
+              DwmGetColorizationColor
+              DwmGetWindowAttribute
+              DwmIsCompositionEnabled
+              DwmSetWindowAttribute
+
+Delayed Imports from SHCORE.dll
+  Attributes:                 00000001
+  Address of HMODULE          80A074E8
+  Import Address Table        80A07720
+  Import Name Table           8086DB38
+  Bound Import Name Table     80000000
+  Unload Import Name Table    80000000
+  Time Stamp:                 00000000
+
+              GetDpiForMonitor
+              GetProcessDpiAwareness
+              GetScaleFactorForMonitor
+
+Delayed Imports from WindowsCodecs.dll
+  Attributes:                 00000001
+  Address of HMODULE          80A074F0
+  Import Address Table        80A07740
+  Import Name Table           8086DB58
+  Bound Import Name Table     80000000
+  Unload Import Name Table    80000000
+  Time Stamp:                 00000000
+
+              WICConvertBitmapSource
+
+******************************************************************************
+Section:             Exports
+File Offset:         00654000 (6635520)
+  Flags:             00000000
+  Time Stamp:        00000000
+  Major Version:     0000
+  Minor Version:     0000
+
+Exports from LMEngine.dll
+  597 exported name(s), 598 export addresse(s).  Ordinal base is 0.
+  Sorted by Name:
+    RVA      Ord. Hint Name
+    -------- ---- ---- ----
+    0034FD30    1 0000 LMEngine_Speech_Active
+    0034FC60    2 0001 LMEngine_Speech_ChangeVoice
+    0034FCF0    3 0002 LMEngine_Speech_Clear
+    0034FC20    4 0003 LMEngine_Speech_GetOnWordEvent
+    0034FCE0    5 0004 LMEngine_Speech_GetRate
+    0034FC80    6 0005 LMEngine_Speech_GetVoice
+    0034FC40    7 0006 LMEngine_Speech_GetVoiceAttribute
+    0034FC30    8 0007 LMEngine_Speech_GetVoiceCount
+    0034FCB0    9 0008 LMEngine_Speech_GetVolume
+    0034FD50   10 0009 LMEngine_Speech_Pause
+    0034FD70   11 000A LMEngine_Speech_Reset
+    0034FD60   12 000B LMEngine_Speech_Resume
+    0034FD00   13 000C LMEngine_Speech_Say
+    0034FBF0   14 000D LMEngine_Speech_SetOnWordCallback
+    0034FCC0   15 000E LMEngine_Speech_SetRate
+    0034FC90   16 000F LMEngine_Speech_SetVolume
+    0034FD80   17 0010 LMEngine_Speech_SubstituteWord
+    0011D2F0   18 0011 ggml_abs
+    0011D350   19 0012 ggml_abs_inplace
+    0011B990   20 0013 ggml_acc
+    0011BD80   21 0014 ggml_acc_inplace
+    0011B240   22 0015 ggml_add
+    0011B740   23 0016 ggml_add1
+    0011B950   24 0017 ggml_add1_inplace
+    0011B4A0   25 0018 ggml_add_cast
+    0011B460   26 0019 ggml_add_inplace
+    001274F0   27 001A ggml_add_rel_pos
+    00127A90   28 001B ggml_add_rel_pos_inplace
+    00124750   29 001C ggml_arange
+    00116D60   30 001D ggml_are_same_shape
+    0011CC40   31 001E ggml_argmax
+    00124A20   32 001F ggml_argsort
+    00006640   33 0020 ggml_backend_alloc_buffer
+    00004E80   34 0021 ggml_backend_alloc_ctx_tensors
+    00004800   35 0022 ggml_backend_alloc_ctx_tensors_from_buft
+    000062E0   36 0023 ggml_backend_buffer_clear
+    000060B0   37 0024 ggml_backend_buffer_free
+    00006240   38 0025 ggml_backend_buffer_get_alignment
+    000062B0   39 0026 ggml_backend_buffer_get_alloc_size
+    00006110   40 0027 ggml_backend_buffer_get_base
+    00006280   41 0028 ggml_backend_buffer_get_max_size
+    00006100   42 0029 ggml_backend_buffer_get_size
+    00006270   43 002A ggml_backend_buffer_get_type
+    00006200   44 002B ggml_backend_buffer_init_tensor
+    00006310   45 002C ggml_backend_buffer_is_host
+    00006090   46 002D ggml_backend_buffer_name
+    00006490   47 002E ggml_backend_buffer_reset
+    00006340   48 002F ggml_backend_buffer_set_usage
+    00005E10   49 0030 ggml_backend_buft_alloc_buffer
+    00005E40   50 0031 ggml_backend_buft_get_alignment
+    00005EB0   51 0032 ggml_backend_buft_get_alloc_size
+    00005E60   52 0033 ggml_backend_buft_get_max_size
+    00005F80   53 0034 ggml_backend_buft_is_host
+    00005DF0   54 0035 ggml_backend_buft_name
+    00005F50   55 0036 ggml_backend_buft_supports_backend
+    0000CD60   56 0037 ggml_backend_compare_graph_backend
+    00008330   57 0038 ggml_backend_cpu_buffer_from_ptr
+    00007ED0   58 0039 ggml_backend_cpu_buffer_type
+    00008040   59 003A ggml_backend_cpu_init
+    00008280   60 003B ggml_backend_cpu_set_abort_callback
+    000081E0   61 003C ggml_backend_cpu_set_n_threads
+    00007620   62 003D ggml_backend_event_free
+    000075D0   63 003E ggml_backend_event_new
+    00007660   64 003F ggml_backend_event_record
+    000076F0   65 0040 ggml_backend_event_synchronize
+    00007780   66 0041 ggml_backend_event_wait
+    000065F0   67 0042 ggml_backend_free
+    00006670   68 0043 ggml_backend_get_alignment
+    00006620   69 0044 ggml_backend_get_default_buffer_type
+    000066A0   70 0045 ggml_backend_get_max_size
+    00007020   71 0046 ggml_backend_graph_compute
+    00007060   72 0047 ggml_backend_graph_compute_async
+    0000C290   73 0048 ggml_backend_graph_copy
+    0000CD20   74 0049 ggml_backend_graph_copy_free
+    00006F90   75 004A ggml_backend_graph_plan_compute
+    00006E70   76 004B ggml_backend_graph_plan_create
+    00006F00   77 004C ggml_backend_graph_plan_free
+    00006560   78 004D ggml_backend_guid
+    00008190   79 004E ggml_backend_is_cpu
+    000065A0   80 004F ggml_backend_name
+    000070C0   81 0050 ggml_backend_offload_op
+    00007E20   82 0051 ggml_backend_reg_alloc_buffer
+    00007A60   83 0052 ggml_backend_reg_find_by_name
+    000079F0   84 0053 ggml_backend_reg_get_count
+    00007D80   85 0054 ggml_backend_reg_get_default_buffer_type
+    00007CF0   86 0055 ggml_backend_reg_get_name
+    00007C30   87 0056 ggml_backend_reg_init_backend
+    00007AF0   88 0057 ggml_backend_reg_init_backend_from_str
+    0000B160   89 0058 ggml_backend_sched_alloc_graph
+    00008B90   90 0059 ggml_backend_sched_free
+    0000BAD0   91 005A ggml_backend_sched_get_buffer_size
+    0000BAB0   92 005B ggml_backend_sched_get_n_copies
+    0000BA90   93 005C ggml_backend_sched_get_n_splits
+    0000BD00   94 005D ggml_backend_sched_get_tensor_backend
+    0000B330   95 005E ggml_backend_sched_graph_compute
+    0000B370   96 005F ggml_backend_sched_graph_compute_async
+    00008640   97 0060 ggml_backend_sched_new
+    00008CD0   98 0061 ggml_backend_sched_reserve
+    00008AF0   99 0062 ggml_backend_sched_reset
+    0000BA50  100 0063 ggml_backend_sched_set_eval_callback
+    0000BC00  101 0064 ggml_backend_sched_set_tensor_backend
+    0000B110  102 0065 ggml_backend_sched_synchronize
+    00007090  103 0066 ggml_backend_supports_op
+    00006E30  104 0067 ggml_backend_synchronize
+    0000BFD0  105 0068 ggml_backend_tensor_alloc
+    00007120  106 0069 ggml_backend_tensor_copy
+    00007430  107 006A ggml_backend_tensor_copy_async
+    00006C10  108 006B ggml_backend_tensor_get
+    00006A80  109 006C ggml_backend_tensor_get_async
+    00006860  110 006D ggml_backend_tensor_set
+    000066D0  111 006E ggml_backend_tensor_set_async
+    0000BDA0  112 006F ggml_backend_view_init
+    001159E0  113 0070 ggml_bf16_to_fp32
+    00115BC0  114 0071 ggml_bf16_to_fp32_row
+    00116450  115 0072 ggml_blck_size
+    00129D80  116 0073 ggml_build_backward_expand
+    00129710  117 0074 ggml_build_backward_gradient_checkpointing
+    0012A670  118 0075 ggml_build_forward_expand
+    0011F3E0  119 0076 ggml_cast
+    00122AC0  120 0077 ggml_clamp
+    0011D140  121 0078 ggml_concat
+    0011F4B0  122 0079 ggml_cont
+    0011F5B0  123 007A ggml_cont_1d
+    0011F780  124 007B ggml_cont_2d
+    0011F7D0  125 007C ggml_cont_3d
+    0011F600  126 007D ggml_cont_4d
+    00122BF0  127 007E ggml_conv_1d
+    00123270  128 007F ggml_conv_1d_ph
+    00123A60  129 0080 ggml_conv_2d
+    00123D00  130 0081 ggml_conv_2d_s1_ph
+    00123C90  131 0082 ggml_conv_2d_sk_p0
+    00123750  132 0083 ggml_conv_depthwise_2d
+    001232E0  133 0084 ggml_conv_transpose_1d
+    00123D90  134 0085 ggml_conv_transpose_2d_p0
+    0013E570  135 0086 ggml_cpu_has_arm_fma
+    0013E4F0  136 0087 ggml_cpu_has_avx
+    0013E510  137 0088 ggml_cpu_has_avx2
+    0013E520  138 0089 ggml_cpu_has_avx512
+    0013E530  139 008A ggml_cpu_has_avx512_vbmi
+    0013E540  140 008B ggml_cpu_has_avx512_vnni
+    0013E500  141 008C ggml_cpu_has_avx_vnni
+    0013E5C0  142 008D ggml_cpu_has_blas
+    0013E5E0  143 008E ggml_cpu_has_clblast
+    0013E5D0  144 008F ggml_cpu_has_cuda
+    0013E590  145 0090 ggml_cpu_has_f16c
+    0013E550  146 0091 ggml_cpu_has_fma
+    0013E5A0  147 0092 ggml_cpu_has_fp16_va
+    0013E620  148 0093 ggml_cpu_has_gpublas
+    0013E600  149 0094 ggml_cpu_has_kompute
+    0013E6D0  150 0095 ggml_cpu_has_matmul_int8
+    0013E580  151 0096 ggml_cpu_has_metal
+    0013E560  152 0097 ggml_cpu_has_neon
+    0013E6A0  153 0098 ggml_cpu_has_sse3
+    0013E6B0  154 0099 ggml_cpu_has_ssse3
+    0013E610  155 009A ggml_cpu_has_sycl
+    0013E6C0  156 009B ggml_cpu_has_vsx
+    0013E5F0  157 009C ggml_cpu_has_vulkan
+    0013E5B0  158 009D ggml_cpu_has_wasm_simd
+    0011F1F0  159 009E ggml_cpy
+    00128D40  160 009F ggml_cross_entropy_loss
+    00128E90  161 00A0 ggml_cross_entropy_loss_back
+    00115DA0  162 00A1 ggml_cycles
+    00115DB0  163 00A2 ggml_cycles_per_ms
+    00121210  164 00A3 ggml_diag
+    00121370  165 00A4 ggml_diag_mask_inf
+    001214A0  166 00A5 ggml_diag_mask_inf_inplace
+    001214E0  167 00A6 ggml_diag_mask_zero
+    00121610  168 00A7 ggml_diag_mask_zero_inplace
+    0011C2D0  169 00A8 ggml_div
+    0011C500  170 00A9 ggml_div_inplace
+    0011B0F0  171 00AA ggml_dup
+    0011B210  172 00AB ggml_dup_inplace
+    00118CC0  173 00AC ggml_dup_tensor
+    00116740  174 00AD ggml_element_size
+    0011D540  175 00AE ggml_elu
+    0011D570  176 00AF ggml_elu_inplace
+    00124C00  177 00B0 ggml_flash_attn
+    001254C0  178 00B1 ggml_flash_attn_back
+    00124DB0  179 00B2 ggml_flash_attn_ext
+    00125240  180 00B3 ggml_flash_attn_ext_set_prec
+    001252E0  181 00B4 ggml_flash_ff
+    00115DC0  182 00B5 ggml_fopen
+    0011AEF0  183 00B6 ggml_format_name
+    00115830  184 00B7 ggml_fp16_to_fp32
+    00115AE0  185 00B8 ggml_fp16_to_fp32_row
+    00115A20  186 00B9 ggml_fp32_to_bf16
+    00115C30  187 00BA ggml_fp32_to_bf16_row
+    00115880  188 00BB ggml_fp32_to_fp16
+    00115B50  189 00BC ggml_fp32_to_fp16_row
+    00117640  190 00BD ggml_free
+    00116900  191 00BE ggml_ftype_to_ggml_type
+    00004050  192 00BF ggml_gallocr_alloc_graph
+    00002D10  193 00C0 ggml_gallocr_free
+    00004730  194 00C1 ggml_gallocr_get_buffer_size
+    00002CF0  195 00C2 ggml_gallocr_new
+    000029B0  196 00C3 ggml_gallocr_new_n
+    00004020  197 00C4 ggml_gallocr_reserve
+    00002E40  198 00C5 ggml_gallocr_reserve_n
+    0011D830  199 00C6 ggml_gelu
+    0011D860  200 00C7 ggml_gelu_inplace
+    0011D890  201 00C8 ggml_gelu_quick
+    0011D8C0  202 00C9 ggml_gelu_quick_inplace
+    0011ADD0  203 00CA ggml_get_data
+    0011ADF0  204 00CB ggml_get_data_f32
+    00119F30  205 00CC ggml_get_f32_1d
+    0011A430  206 00CD ggml_get_f32_nd
+    001178E0  207 00CE ggml_get_first_tensor
+    001190D0  208 00CF ggml_get_i32_1d
+    001195C0  209 00D0 ggml_get_i32_nd
+    00117840  210 00D1 ggml_get_max_tensor_size
+    00117820  211 00D2 ggml_get_mem_buffer
+    00117830  212 00D3 ggml_get_mem_size
+    0011AE90  213 00D4 ggml_get_name
+    00117960  214 00D5 ggml_get_next_tensor
+    001177D0  215 00D6 ggml_get_no_alloc
+    001272A0  216 00D7 ggml_get_rel_pos
+    00120DB0  217 00D8 ggml_get_rows
+    00121010  218 00D9 ggml_get_rows_back
+    0011B040  219 00DA ggml_get_tensor
+    001166C0  220 00DB ggml_get_unary_op
+    0012F000  221 00DC ggml_graph_clear
+    00130A50  222 00DD ggml_graph_compute
+    001316B0  223 00DE ggml_graph_compute_with_ctx
+    00129A00  224 00DF ggml_graph_cpy
+    00133CC0  225 00E0 ggml_graph_dump_dot
+    0012EEE0  226 00E1 ggml_graph_dup
+    00131830  227 00E2 ggml_graph_export
+    00131720  228 00E3 ggml_graph_get_tensor
+    001328D0  229 00E4 ggml_graph_import
+    0012E860  230 00E5 ggml_graph_overhead
+    0012E7A0  231 00E6 ggml_graph_overhead_custom
+    0012F050  232 00E7 ggml_graph_plan
+    00133800  233 00E8 ggml_graph_print
+    0012EF30  234 00E9 ggml_graph_reset
+    0012EDF0  235 00EA ggml_graph_view
+    0011DED0  236 00EB ggml_group_norm
+    0011E050  237 00EC ggml_group_norm_inplace
+    00115CC0  238 00ED ggml_guid_matches
+    0011DA50  239 00EE ggml_hardsigmoid
+    0011DA20  240 00EF ggml_hardswish
+    00122D70  241 00F0 ggml_im2col
+    00116DF0  242 00F1 ggml_init
+    00116070  243 00F2 ggml_internal_get_type_traits
+    00116870  244 00F3 ggml_is_3d
+    00116B80  245 00F4 ggml_is_contiguous
+    00116CF0  246 00F5 ggml_is_empty
+    00116830  247 00F6 ggml_is_matrix
+    001161B0  248 00F7 ggml_is_numa
+    00116C80  249 00F8 ggml_is_permuted
+    001165D0  250 00F9 ggml_is_quantized
+    00116760  251 00FA ggml_is_scalar
+    00116B60  252 00FB ggml_is_transposed
+    001167D0  253 00FC ggml_is_vector
+    0011D600  254 00FD ggml_leaky_relu
+    0011C7E0  255 00FE ggml_log
+    0011C900  256 00FF ggml_log_inplace
+    00127D50  257 0100 ggml_map_binary_f32
+    00127F40  258 0101 ggml_map_binary_inplace_f32
+    001284E0  259 0102 ggml_map_custom1
+    00127F80  260 0103 ggml_map_custom1_f32
+    001286E0  261 0104 ggml_map_custom1_inplace
+    001280C0  262 0105 ggml_map_custom1_inplace_f32
+    00128740  263 0106 ggml_map_custom2
+    00128100  264 0107 ggml_map_custom2_f32
+    001289A0  265 0108 ggml_map_custom2_inplace
+    00128280  266 0109 ggml_map_custom2_inplace_f32
+    00128A10  267 010A ggml_map_custom3
+    001282C0  268 010B ggml_map_custom3_f32
+    00128CC0  269 010C ggml_map_custom3_inplace
+    00128480  270 010D ggml_map_custom3_inplace_f32
+    00127BD0  271 010E ggml_map_unary_f32
+    00127D10  272 010F ggml_map_unary_inplace_f32
+    0011CB00  273 0110 ggml_mean
+    0011BFF0  274 0111 ggml_mul
+    0011C290  275 0112 ggml_mul_inplace
+    0011E090  276 0113 ggml_mul_mat
+    0011E3F0  277 0114 ggml_mul_mat_id
+    0011E310  278 0115 ggml_mul_mat_set_prec
+    00116890  279 0116 ggml_n_dims
+    00116340  280 0117 ggml_nbytes
+    00116490  281 0118 ggml_nbytes_pad
+    0011D420  282 0119 ggml_neg
+    0011D450  283 011A ggml_neg_inplace
+    001162E0  284 011B ggml_nelements
+    00118780  285 011C ggml_new_f32
+    0012EDC0  286 011D ggml_new_graph
+    0012E880  287 011E ggml_new_graph_custom
+    001181D0  288 011F ggml_new_i32
+    001179F0  289 0120 ggml_new_tensor
+    00118060  290 0121 ggml_new_tensor_1d
+    001180A0  291 0122 ggml_new_tensor_2d
+    001180F0  292 0123 ggml_new_tensor_3d
+    00118150  293 0124 ggml_new_tensor_4d
+    0011DA80  294 0125 ggml_norm
+    0011DC20  295 0126 ggml_norm_inplace
+    00116310  296 0127 ggml_nrows
+    00116170  297 0128 ggml_numa_init
+    00116660  298 0129 ggml_op_desc
+    00116600  299 012A ggml_op_name
+    00116620  300 012B ggml_op_symbol
+    001353F0  301 012C ggml_opt
+    00134AC0  302 012D ggml_opt_default_params
+    00134D50  303 012E ggml_opt_init
+    00135530  304 012F ggml_opt_resume
+    001355E0  305 0130 ggml_opt_resume_g
+    0011E8A0  306 0131 ggml_out_prod
+    00124460  307 0132 ggml_pad
+    00120610  308 0133 ggml_permute
+    00123FF0  309 0134 ggml_pool_1d
+    00124230  310 0135 ggml_pool_2d
+    00115780  311 0136 ggml_print_backtrace
+    001161C0  312 0137 ggml_print_object
+    00116260  313 0138 ggml_print_objects
+    00137D00  314 0139 ggml_quantize_chunk
+    00137C80  315 013A ggml_quantize_free
+    00137BC0  316 013B ggml_quantize_init
+    00137CC0  317 013C ggml_quantize_requires_imatrix
+    0011D5A0  318 013D ggml_relu
+    0011D5D0  319 013E ggml_relu_inplace
+    0011CDB0  320 013F ggml_repeat
+    0011CFD0  321 0140 ggml_repeat_back
+    0011F830  322 0141 ggml_reshape
+    0011FA30  323 0142 ggml_reshape_1d
+    0011FC00  324 0143 ggml_reshape_2d
+    0011FDF0  325 0144 ggml_reshape_3d
+    00120010  326 0145 ggml_reshape_4d
+    0011DC60  327 0146 ggml_rms_norm
+    0011DDF0  328 0147 ggml_rms_norm_back
+    0011DDB0  329 0148 ggml_rms_norm_inplace
+    00121D40  330 0149 ggml_rope
+    00122690  331 014A ggml_rope_back
+    00122300  332 014B ggml_rope_custom
+    00122450  333 014C ggml_rope_custom_inplace
+    00122220  334 014D ggml_rope_inplace
+    001225A0  335 014E ggml_rope_xpos_inplace
+    001290D0  336 014F ggml_rope_yarn_corr_dims
+    001164C0  337 0150 ggml_row_size
+    0011EB20  338 0151 ggml_scale
+    0011ECC0  339 0152 ggml_scale_inplace
+    0011ED00  340 0153 ggml_set
+    0011F020  341 0154 ggml_set_1d
+    0011F090  342 0155 ggml_set_1d_inplace
+    0011F100  343 0156 ggml_set_2d
+    0011F180  344 0157 ggml_set_2d_inplace
+    001187E0  345 0158 ggml_set_f32
+    0011A630  346 0159 ggml_set_f32_1d
+    0011AB90  347 015A ggml_set_f32_nd
+    001182C0  348 015B ggml_set_i32
+    001197B0  349 015C ggml_set_i32_1d
+    00119D00  350 015D ggml_set_i32_nd
+    0011EFA0  351 015E ggml_set_inplace
+    00137B80  352 015F ggml_set_input
+    0011AEB0  353 0160 ggml_set_name
+    001177F0  354 0161 ggml_set_no_alloc
+    00137BA0  355 0162 ggml_set_output
+    00128FF0  356 0163 ggml_set_param
+    00117760  357 0164 ggml_set_scratch
+    00118D00  358 0165 ggml_set_zero
+    0011D3C0  359 0166 ggml_sgn
+    0011D3F0  360 0167 ggml_sgn_inplace
+    0011D7D0  361 0168 ggml_sigmoid
+    0011D800  362 0169 ggml_sigmoid_inplace
+    0011D8F0  363 016A ggml_silu
+    0011D950  364 016B ggml_silu_back
+    0011D920  365 016C ggml_silu_inplace
+    00121650  366 016D ggml_soft_max
+    00121BC0  367 016E ggml_soft_max_back
+    00121D00  368 016F ggml_soft_max_back_inplace
+    00121B60  369 0170 ggml_soft_max_ext
+    00121B10  370 0171 ggml_soft_max_inplace
+    0011C540  371 0172 ggml_sqr
+    0011C660  372 0173 ggml_sqr_inplace
+    0011C690  373 0174 ggml_sqrt
+    0011C7B0  374 0175 ggml_sqrt_inplace
+    00125DF0  375 0176 ggml_ssm_conv
+    00126420  376 0177 ggml_ssm_scan
+    00115790  377 0178 ggml_status_to_string
+    0011D480  378 0179 ggml_step
+    0011D4B0  379 017A ggml_step_inplace
+    0011BE00  380 017B ggml_sub
+    0011BFB0  381 017C ggml_sub_inplace
+    0011C930  382 017D ggml_sum
+    0011C9E0  383 017E ggml_sum_rows
+    000027A0  384 017F ggml_tallocr_alloc
+    00002630  385 0180 ggml_tallocr_new
+    0011D4E0  386 0181 ggml_tanh
+    0011D510  387 0182 ggml_tanh_inplace
+    00116B50  388 0183 ggml_tensor_overhead
+    00115D00  389 0184 ggml_time_init
+    00115D40  390 0185 ggml_time_ms
+    00115D70  391 0186 ggml_time_us
+    001248C0  392 0187 ggml_timestep_embedding
+    00124AE0  393 0188 ggml_top_k
+    00120CA0  394 0189 ggml_transpose
+    001165B0  395 018A ggml_type_name
+    00116470  396 018B ggml_type_size
+    00116550  397 018C ggml_type_sizef
+    0011D320  398 018D ggml_unary
+    0011D380  399 018E ggml_unary_inplace
+    00116640  400 018F ggml_unary_op_name
+    00118F30  401 0190 ggml_unravel_index
+    001245D0  402 0191 ggml_upscale
+    00117710  403 0192 ggml_used_mem
+    00031F60  404 0193 ggml_validate_row_data
+    00120240  405 0194 ggml_view_1d
+    001203B0  406 0195 ggml_view_2d
+    00120460  407 0196 ggml_view_3d
+    00120530  408 0197 ggml_view_4d
+    0011AF80  409 0198 ggml_view_tensor
+    00126D70  410 0199 ggml_win_part
+    001270D0  411 019A ggml_win_unpart
+    0013D430  412 019B gguf_add_tensor
+    0013AAD0  413 019C gguf_find_key
+    0013C330  414 019D gguf_find_tensor
+    0013A4C0  415 019E gguf_free
+    0013ADF0  416 019F gguf_get_alignment
+    0013B0C0  417 01A0 gguf_get_arr_data
+    0013B340  418 01A1 gguf_get_arr_n
+    0013B1F0  419 01A2 gguf_get_arr_str
+    0013AF90  420 01A3 gguf_get_arr_type
+    0013AE10  421 01A4 gguf_get_data
+    0013AE00  422 01A5 gguf_get_data_offset
+    0013AE30  423 01A6 gguf_get_key
+    0013AEE0  424 01A7 gguf_get_kv_type
+    0013E470  425 01A8 gguf_get_meta_data
+    0013E430  426 01A9 gguf_get_meta_size
+    0013AE20  427 01AA gguf_get_n_kv
+    0013C320  428 01AB gguf_get_n_tensors
+    0013C3D0  429 01AC gguf_get_tensor_name
+    0013C400  430 01AD gguf_get_tensor_offset
+    0013C430  431 01AE gguf_get_tensor_type
+    0013BF20  432 01AF gguf_get_val_bool
+    0013C180  433 01B0 gguf_get_val_data
+    0013BA60  434 01B1 gguf_get_val_f32
+    0013BDF0  435 01B2 gguf_get_val_f64
+    0013B800  436 01B3 gguf_get_val_i16
+    0013B930  437 01B4 gguf_get_val_i32
+    0013BCC0  438 01B5 gguf_get_val_i64
+    0013B5A0  439 01B6 gguf_get_val_i8
+    0013C050  440 01B7 gguf_get_val_str
+    0013B6D0  441 01B8 gguf_get_val_u16
+    0013AB70  442 01B9 gguf_get_val_u32
+    0013BB90  443 01BA gguf_get_val_u64
+    0013B470  444 01BB gguf_get_val_u8
+    0013ADE0  445 01BC gguf_get_version
+    00138730  446 01BD gguf_init_empty
+    00138900  447 01BE gguf_init_from_file
+    0013C460  448 01BF gguf_remove_key
+    0013CBB0  449 01C0 gguf_set_arr_data
+    0013CCE0  450 01C1 gguf_set_arr_str
+    0013CE20  451 01C2 gguf_set_kv
+    0013D7F0  452 01C3 gguf_set_tensor_data
+    0013D740  453 01C4 gguf_set_tensor_type
+    0013CAA0  454 01C5 gguf_set_val_bool
+    0013C8E0  455 01C6 gguf_set_val_f32
+    0013CA30  456 01C7 gguf_set_val_f64
+    0013C790  457 01C8 gguf_set_val_i16
+    0013C870  458 01C9 gguf_set_val_i32
+    0013C9C0  459 01CA gguf_set_val_i64
+    0013C6B0  460 01CB gguf_set_val_i8
+    0013CB10  461 01CC gguf_set_val_str
+    0013C720  462 01CD gguf_set_val_u16
+    0013C800  463 01CE gguf_set_val_u32
+    0013C950  464 01CF gguf_set_val_u64
+    0013C560  465 01D0 gguf_set_val_u8
+    0013ADC0  466 01D1 gguf_type_name
+    0013D960  467 01D2 gguf_write_to_file
+    0019BFC0  468 01D3 llama_add_bos_token
+    0019BFE0  469 01D4 llama_add_eos_token
+    001876B0  470 01D5 llama_backend_free
+    00187620  471 01D6 llama_backend_init
+    00198300  472 01D7 llama_batch_free
+    0018B5E0  473 01D8 llama_batch_get_one
+    00197C70  474 01D9 llama_batch_init
+    001873E0  475 01DA llama_beam_search
+    0019DFC0  476 01DB llama_chat_apply_template
+    00187560  477 01DC llama_context_default_params
+    00190DE0  478 01DD llama_control_vector_apply
+    00193400  479 01DE llama_copy_state_data
+    00198E70  480 01DF llama_decode
+    001A2430  481 01E0 llama_dump_timing_info_yaml
+    00189B90  482 01E1 llama_free
+    001882D0  483 01E2 llama_free_model
+    0019B600  484 01E3 llama_get_embeddings
+    0019B630  485 01E4 llama_get_embeddings_ith
+    0019BCA0  486 01E5 llama_get_embeddings_seq
+    00191D70  487 01E6 llama_get_kv_cache_token_count
+    001917B0  488 01E7 llama_get_kv_cache_used_cells
+    0019AF60  489 01E8 llama_get_logits
+    0019AF90  490 01E9 llama_get_logits_ith
+    00186270  491 01EA llama_get_model
+    0018C5C0  492 01EB llama_get_model_tensor
+    001931E0  493 01EC llama_get_state_size
+    001A0E00  494 01ED llama_get_timings
+    00186FE0  495 01EE llama_grammar_accept_token
+    00182E50  496 01EF llama_grammar_copy
+    00182E10  497 01F0 llama_grammar_free
+    00182250  498 01F1 llama_grammar_init
+    00191DF0  499 01F2 llama_kv_cache_clear
+    00192DE0  500 01F3 llama_kv_cache_defrag
+    00192740  501 01F4 llama_kv_cache_seq_add
+    00192270  502 01F5 llama_kv_cache_seq_cp
+    00192A70  503 01F6 llama_kv_cache_seq_div
+    00192590  504 01F7 llama_kv_cache_seq_keep
+    00192D00  505 01F8 llama_kv_cache_seq_pos_max
+    00191F10  506 01F9 llama_kv_cache_seq_rm
+    00192E10  507 01FA llama_kv_cache_update
+    001917D0  508 01FB llama_kv_cache_view_free
+    00191740  509 01FC llama_kv_cache_view_init
+    00191840  510 01FD llama_kv_cache_view_update
+    001876D0  511 01FE llama_load_model_from_file
+    00194490  512 01FF llama_load_session_file
+    001A2720  513 0200 llama_log_set
+    001875E0  514 0201 llama_max_devices
+    0018F4E0  515 0202 llama_model_apply_lora_from_file
+    00187520  516 0203 llama_model_default_params
+    0018BC20  517 0204 llama_model_desc
+    0018BA40  518 0205 llama_model_meta_count
+    0018BA60  519 0206 llama_model_meta_key_by_index
+    0018B860  520 0207 llama_model_meta_val_str
+    0018BB40  521 0208 llama_model_meta_val_str_by_index
+    0018C520  522 0209 llama_model_n_params
+    0018C700  523 020A llama_model_quantize
+    00187590  524 020B llama_model_quantize_default_params
+    0018C480  525 020C llama_model_size
+    0018B660  526 020D llama_n_batch
+    0018B650  527 020E llama_n_ctx
+    0018B820  528 020F llama_n_ctx_train
+    0018B830  529 0210 llama_n_embd
+    0018B840  530 0211 llama_n_layer
+    0018B680  531 0212 llama_n_seq_max
+    0018B670  532 0213 llama_n_ubatch
+    00186260  533 0214 llama_n_vocab
+    00188310  534 0215 llama_new_context_with_model
+    00187680  535 0216 llama_numa_init
+    0018B810  536 0217 llama_pooling_type
+    001A11B0  537 0218 llama_print_system_info
+    001A0F60  538 0219 llama_print_timings
+    001A1130  539 021A llama_reset_timings
+    0018B850  540 021B llama_rope_freq_scale_train
+    0018B6C0  541 021C llama_rope_type
+    001860F0  542 021D llama_sample_apply_guidance
+    00184DB0  543 021E llama_sample_entropy
+    001855C0  544 021F llama_sample_grammar
+    00183D50  545 0220 llama_sample_min_p
+    00185220  546 0221 llama_sample_repetition_penalties
+    001831A0  547 0222 llama_sample_softmax
+    00184170  548 0223 llama_sample_tail_free
+    00185170  549 0224 llama_sample_temp
+    001868F0  550 0225 llama_sample_token
+    00186C80  551 0226 llama_sample_token_greedy
+    00186390  552 0227 llama_sample_token_mirostat
+    00186990  553 0228 llama_sample_token_mirostat_v2
+    00183410  554 0229 llama_sample_top_k
+    00183C10  555 022A llama_sample_top_p
+    001847D0  556 022B llama_sample_typical
+    001945F0  557 022C llama_save_session_file
+    00198E00  558 022D llama_set_abort_callback
+    00198E40  559 022E llama_set_causal_attn
+    00198DD0  560 022F llama_set_n_threads
+    00183140  561 0230 llama_set_rng_seed
+    001934C0  562 0231 llama_set_state_data
+    001A0B90  563 0232 llama_split_path
+    001A0C20  564 0233 llama_split_prefix
+    00193430  565 0234 llama_state_get_data
+    00193200  566 0235 llama_state_get_size
+    001944E0  567 0236 llama_state_load_file
+    00194630  568 0237 llama_state_save_file
+    00195F00  569 0238 llama_state_seq_get_data
+    00195CC0  570 0239 llama_state_seq_get_size
+    00198780  571 023A llama_state_seq_load_file
+    00198410  572 023B llama_state_seq_save_file
+    00196E00  573 023C llama_state_seq_set_data
+    001934F0  574 023D llama_state_set_data
+    00187610  575 023E llama_supports_gpu_offload
+    00187600  576 023F llama_supports_mlock
+    001875F0  577 0240 llama_supports_mmap
+    00195600  578 0241 llama_synchronize
+    001876C0  579 0242 llama_time_us
+    0018AE20  580 0243 llama_token_bos
+    0019BF60  581 0244 llama_token_cls
+    0019BF20  582 0245 llama_token_eos
+    0019BF40  583 0246 llama_token_eot
+    0019BDE0  584 0247 llama_token_get_score
+    0019BD40  585 0248 llama_token_get_text
+    0019BE80  586 0249 llama_token_get_type
+    00185E50  587 024A llama_token_is_eog
+    0019C020  588 024B llama_token_middle
+    0019BFA0  589 024C llama_token_nl
+    0019C000  590 024D llama_token_prefix
+    0019BF80  591 024E llama_token_sep
+    0019C040  592 024F llama_token_suffix
+    0019CF80  593 0250 llama_token_to_piece
+    0019C060  594 0251 llama_tokenize
+    0018B6A0  595 0252 llama_vocab_type
+    0034F800  596 0253 redirect_cerr_to_callback
+    0034F8E0  597 0254 restore_cerr
+
+******************************************************************************
+Section:             Resources
+File Offset:         00A8AE00 (11054592)
+  Flags:             00000000
+  Time Stamp:        00000000
+  Major Version:     0000
+  Minor Version:     0000
+
+Resources:
+Type          Name                   Lang Id
+--------------------------------------------
+[0 named entries, 5 ID entries]
+type: Cursor (1)  (next directory @00000038)
+
+              [0 named entries, 7 ID entries]
+              type: Cursor (1)  (next directory @00000208)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @00000688)
+                                         Offset:    00B7FE98
+                                         Size:      00000134
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Bitmap (2)  (next directory @00000220)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @00000698)
+                                         Offset:    00B7FFE8
+                                         Size:      00000134
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Icon (3)  (next directory @00000238)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @000006A8)
+                                         Offset:    00B80138
+                                         Size:      00000134
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Menu (4)  (next directory @00000250)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @000006B8)
+                                         Offset:    00B80288
+                                         Size:      00000134
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Dialog (5)  (next directory @00000268)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @000006C8)
+                                         Offset:    00B803D8
+                                         Size:      00000134
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: String Table (6)  (next directory @00000280)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @000006D8)
+                                         Offset:    00B80528
+                                         Size:      00000134
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Font Directory (7)  (next directory @00000298)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @000006E8)
+                                         Offset:    00B80678
+                                         Size:      00000134
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+type: String Table (6)  (next directory @00000080)
+
+              [0 named entries, 29 ID entries]
+              type: Unknown (4068)  (next directory @000002B0)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @000006F8)
+                                         Offset:    00B7FA90
+                                         Size:      00000408
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4069)  (next directory @000002C8)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000708)
+                                         Offset:    00B7F5F8
+                                         Size:      00000494
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4070)  (next directory @000002E0)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000718)
+                                         Offset:    00B7F228
+                                         Size:      000003CC
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4071)  (next directory @000002F8)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000728)
+                                         Offset:    00B7EE38
+                                         Size:      000003EC
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4072)  (next directory @00000310)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000738)
+                                         Offset:    00B7EC08
+                                         Size:      0000022C
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4073)  (next directory @00000328)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000748)
+                                         Offset:    00B7EB40
+                                         Size:      000000C8
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4074)  (next directory @00000340)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000758)
+                                         Offset:    00B7EA28
+                                         Size:      00000118
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4075)  (next directory @00000358)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000768)
+                                         Offset:    00B7E5A8
+                                         Size:      00000480
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4076)  (next directory @00000370)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000778)
+                                         Offset:    00B7E1A8
+                                         Size:      000003FC
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4077)  (next directory @00000388)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000788)
+                                         Offset:    00B7DE10
+                                         Size:      00000394
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4078)  (next directory @000003A0)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000798)
+                                         Offset:    00B7D900
+                                         Size:      00000510
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4079)  (next directory @000003B8)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @000007A8)
+                                         Offset:    00B7D4F0
+                                         Size:      00000410
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4080)  (next directory @000003D0)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @000007B8)
+                                         Offset:    00B7D088
+                                         Size:      00000464
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4081)  (next directory @000003E8)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @000007C8)
+                                         Offset:    00B7CB00
+                                         Size:      00000584
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4082)  (next directory @00000400)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @000007D8)
+                                         Offset:    00B7C8E8
+                                         Size:      00000218
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4083)  (next directory @00000418)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @000007E8)
+                                         Offset:    00B7C478
+                                         Size:      0000046C
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4084)  (next directory @00000430)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @000007F8)
+                                         Offset:    00B7C0D0
+                                         Size:      000003A8
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4085)  (next directory @00000448)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000808)
+                                         Offset:    00B7BBE8
+                                         Size:      000004E8
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4086)  (next directory @00000460)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000818)
+                                         Offset:    00B7B6E8
+                                         Size:      00000500
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4087)  (next directory @00000478)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000828)
+                                         Offset:    00B7B380
+                                         Size:      00000364
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4088)  (next directory @00000490)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000838)
+                                         Offset:    00B7AFC0
+                                         Size:      000003BC
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4089)  (next directory @000004A8)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000848)
+                                         Offset:    00B7AB90
+                                         Size:      0000042C
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4090)  (next directory @000004C0)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000858)
+                                         Offset:    00B7AA88
+                                         Size:      00000108
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4091)  (next directory @000004D8)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000868)
+                                         Offset:    00B7A9B8
+                                         Size:      000000CC
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4092)  (next directory @000004F0)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000878)
+                                         Offset:    00B7A7A0
+                                         Size:      00000214
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4093)  (next directory @00000508)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000888)
+                                         Offset:    00B7A390
+                                         Size:      0000040C
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4094)  (next directory @00000520)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @00000898)
+                                         Offset:    00B7A008
+                                         Size:      00000384
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4095)  (next directory @00000538)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @000008A8)
+                                         Offset:    00B79CF0
+                                         Size:      00000318
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (4096)  (next directory @00000550)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (0)  (data @000008B8)
+                                         Offset:    00B799F0
+                                         Size:      00000300
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+type: RCData (10)  (next directory @00000178)
+
+              [4 named entries, 0 ID entries]
+              MSG_ERROR  (next directory @00000568)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @000008C8)
+                                         Offset:    00B818E8
+                                         Size:      0000148B
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              MSG_INFO  (next directory @00000580)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @000008D8)
+                                         Offset:    00B807C8
+                                         Size:      0000111E
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              MSG_WARNING  (next directory @00000598)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @000008E8)
+                                         Offset:    00B82D78
+                                         Size:      00000D8C
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              PLATFORMTARGETS  (next directory @000005B0)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @000008F8)
+                                         Offset:    00B83F68
+                                         Size:      00000004
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+type: Group Cursor (12)  (next directory @000001A8)
+
+              [0 named entries, 7 ID entries]
+              type: Unknown (32761)  (next directory @000005C8)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @00000908)
+                                         Offset:    00B7FFD0
+                                         Size:      00000014
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (32762)  (next directory @000005E0)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @00000918)
+                                         Offset:    00B80120
+                                         Size:      00000014
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (32763)  (next directory @000005F8)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @00000928)
+                                         Offset:    00B80270
+                                         Size:      00000014
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (32764)  (next directory @00000610)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @00000938)
+                                         Offset:    00B803C0
+                                         Size:      00000014
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (32765)  (next directory @00000628)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @00000948)
+                                         Offset:    00B80510
+                                         Size:      00000014
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (32766)  (next directory @00000640)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @00000958)
+                                         Offset:    00B80660
+                                         Size:      00000014
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+              type: Unknown (32767)  (next directory @00000658)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @00000968)
+                                         Offset:    00B807B0
+                                         Size:      00000014
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+type: Version (16)  (next directory @000001F0)
+
+              [0 named entries, 1 ID entries]
+              type: Cursor (1)  (next directory @00000670)
+
+                                     [0 named entries, 1 ID entries]
+                                     type: Unknown (1033)  (data @00000978)
+                                         Offset:    00B83B08
+                                         Size:      0000045C
+                                         Code Page: 00000000
+                                         Reserved:  00000000
+
+
+
