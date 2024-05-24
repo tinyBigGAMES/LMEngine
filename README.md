@@ -12,7 +12,7 @@ This library efficiently loads LLMs in [GGUF format](https://huggingface.co/docs
 - Acquire a GGUF model. All vetted models compatible with LMEngine can be downloaded from our <a href="https://huggingface.co/tinybiggames" target="_blank">Hugging Face</a> account.
 - The application utilizes Vulkan for enhanced performance on supported GPUs. You can perform inference solely on the CPU or distribute the workload between the CPU and GPU to accommodate scenarios with limited VRAM (this split functionality will be available in a future update). Ensure the model size does not exceed the available system resources, considering the requisite memory.
 - Consult the `installdir\examples` directory for demonstrations on integrating **LMEngine** with your programming language.
-- Include the following DLLs in your project distribution: `LMEngine.dll`. See [VirusTotal Report](bin/LMEngine.dll.virustotal.txt) report.
+- Include the following DLLs in your project distribution: `LMEngine.dll`. See [VirusTotal Report](bin/LMEngine.dll.VirusTotal.txt) report.
 - LMEngine API supports integration across programming languages that accommodate Win64 and Unicode, with out-of-the-box support for Pascal and C/C++.
 - Ship-ready DLLs are included in the repository; however, if there is a need to rebuild the `LMEngine.dll`, [RAD Studio 12.1](https://www.embarcadero.com/products/rad-studio/) is required.
 - This project is developed using RAD Studio 12.1, on Windows 11, powered by an Intel Core i5-12400F at 2500 MHz with 6 cores (12 logical), equipped with 36GB RAM and an NVIDIA RTX 3060 GPU with 12GB RAM.
