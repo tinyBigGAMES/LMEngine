@@ -14,7 +14,7 @@ This library efficiently loads LLMs in [GGUF format](https://huggingface.co/docs
 ### <img src="media\Update.png" alt="drawing" width="20" height="20"/> Installation
 - [Download](https://github.com/tinyBigGAMES/LMEngine/archive/refs/heads/main.zip) the LMEngine repo, unzip to a desired location.
 - Acquire a GGUF model. All vetted models compatible with LMEngine can be downloaded from our <a href="https://huggingface.co/tinybiggames" target="_blank">Hugging Face</a> account.
-- The application utilizes Vulkan for enhanced performance on supported GPUs. You can perform inference solely on the CPU or distribute the workload between the CPU and GPU to accommodate scenarios with limited VRAM (this split functionality will be available in a future update). Ensure the model size does not exceed the available system resources, considering the requisite memory.
+- The library utilizes Vulkan for enhanced performance on supported GPUs. You can perform inference solely on the GPU or distribute the workload between the CPU and GPU to accommodate scenarios with limited VRAM (this split functionality will be available in a future update). Ensure the model size does not exceed the available system resources, considering the requisite memory.
 - Consult the `installdir\examples` directory for demonstrations on integrating **LMEngine** with your programming language.
 - Include the following DLLs in your project distribution: `LMEngine.dll`. See [VirusTotal Report](bin/LMEngine.dll.VirusTotal.txt) report.
 - LMEngine API supports integration across programming languages that accommodate Win64 and Unicode, with out-of-the-box support for Pascal and C/C++.

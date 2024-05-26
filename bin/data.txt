@@ -1,0 +1,69 @@
+The FutureStarts Here
+---------------------
+
+1,000+
+
+Developers Empowered
+
+Shaping the Future AI
+---------------------
+
+Founded in 2020 in Berlin, Jina AI is a leading AI company. We provide the search foundation, a crucial component in multimodal AI, with the goal of enabling businesses and developers to harness the power of multimodal data for value creation and cost savings. Our commitment to open-source and open research has established us as a commercial open-source software company.
+
+Our Mission
+-----------
+
+The future of AI is multimodal, and we are part of it. We realize that businesses face challenges in leveraging multimodal data. In response, we're committed to the search foundation to help businesses and developers better search, understand, and utilize multimodal data for all kinds of business potentials.
+
+Yann LeCun
+
+An artificial intelligence system trained on words and sentences alone will never approximate human understanding.
+
+Jina AI
+
+Absolutely, Yann. We're on it, building bridges to a multimodal AI future!
+
+Our Approach
+------------
+
+At Jina AI, we are building the search foundation, which consists of embeddings, rerankers, prompt ops, and core infrastructure. These components work in concert to revolutionize how we search and understand data, thereby increasing relevance and reducing search time. This leads to improved user satisfaction and trust, higher engagement and conversion rates, a direct increase in sales volume, and the unlocking of new applications to foster business growth.
+
+Understand the Search Foundation
+
+Embeddings
+
+Click to learn more
+
+Reranker
+
+Click to learn more
+
+PromptOps
+
+Click to learn more
+
+Core Infra
+
+Click to learn more
+
+Our Value
+---------
+
+We believe that openness can accelerate innovation and foster collaboration. We're not just advocates—we are active contributors, investing significantly in the open-source community. From being an early donor to FastAPI, to actively supporting the Linux Foundation and the Python Software Foundation, we are passionate about giving back. But we don’t stop there; we’ve also open-sourced our models and projects, sharing our expertise with the world.
+
+Our Offices
+-----------
+
+Berlin, Germany
+
+Ohlauer Str. 43 (1st floor), zone A, 10999 Berlin, Germany
+
+Beijing, China
+
+Level 5, Building 6, No.48 Haidian West St. Beijing Haidian, China
+
+Shenzhen, China
+
+402, Floor 4, Fu'an Technology Building, Shenzhen Nanshan, China
+
+

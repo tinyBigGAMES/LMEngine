@@ -47,7 +47,7 @@
 #error "Unsupported platform"
 #endif
 
-// link in Infero.lib
+// link in LMEngine.lib
 #pragma comment(lib,"LMEngine.lib")
 
 #ifdef __cplusplus

@@ -111,11 +111,11 @@ type
     TInference = record
       Active: Boolean;
       TokenList: TArray<llama_token>;
-      CtxNum: integer;
-      KVReqNum: integer;
-      LenNum: integer;
+      CtxNum: UInt32;
+      KVReqNum: UInt32;
+      LenNum: UInt32;
       Batch: llama_batch;
-      CurNum: integer;
+      CurNum: UInt32;
       VocabNum: Int32;
       Logits: System.PSingle;
       Candidates: TArray<llama_token_data>;
@@ -128,6 +128,7 @@ type
       ModelName: string;
       PrevToken: string;
       LTokenBuffer: string;
+      InputTokens: uint32;
     end;
     TCallbacks = record
       InferenceCancel: TCallback<InferenceCancelCallback>;
@@ -154,7 +155,9 @@ type
     FUsage: TUsage;
     FError: TError;
     FModel: Pllama_model;
+    FModelParams: llama_model_params;
     FContext: Pllama_context;
+    FContextParams: llama_context_params;
     FLastUserMessage: UTF8String;
     FCallbacks: TCallbacks;
     FInference: TInference;
@@ -940,8 +943,8 @@ end;
 function  TLMEngine.Model_Load(const AModelName: string): Boolean;
 var
   LModel: TModel;
-  LModelParams: llama_model_params;
-  LContextParams: llama_context_params;
+  //LModelParams: llama_model_params;
+  //LContextParams: llama_context_params;
   LFilename: string;
 begin
   Result := False;
@@ -972,13 +975,13 @@ begin
     llama_backend_init();
     llama_numa_init(GGML_NUMA_STRATEGY_DISTRIBUTE);
 
-    LModelParams := llama_model_default_params();
+    FModelParams := llama_model_default_params();
     FInference.ModelName := AModelName;
-    LModelParams.progress_callback_user_data := Self;
-    LModelParams.progress_callback := TLMEngine_ModelLoadProgressCallback;
-    LModelParams.n_gpu_layers := FConfig.NumGPULayers;
+    FModelParams.progress_callback_user_data := Self;
+    FModelParams.progress_callback := TLMEngine_ModelLoadProgressCallback;
+    FModelParams.n_gpu_layers := FConfig.NumGPULayers;
     LFilename := TPath.Combine(FConfig.ModelPath, LModel.Filename);
-    FModel := llama_load_model_from_file(Utils.AsUTF8(LFilename), LModelParams);
+    FModel := llama_load_model_from_file(Utils.AsUTF8(LFilename), FModelParams);
     if not Assigned(FModel) then
     begin
       OnLoadModel(AModelName, False);
@@ -990,13 +993,13 @@ begin
 
     OnLoadModel(AModelName, True);
 
-    LContextParams := llama_context_default_params();
-    LContextParams.offload_kqv := true;
-    LContextParams.seed  := MaxInt;
-    LContextParams.n_ctx := LModel.MaxContext;
-    LContextParams.n_threads := Utils.GetPhysicalProcessorCount();
-    LContextParams.n_threads_batch := LContextParams.n_threads;
-    FContext := llama_new_context_with_model(FModel, LContextParams);
+    FContextParams := llama_context_default_params();
+    FContextParams.offload_kqv := true;
+    FContextParams.seed  := MaxInt;
+    FContextParams.n_ctx := LModel.MaxContext;
+    FContextParams.n_threads := Utils.GetPhysicalProcessorCount();
+    FContextParams.n_threads_batch := FContextParams.n_threads;
+    FContext := llama_new_context_with_model(FModel, FContextParams);
     if not Assigned(FContext) then
     begin
       llama_free_model(FModel);
@@ -1045,15 +1048,25 @@ end;
 
 function  TLMEngine.Inference_Run(const AModelName: string; const AMaxTokens: UInt32): Boolean;
 begin
-  Result := True;
+  try
+    Result := Inference_Start(AModelName, AMaxTokens);
 
-  if Inference_Start(AModelName, AMaxTokens) then
-  begin
-    while Inference_IsActive() do
+    if Result = True then
     begin
-      Inference_GetNextToken();
+      while Inference_IsActive() do
+      begin
+        Inference_GetNextToken();
+      end;
     end;
-  end;
+
+  except
+    on E: Exception do
+    begin
+      Error_Set('[%s] %s', ['Inference_Run', E.Message]);
+      Result := False;
+    end;
+end;
+
 end;
 
 function  TLMEngine.Inference_Start(const AModelName: string; const AMaxTokens: UInt32): Boolean;
@@ -1089,11 +1102,20 @@ begin
 
     // generate token list
     FInference.TokenList := Tokenize(FContext, FInference.Prompt, true, true);
+    FInference.InputTokens := Length(FInference.TokenList);
 
     FInference.MaxTokens := AMaxTokens;
     FInference.CtxNum    := llama_n_ctx(FContext);
+
+    if FInference.InputTokens > FInference.CtxNum then
+    //if FInference.InputTokens > 100 then
+    begin
+      Error_Set('[%s] Max context of %d reached! Reduce input tokens', ['Inference_Start', FInference.CtxNum]);
+      Exit;
+    end;
+
     FInference.LenNum :=  EnsureRange(FInference.MaxTokens, 512, FInference.CtxNum);
-    FInference.KVReqNum := Length(FInference.TokenList) + (FInference.LenNum - Length(FInference.TokenList));
+    FInference.KVReqNum := FInference.InputTokens + (FInference.LenNum -  FInference.InputTokens);
 
     if FInference.KVReqNum > FInference.CtxNum then
     begin
@@ -1103,9 +1125,10 @@ begin
       Exit;
     end;
 
-    FInference.Batch := llama_batch_init(512, 0, 1);
+    //FInference.Batch := llama_batch_init(FContextParams.n_batch, 0, 2);
+    FInference.Batch := llama_batch_init(FInference.InputTokens, 0, 1);
 
-    for I := 0 to Length(FInference.TokenList)-1 do
+    for I := 0 to FInference.InputTokens-1 do
     begin
       BatchAdd(FInference.Batch, FInference.TokenList[I], I, [0], false);
     end;

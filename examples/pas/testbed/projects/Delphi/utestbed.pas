@@ -45,6 +45,7 @@ interface
 
 uses
   SysUtils,
+  IOUtils,
   LMEngine;
 
 procedure RunTests();

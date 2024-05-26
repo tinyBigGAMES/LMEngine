@@ -348,6 +348,7 @@ ggml_cpu_has_avx512_vnni
 ggml_cpu_has_avx512_bf16
 ggml_cpu_has_fma
 ggml_cpu_has_neon
+ggml_cpu_has_sve
 ggml_cpu_has_arm_fma
 ggml_cpu_has_metal
 ggml_cpu_has_f16c
@@ -541,6 +542,7 @@ llama_token_get_text
 llama_token_get_score
 llama_token_get_type
 llama_token_is_eog
+llama_token_is_control
 llama_token_bos
 llama_token_eos
 llama_token_cls

@@ -445,6 +445,7 @@ const
   LLAMA_VOCAB_PRE_TYPE_QWEN2 = 11;
   LLAMA_VOCAB_PRE_TYPE_OLMO = 12;
   LLAMA_VOCAB_PRE_TYPE_DBRX = 13;
+  LLAMA_VOCAB_PRE_TYPE_SMAUG = 14;
 
 type
   llama_rope_type = Integer;
@@ -2075,6 +2076,9 @@ function ggml_cpu_has_fma(): Integer; cdecl;
 function ggml_cpu_has_neon(): Integer; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_cpu_has_neon';
 
+function ggml_cpu_has_sve(): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'ggml_cpu_has_sve';
+
 function ggml_cpu_has_arm_fma(): Integer; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_cpu_has_arm_fma';
 
@@ -2653,6 +2657,9 @@ function llama_token_get_type(const model: Pllama_model; token: llama_token): ll
 
 function llama_token_is_eog(const model: Pllama_model; token: llama_token): Boolean; cdecl;
   external LMENGINE_DLL name _PU + 'llama_token_is_eog';
+
+function llama_token_is_control(const model: Pllama_model; token: llama_token): Boolean; cdecl;
+  external LMENGINE_DLL name _PU + 'llama_token_is_control';
 
 function llama_token_bos(const model: Pllama_model): llama_token; cdecl;
   external LMENGINE_DLL name _PU + 'llama_token_bos';
