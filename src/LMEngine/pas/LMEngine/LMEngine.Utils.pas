@@ -595,11 +595,11 @@ type
   Speech = class
   public type
     VoiceAttributeEvent = (vaDescription, vaName, vaVendor, vaAge, vaGender, vaLanguage, vaId);
-    WordEvent = procedure(const ASender: Pointer; const AWord, AText: PAnsiChar); cdecl;
+    WordEvent = procedure(const AWord, AText: PWideChar; const AUserData: Pointer); cdecl;
   protected type
     TOnWordEvent = record
-      Sender: Pointer;
       Handler: WordEvent;
+      UserData: Pointer;
     end;
   protected class var
     FSpVoice: TSpVoice;
@@ -620,7 +620,7 @@ type
     class constructor Create();
     class destructor Destroy();
   public
-    class procedure SetOnWordEvent(const ASender: Pointer; const AHandler: Speech.WordEvent);
+    class procedure SetOnWordEvent(const AHandler: Speech.WordEvent; const AUserData: Pointer);
     class function  GetOnWordEvent(): Speech.WordEvent;
     class function  GetVoiceCount(): Integer;
     class function  GetVoiceAttribute(const AIndex: Integer; const AAttribute: VoiceAttributeEvent): string;
@@ -756,6 +756,29 @@ type
     function Finalize: Boolean;
   end;
 
+  { TVector<T> }
+  TVector<T> = class
+  private
+    //FItems: array of T;
+    FCount: UInt32;
+    procedure SetItem(AIndex: UInt32; const Value: T);
+    function GetItem(AIndex: UInt32): T;
+    procedure SetCapacity(const ANewCapacity: UInt32);
+  public
+    FItems: array of T;
+    constructor Create();
+    procedure Add(const AItem: T);
+    procedure Insert(const AIndex: UInt32; const Item: T);
+    procedure Delete(const AIndex: UInt32);
+    procedure Erase(const AStartIndex, AEndIndex: UInt32);
+    procedure Clear();
+    procedure Resize(const ANewSize: UInt32);
+    function Count(): UInt32;
+    function Capacity(): UInt32;
+    function Empty(): Boolean;
+    function Data: Pointer;
+    property Items[AIndex: UInt32]: T read GetItem write SetItem; default;
+  end;
 
   { TBaseObject }
   TBaseObject = class
@@ -2324,7 +2347,7 @@ begin
     FWord := LWord;
   if Assigned(FOnWord.Handler) then
   begin
-    FOnWord.Handler(FOnWord.Sender, Utils.AsUTF8(FWord), Utils.AsUTF8(FText));
+    FOnWord.Handler(PWideChar(FWord), PWideChar(FText), FOnWord.UserData);
   end;
 end;
 
@@ -2386,9 +2409,9 @@ begin
   CoUninitialize();
 end;
 
-class procedure Speech.SetOnWordEvent(const ASender: Pointer; const AHandler: Speech.WordEvent);
+class procedure Speech.SetOnWordEvent(const AHandler: Speech.WordEvent; const AUserData: Pointer);
 begin
-  FOnWord.Sender := ASender;
+  FOnWord.UserData := AUserData;
   FOnWord.Handler := AHandler;
 end;
 
@@ -3075,6 +3098,114 @@ var
 begin
   Console.GetSize(@LWidth, nil);
   FRightMargin := EnsureRange(AMargin, 1, LWidth);
+end;
+
+{ TVector<T> }
+constructor TVector<T>.Create;
+begin
+  inherited Create;
+  FCount := 0;
+  SetLength(FItems, 0);
+end;
+
+procedure TVector<T>.Add(const AItem: T);
+begin
+  if FCount = Length(FItems) then
+    SetCapacity(FCount + 16);
+  FItems[FCount] := AItem;
+  Inc(FCount);
+end;
+
+procedure TVector<T>.Insert(const AIndex: UInt32; const Item: T);
+var
+  I: UInt32;
+begin
+  if AIndex > FCount then
+    raise EListError.Create('Index out of bounds');
+  if FCount = Length(FItems) then
+    SetCapacity(FCount + 16);
+  for I := FCount downto AIndex + 1 do
+    FItems[I] := FItems[I - 1];
+  FItems[AIndex] := Item;
+  Inc(FCount);
+end;
+
+procedure TVector<T>.Delete(const AIndex: UInt32);
+var
+  I: Integer;
+begin
+  if AIndex >= FCount then
+    raise EListError.Create('Index out of bounds');
+  for I := AIndex to FCount - 2 do
+    FItems[I] := FItems[I + 1];
+  Dec(FCount);
+end;
+
+procedure TVector<T>.Erase(const AStartIndex, AEndIndex: UInt32);
+var
+  I, CountToErase: UInt32;
+begin
+  if (AEndIndex >= FCount) or (AStartIndex > AEndIndex) then
+    raise EListError.Create('Index out of bounds');
+  CountToErase := AEndIndex - AStartIndex + 1;
+  for I := AStartIndex to FCount - CountToErase - 1 do
+    FItems[I] := FItems[I + CountToErase];
+  Dec(FCount, CountToErase);
+end;
+
+procedure TVector<T>.Clear;
+begin
+  FCount := 0;
+  SetLength(FItems, 0);
+end;
+
+procedure TVector<T>.Resize(const ANewSize: UInt32);
+begin
+  //if ANewSize < 0 then
+  //  raise EListError.Create('Size cannot be negative');
+  SetCapacity(ANewSize);
+  FCount := ANewSize;
+end;
+
+function TVector<T>.Count: UInt32;
+begin
+  Result := FCount;
+end;
+
+function TVector<T>.Capacity: UInt32;
+begin
+  Result := Length(FItems);
+end;
+
+function TVector<T>.Empty: Boolean;
+begin
+  Result := FCount = 0;
+end;
+
+procedure TVector<T>.SetItem(AIndex: UInt32; const Value: T);
+begin
+  if (AIndex >= FCount) then
+    raise EListError.Create('Index out of bounds');
+  FItems[AIndex] := Value;
+end;
+
+function TVector<T>.GetItem(AIndex: UInt32): T;
+begin
+  if (AIndex >= FCount) then
+    raise EListError.Create('Index out of bounds');
+  Result := FItems[AIndex];
+end;
+
+procedure TVector<T>.SetCapacity(const ANewCapacity: UInt32);
+begin
+  if ANewCapacity < FCount then
+    raise EListError.Create('New capacity cannot be less than count');
+  SetLength(FItems, ANewCapacity);
+end;
+
+function TVector<T>.Data: Pointer;
+begin
+  Result := @FItems[0];
 end;
 
 { TBaseObject }

@@ -1152,9 +1152,6 @@ function ggml_ftype_to_ggml_type(ftype: ggml_ftype): ggml_type; cdecl;
 function ggml_is_transposed(const tensor: Pggml_tensor): Boolean; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_is_transposed';
 
-function ggml_is_contiguous(const tensor: Pggml_tensor): Boolean; cdecl;
-  external LMENGINE_DLL name _PU + 'ggml_is_contiguous';
-
 function ggml_is_permuted(const tensor: Pggml_tensor): Boolean; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_is_permuted';
 
@@ -1175,6 +1172,18 @@ function ggml_is_3d(const tensor: Pggml_tensor): Boolean; cdecl;
 
 function ggml_n_dims(const tensor: Pggml_tensor): Integer; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_n_dims';
+
+function ggml_is_contiguous(const tensor: Pggml_tensor): Boolean; cdecl;
+  external LMENGINE_DLL name _PU + 'ggml_is_contiguous';
+
+function ggml_is_contiguous_0(const tensor: Pggml_tensor): Boolean; cdecl;
+  external LMENGINE_DLL name _PU + 'ggml_is_contiguous_0';
+
+function ggml_is_contiguous_1(const tensor: Pggml_tensor): Boolean; cdecl;
+  external LMENGINE_DLL name _PU + 'ggml_is_contiguous_1';
+
+function ggml_is_contiguous_2(const tensor: Pggml_tensor): Boolean; cdecl;
+  external LMENGINE_DLL name _PU + 'ggml_is_contiguous_2';
 
 function ggml_are_same_shape(const t0: Pggml_tensor; const t1: Pggml_tensor): Boolean; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_are_same_shape';
@@ -1386,7 +1395,7 @@ function ggml_repeat(ctx: Pggml_context; a: Pggml_tensor; b: Pggml_tensor): Pggm
 function ggml_repeat_back(ctx: Pggml_context; a: Pggml_tensor; b: Pggml_tensor): Pggml_tensor; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_repeat_back';
 
-function ggml_concat(ctx: Pggml_context; a: Pggml_tensor; b: Pggml_tensor): Pggml_tensor; cdecl;
+function ggml_concat(ctx: Pggml_context; a: Pggml_tensor; b: Pggml_tensor; dim: Integer): Pggml_tensor; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_concat';
 
 function ggml_abs(ctx: Pggml_context; a: Pggml_tensor): Pggml_tensor; cdecl;
@@ -1631,6 +1640,9 @@ function ggml_rope_custom(ctx: Pggml_context; a: Pggml_tensor; b: Pggml_tensor; 
 
 function ggml_rope_custom_inplace(ctx: Pggml_context; a: Pggml_tensor; b: Pggml_tensor; n_dims: Integer; mode: Integer; n_ctx: Integer; n_orig_ctx: Integer; freq_base: Single; freq_scale: Single; ext_factor: Single; attn_factor: Single; beta_fast: Single; beta_slow: Single): Pggml_tensor; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_rope_custom_inplace';
+
+function ggml_rope_xpos_inplace(ctx: Pggml_context; a: Pggml_tensor; b: Pggml_tensor; n_dims: Integer; base: Single; down: Boolean): Pggml_tensor; cdecl;
+  external LMENGINE_DLL name _PU + 'ggml_rope_xpos_inplace';
 
 procedure ggml_rope_yarn_corr_dims(n_dims: Integer; n_orig_ctx: Integer; freq_base: Single; beta_fast: Single; beta_slow: Single; dims: PSingle); cdecl;
   external LMENGINE_DLL name _PU + 'ggml_rope_yarn_corr_dims';
@@ -2121,6 +2133,9 @@ function ggml_cpu_has_ssse3(): Integer; cdecl;
 function ggml_cpu_has_sycl(): Integer; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_cpu_has_sycl';
 
+function ggml_cpu_has_rpc(): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'ggml_cpu_has_rpc';
+
 function ggml_cpu_has_vsx(): Integer; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_cpu_has_vsx';
 
@@ -2394,7 +2409,7 @@ function ggml_backend_compare_graph_backend(backend1: ggml_backend_t; backend2: 
 procedure ggml_backend_tensor_alloc(buffer: ggml_backend_buffer_t; tensor: Pggml_tensor; addr: Pointer); cdecl;
   external LMENGINE_DLL name _PU + 'ggml_backend_tensor_alloc';
 
-procedure ggml_backend_view_init(buffer: ggml_backend_buffer_t; tensor: Pggml_tensor); cdecl;
+procedure ggml_backend_view_init(tensor: Pggml_tensor); cdecl;
   external LMENGINE_DLL name _PU + 'ggml_backend_view_init';
 
 function llama_model_default_params(): llama_model_params; cdecl;

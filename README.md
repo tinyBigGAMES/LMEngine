@@ -5,7 +5,7 @@
 ### <img src="media\Analyze.png" alt="Overview" width="20" height="20"/> Overview
 Welcome to LMEngine. We are pleased to introduce you to our versatile and user-friendly library, designed to facilitate local LLM inference across various programming languages. Whether you are a seasoned developer or just beginning your journey, LMEngine offers a straightforward solution to integrate advanced language model capabilities into your applications with ease. 
 
-The library maintains a minimal overhead of approximately 2MB. The API is highly flexible, enabling inference execution through the `Inference_Run` function, which completes the process and returns the results. Users can define callbacks for customization or implement their own inference loop for finer control.
+The library maintains a minimal overhead of approximately 2.5MB. The API is highly flexible, enabling inference execution through the `LME_RunInference` function, which completes the process and returns the results. Users can define callbacks for customization.
 
 LMEngine provides out-of-the-box bindings for Pascal and C/C++, featuring a straightforward procedural API that facilitates the creation of bindings for additional languages.
 
@@ -33,23 +33,25 @@ uses
 
 begin
   // init
-  Config_Init('C:/LLM/gguf', -1);
+  LME_InitConfigt('C:/LLM/gguf', -1);
   
   // define model
-  Model_Define('phi-3-mini-4k-instruct.Q4_K_M.gguf', 'phi-3-mini-4k-instruct.Q4_K_M', 4000, '<|{role}|>{content}<|end|>', '<|assistant|>');  
+  LME_DefineModel('phi-3-mini-4k-instruct.Q4_K_M.gguf',
+    'phi-3-mini-4k-instruct.Q4_K_M', 4000, '<|{role}|>{content}<|end|>',
+    '<|assistant|>');  
   
   // add message
-  Message_Add(ROLE_SYSTEM, 'You are a helpful AI assistant');
-  Message_Add(ROLE_USER, 'What is AI?');
+  LME_AddMessage(LME_ROLE_SYSTEM, 'You are a helpful AI assistant');
+  LME_AddMessage(LME_ROLE_USER, 'What is AI?');
     
-  if not Model_Load('phi-3-mini-4k-instruct.Q4_K_M') then
+  if not LME_LoadModel('phi-3-mini-4k-instruct.Q4_K_M') then
   begin
-    Console_PrintLn('Error: %s', FG_RED, Error_Get());
+    LME_PrintLn('Error: %s', LME_FG_RED, LME_GetError());
     Exit;
   end;    
     
   // do inference
-  if Inference_Run('phi-3-mini-4k-instruct.Q4_K_M', 1024) then
+  if LME_RunInference('phi-3-mini-4k-instruct.Q4_K_M', 1024) then
     begin
       // success
     end
@@ -59,7 +61,7 @@ begin
     end;
 
   // unload model  
-  Model_Unload();
+  LME_UnloadModel();
 
 end.
 ```  
@@ -70,23 +72,25 @@ C/CPP Example
 int main()
 {
     // init
-    Config_Init("C:/LLM/gguf", -1);
+    LME_InitConfig(L"C:/LLM/gguf", -1);
     
     // define model
-    Model_Define("phi-3-mini-4k-instruct.Q4_K_M.gguf", "phi-3-mini-4k-instruct.Q4_K_M", 4000, "<|{role}|>{content}<|end|>", "<|assistant|>");  
+    LME_DefineModel(L"phi-3-mini-4k-instruct.Q4_K_M.gguf",
+      L"phi-3-mini-4k-instruct.Q4_K_M", 4000, L"<|{role}|>{content}<|end|>",
+      L"<|assistant|>");  
     
     // add message
-    Message_Add(ROLE_SYSTEM, "You are a helpful AI assistant");
-    Message_Add(ROLE_USER, "What is AI?");
+    LME_AddMessage(LME_ROLE_SYSTEM, L"You are a helpful AI assistant");
+    LME_AddMessage(LME_ROLE_USER, L"What is AI?");
     
-    if (!Model_Load("phi-3-mini-4k-instruct.Q4_K_M"))
+    if (!LME_LoadModel(L"phi-3-mini-4k-instruct.Q4_K_M"))
     {
-        Console_PrintLn("Error: %s", FG_RED, Error_Get());
+        LME_PrintLn(L"Error: %s", LME_FG_RED, LME_GetError());
         return 1;
     }
     
     // do inference
-    if (Inference_Run('phi-3-mini-4k-instruct.Q4_K_M', 1024))
+    if (LME_RunInference(L'phi-3-mini-4k-instruct.Q4_K_M', 1024))
     {
         // success
     }
@@ -96,7 +100,7 @@ int main()
     }
     
     // unload model  
-    Model_Unload();
+    LME_UnloadModel();
 
     return 0;
 }

@@ -78,9 +78,10 @@
         <Multithreaded>true</Multithreaded>
         <ILINK_GenerateImportLibrary>true</ILINK_GenerateImportLibrary>
         <_TCHARMapping>wchar_t</_TCHARMapping>
-        <IncludePath>pas\LMEngine\;cpp\llama\;cpp\misc\;LMEngine\repo\main\src\LMEngine\;$(IncludePath)</IncludePath>
-        <ILINK_LibraryPath>pas\LMEngine\;cpp\llama\;cpp\misc\;LMEngine\repo\main\src\LMEngine\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <IncludePath>cpp\llama\common\;pas\LMEngine\;cpp\llama\;cpp\misc\;LMEngine\repo\main\src\LMEngine\;$(IncludePath)</IncludePath>
+        <ILINK_LibraryPath>cpp\llama\common\;pas\LMEngine\;cpp\llama\;cpp\misc\;LMEngine\repo\main\src\LMEngine\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <SanitizedProjectName>LMEngine</SanitizedProjectName>
+        <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <PackageImports>adortl;appanalytics;bcbie;bcbsmp;bindcomp;bindcompdbx;bindcompfmx;bindcompvcl;bindcompvclsmp;bindcompvclwinx;bindengine;CloudService;CustomIPTransport;DataSnapClient;DataSnapCommon;DataSnapConnectors;DatasnapConnectorsFreePascal;DataSnapFireDAC;DataSnapIndy10ServerTransport;DataSnapNativeClient;DataSnapProviderClient;DataSnapServer;DataSnapServerMidas;dbexpress;dbrtl;dbxcds;DbxClientDriver;DbxCommonDriver;DBXDb2Driver;DBXFirebirdDriver;DBXInformixDriver;DBXInterBaseDriver;DBXMSSQLDriver;DBXMySQLDriver;DBXOdbcDriver;DBXOracleDriver;DBXSqliteDriver;DBXSybaseASADriver;DBXSybaseASEDriver;dsnap;dsnapcon;dsnapxml;emsclient;emsclientfiredac;emsedge;emshosting;emsserverresource;FireDAC;FireDACADSDriver;FireDACASADriver;FireDACCommon;FireDACCommonDriver;FireDACCommonODBC;FireDACDb2Driver;FireDACDBXDriver;FireDACDSDriver;FireDACIBDriver;FireDACInfxDriver;FireDACMongoDBDriver;FireDACMSAccDriver;FireDACMSSQLDriver;FireDACMySQLDriver;FireDACODBCDriver;FireDACOracleDriver;FireDACPgDriver;FireDACSqliteDriver;FireDACTDataDriver;fmx;fmxase;fmxdae;fmxFireDAC;fmxobj;IndyCore;IndyIPClient;IndyIPCommon;IndyIPServer;IndyProtocols;IndySystem;inet;inetdb;inetdbxpress;RaizeComponentsVcl;RaizeComponentsVclDb;RESTBackendComponents;RESTComponents;rtl;Skia;soapmidas;soaprtl;soapserver;test;tethering;vcl;vclactnband;vcldb;vcldsnap;vcledge;vclFireDAC;vclie;vclimg;VCLRESTComponents;VclSmp;vcltouch;vclwinx;vclx;xmlrtl;$(PackageImports)</PackageImports>
@@ -103,10 +104,10 @@
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Keys>CompanyName=tinyBigGAMES™ LLC;FileDescription=LMEngine™ - Local LLM Inference;FileVersion=0.1.0.0;InternalName=LMEngine™ - Local LLM Inference;LegalCopyright=Copyright © 2024-present tinyBigGAMES™ LLC;LegalTrademarks=All Rights Reserved.;OriginalFilename=LMEngine.dll;ProgramID=com.tinybiggames.lmengine;ProductName=LMEngine™ - Local LLM Inference;ProductVersion=1.0.0.0;Comments=https://tinybiggames.com</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=tinyBigGAMES™ LLC;FileDescription=LMEngine™ - Local LLM Inference;FileVersion=0.2.0.0;InternalName=LMEngine™ - Local LLM Inference;LegalCopyright=Copyright © 2024-present tinyBigGAMES™ LLC;LegalTrademarks=All Rights Reserved.;OriginalFilename=LMEngine.dll;ProgramID=com.tinybiggames.lmengine;ProductName=LMEngine™ - Local LLM Inference;ProductVersion=1.0.0.0;Comments=https://tinybiggames.com</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_MajorVer>0</VerInfo_MajorVer>
-        <VerInfo_MinorVer>1</VerInfo_MinorVer>
+        <VerInfo_MinorVer>2</VerInfo_MinorVer>
         <VerInfo_DLL>true</VerInfo_DLL>
         <Manifest_File>(None)</Manifest_File>
         <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
@@ -151,7 +152,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_MajorVer>0</VerInfo_MajorVer>
         <LinkPackageStatics>rtl.lib;vcl.lib</LinkPackageStatics>
-        <VerInfo_MinorVer>1</VerInfo_MinorVer>
+        <VerInfo_MinorVer>2</VerInfo_MinorVer>
         <VerInfo_DLL>true</VerInfo_DLL>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -164,15 +165,34 @@ $(PostBuildEvent)]]></PostBuildEvent>
     <PropertyGroup Condition="'$(Cfg_2_Win64x)'!=''">
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_MajorVer>0</VerInfo_MajorVer>
-        <VerInfo_MinorVer>1</VerInfo_MinorVer>
+        <VerInfo_MinorVer>2</VerInfo_MinorVer>
         <VerInfo_DLL>true</VerInfo_DLL>
-        <VerInfo_Locale>1033</VerInfo_Locale>
-        <ILINK_AdditionalOptions>exports.def --gc-sections --strip-all</ILINK_AdditionalOptions>
         <LinkPackageStatics>rtl.lib;vcl.lib</LinkPackageStatics>
         <PostBuildEvent><![CDATA[..\..\tools\lib.cmd
 ..\..\tools\compress.cmd]]></PostBuildEvent>
+        <ILINK_GCSections>true</ILINK_GCSections>
+        <ILINK_AdditionalOptions>exports.def --gc-sections --strip-all</ILINK_AdditionalOptions>
     </PropertyGroup>
     <ItemGroup>
+        <None Include="common.h">
+            <BuildOrder>24</BuildOrder>
+        </None>
+        <CppCompile Include="cpp\llama\common\common.cpp">
+            <VirtualFolder>{E14E0917-4A34-4D6E-B360-F61C48CC8AAC}</VirtualFolder>
+            <BuildOrder>18</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="cpp\llama\common\grammar-parser.cpp">
+            <VirtualFolder>{E14E0917-4A34-4D6E-B360-F61C48CC8AAC}</VirtualFolder>
+            <BuildOrder>19</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="cpp\llama\common\json-schema-to-grammar.cpp">
+            <VirtualFolder>{E14E0917-4A34-4D6E-B360-F61C48CC8AAC}</VirtualFolder>
+            <BuildOrder>20</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="cpp\llama\common\sampling.cpp">
+            <VirtualFolder>{E14E0917-4A34-4D6E-B360-F61C48CC8AAC}</VirtualFolder>
+            <BuildOrder>21</BuildOrder>
+        </CppCompile>
         <CppCompile Include="cpp\llama\ggml-alloc.c">
             <VirtualFolder>{5893E2FC-F25D-488F-BC57-4F6C15C19FD6}</VirtualFolder>
             <BuildOrder>4</BuildOrder>
@@ -209,6 +229,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <VirtualFolder>{40ADB30F-1203-4D28-9EF3-F9A895BFA332}</VirtualFolder>
             <BuildOrder>2</BuildOrder>
         </CppCompile>
+        <CppCompile Include="cpp\misc\misc.cpp">
+            <VirtualFolder>{40ADB30F-1203-4D28-9EF3-F9A895BFA332}</VirtualFolder>
+            <BuildOrder>21</BuildOrder>
+        </CppCompile>
         <LibFiles Include="cpp\vulkan\lib\vulkan-1.lib" Condition="'$(Platform)'=='Win64x' Or '$(Platform)'=='Win32'">
             <VirtualFolder>{5893E2FC-F25D-488F-BC57-4F6C15C19FD6}</VirtualFolder>
             <BuildOrder>11</BuildOrder>
@@ -216,7 +240,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         </LibFiles>
         <CppCompile Include="exports.cpp">
             <DependentOn>exports.h</DependentOn>
-            <BuildOrder>14</BuildOrder>
+            <BuildOrder>23</BuildOrder>
         </CppCompile>
         <PCHCompile Include="LMEnginePCH1.h">
             <BuildOrder>0</BuildOrder>
@@ -227,7 +251,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         </CppCompile>
         <DelphiCompile Include="pas\LMEngine\LMEngine.Core.pas">
             <VirtualFolder>{9038DC64-3448-4502-957B-90089C35321A}</VirtualFolder>
-            <BuildOrder>16</BuildOrder>
+            <BuildOrder>25</BuildOrder>
         </DelphiCompile>
         <DelphiCompile Include="pas\LMEngine\LMEngine.Deps.pas">
             <VirtualFolder>{9038DC64-3448-4502-957B-90089C35321A}</VirtualFolder>
@@ -235,7 +259,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         </DelphiCompile>
         <DelphiCompile Include="pas\LMEngine\LMEngine.Export.pas">
             <VirtualFolder>{9038DC64-3448-4502-957B-90089C35321A}</VirtualFolder>
-            <BuildOrder>15</BuildOrder>
+            <BuildOrder>22</BuildOrder>
         </DelphiCompile>
         <DelphiCompile Include="pas\LMEngine\LMEngine.Utils.pas">
             <VirtualFolder>{9038DC64-3448-4502-957B-90089C35321A}</VirtualFolder>
@@ -272,7 +296,9 @@ $(PostBuildEvent)]]></PostBuildEvent>
                 </Excluded_Packages>
                 <VFOLDERS>
                     <VFOLDER ID="{5C9E85C0-A361-48E9-B483-8283BFCB6FB5}" name="cpp">
-                        <VFOLDER ID="{5893E2FC-F25D-488F-BC57-4F6C15C19FD6}" name="llama"/>
+                        <VFOLDER ID="{5893E2FC-F25D-488F-BC57-4F6C15C19FD6}" name="llama">
+                            <VFOLDER ID="{E14E0917-4A34-4D6E-B360-F61C48CC8AAC}" name="common"/>
+                        </VFOLDER>
                         <VFOLDER ID="{40ADB30F-1203-4D28-9EF3-F9A895BFA332}" name="misc"/>
                     </VFOLDER>
                     <VFOLDER ID="{9038DC64-3448-4502-957B-90089C35321A}" name="pas"/>
@@ -1227,6 +1253,158 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win64x'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='LMEnginePCH1.h'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='cpp\llama\ggml-backend.c'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='cpp\llama\ggml-quants.c'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='cpp\misc\cerr_redirector.cpp'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='cpp\llama\unicode-data.cpp'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='exports.cpp'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='cpp\llama\common\sampling.cpp'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='cpp\misc\misc.cpp'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='cpp\llama\common\grammar-parser.cpp'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='common.h'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='main.cpp'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='cpp\llama\common\common.cpp'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='cpp\llama\common\json-schema-to-grammar.cpp'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='cpp\llama\ggml-vulkan.cpp'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='cpp\llama\ggml-alloc.c'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='exports.h'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='cpp\llama\unicode.cpp'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='cpp\llama\llama.cpp'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>..\..\tools\lib.cmd&amp;&amp;..\..\tools\compress.cmd</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(FileToCompile)'=='cpp\llama\ggml.c'">
         <PreBuildEvent/>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>

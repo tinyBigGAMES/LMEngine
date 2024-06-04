@@ -46,550 +46,463 @@ unit LMEngine.Export;
 interface
 
 uses
+  LMEngine.Deps,
   LMEngine.Utils,
   LMEngine.Core;
 
-//--- UTILS -----------------------------------------------------------------
-procedure Utils_ProcessMessages();
-function  Utils_MaskFirstFoundWord(const AText, AWord: PAnsiChar): PAnsiChar;
+//=== UTILS =================================================================
+procedure LME_Print(const AText: PWideChar; const AColor: Integer);
+procedure LME_PrintLn(const AText: PWideChar; const AColor: Integer);
 
-//--- UTF8 ------------------------------------------------------------------
-function  UTF8_Encode(const AText: PWideChar): PAnsiChar;
-function  UTF8_Decode(const AText: PAnsiChar): PAnsiChar;
-procedure UTF8_Free(APtr: PAnsiChar);
+procedure LME_GetCursorPos(X, Y: PInteger);
+procedure LME_SetCursorPos(const X, Y: Integer);
+procedure LME_ClearConsole();
+procedure LME_ClearConsoleLine(const AColor: WORD);
 
-//--- CONSOLE ---------------------------------------------------------------
-procedure Console_GetCursorPos(X, Y: PInteger);
-procedure Console_SetCursorPos(const X, Y: Integer);
-procedure Console_Clear();
-procedure Console_ClearLine(const AColor: WORD);
-procedure Console_ClearKeyStates();
-function  Console_IsKeyPressed(AKey: Byte): Boolean;
-function  Console_WasKeyReleased(AKey: Byte): Boolean;
-function  Console_WasKeyPressed(AKey: Byte): Boolean;
-procedure Console_Pause(const AForcePause: Boolean; AColor: WORD; const AText: PAnsiChar);
+procedure LME_ClearKeyStates();
+function  LME_IsKeyPressed(AKey: Byte): Boolean;
+function  LME_WasKeyReleased(AKey: Byte): Boolean;
+function  LME_WasKeyPressed(AKey: Byte): Boolean;
+procedure LME_Pause(const AForcePause: Boolean; AColor: WORD; const AText: PWideChar);
 
+procedure LME_ProcessMessages();
+function  LME_MaskFirstFoundWord(const AText, AWord: PWideChar): PWideChar;
 
-//--- SPEECH ----------------------------------------------------------------
-procedure Speech_SetWordCallback(const ASender: Pointer; const AHandler: Speech.WordEvent);
-function  Speech_GetWordCallback(): Speech.WordEvent;
-function  Speech_GetVoiceCount(): Integer;
-function  Speech_GetVoiceAttribute(const AIndex: Integer; const AAttribute: Speech.VoiceAttributeEvent): PAnsiChar;
-procedure Speech_ChangeVoice(const AIndex: Integer);
-function  Speech_GetVoice(): Integer;
-procedure Speech_SetVolume(const AVolume: Single);
-function  Speech_GetVolume(): Single;
-procedure Speech_SetRate(const ARate: Single);
-function  Speech_GetRate(): Single;
-procedure Speech_Clear();
-procedure Speech_Say(const AText: PAnsiChar; const APurge: Boolean);
-function  Speech_Active(): Boolean;
-procedure Speech_Pause();
-procedure Speech_Resume();
-procedure Speech_Reset();
-procedure Speech_SubstituteWord(const AWord, ASubstituteWord: PAnsiChar);
+procedure LME_SetTokenResponseRightMargin(const AMargin: Integer);
+function  LME_AddTokenResponseToken(const AToken: PWideChar): Integer;
+function  LME_LastTokenResponseWord(const ATrimLeft: Boolean): PWideChar;
+function  LME_FinalizeTokenResponse(): Boolean;
 
 
-//--- LMEngine --------------------------------------------------------------
-
-// Version
-function  Version_Get(const AType: Byte): PAnsiChar;
-
-// Error
-procedure Error_Clear();
-procedure Error_Set(const AText: PAnsiChar);
-function  Error_Get(): PAnsiChar;
-
-// Callback
-function  Callback_GetLoadModelProgress(): TLMEngine.LoadModelProgressCallback;
-procedure Callback_SetLoadModelProgress(const ASender: Pointer; const AHandler: TLMEngine.LoadModelProgressCallback);
-
-function  Callback_GetLoadModel(): TLMEngine.LoadModelCallback;
-procedure Callback_SetLoadModel(const ASender: Pointer; const AHandler: TLMEngine.LoadModelCallback);
-
-function  Callback_GetInferenceCancel(): TLMEngine.InferenceCancelCallback;
-procedure Callback_SetInferenceCancel(const ASender: Pointer; const AHandler: TLMEngine.InferenceCancelCallback);
-
-function  Callback_GetInferenceNextToken(): TLMEngine.InferenceGetNextTokenCallback;
-procedure Callback_SetInferenceNextToken(const ASender: Pointer; const AHandler: TLMEngine.InferenceGetNextTokenCallback);
-
-function  Callback_GetInferenceStart(): TLMEngine.InferenceStartCallback;
-procedure Callback_SetInferenceStart(const ASender: Pointer; const AHandler: TLMEngine.InferenceStartCallback);
-
-function  Callback_GetInferenceEnd(): TLMEngine.InferenceEndCallback;
-procedure Callback_SetInferenceEnd(const ASender: Pointer; const AHandler: TLMEngine.InferenceEndCallback);
-
-function  Callback_GetInfo(): TLMEngine.InfoCallback;
-procedure Callback_SetInfo(const ASender: Pointer; const AHandler: TLMEngine.InfoCallback);
+//=== SPEECH =================================================================
+procedure LME_SetSpeechWordCallback(const AHandler: Speech.WordEvent; const AUserData: Pointer);
+function  LME_GetSpeechWordCallback(): Speech.WordEvent;
+function  LME_GetSpeechVoiceCount(): Integer;
+function  LME_GetSpeechVoiceAttribute(const AIndex: Integer; const AAttribute: Speech.VoiceAttributeEvent): PWideChar;
+procedure LME_ChangeSpeechVoice(const AIndex: Integer);
+function  LME_GetSpeechVoice(): Integer;
+procedure LME_SetSpeechVolume(const AVolume: Single);
+function  LME_GetSpeechVolume(): Single;
+procedure LME_SetSpeechRate(const ARate: Single);
+function  LME_GetSpeechRate(): Single;
+procedure LME_ClearSpeech();
+procedure LME_SaySpeech(const AText: PWideChar; const APurge: Boolean);
+function  LME_IsSpeechActive(): Boolean;
+procedure LME_PauseSpeech();
+procedure LME_ResumeSpeech();
+procedure LME_ResetSpeech();
+procedure LME_SubstituteSpeechWord(const AWord, ASubstituteWord: PWideChar);
 
 
-// Config
-procedure Config_Init(const AModelPath: PAnsiChar; const ANumGPULayers: Int32);
-function  Config_Save(const AFilename: PAnsiChar): Boolean;
-function  Config_Load(const AFilename: PAnsiChar): Boolean;
+//=== CORE ===================================================================
+function  LME_GetVersion(const AType: Byte): PWideChar;
 
-// Message
-procedure Message_ClearAll();
-function  Message_Add(const ARole, AContent: PAnsiChar): Int32;
-function  Message_AddW(const ARole: PAnsiChar; AContent: PWideChar): Int32;
-function  Message_GetLastUser(): PAnsiChar;
-function  Message_BuildInferencePrompt(const AModelName: PAnsiChar): PAnsiChar;
+procedure LME_ClearError();
+procedure LME_SetError(const AText: PWideChar);
+function  LME_GetError(): PWideChar;
 
-// Model
-procedure Model_ClearDefines();
-function  Model_Define(const AModelFilename, AModelName: PAnsiChar; const AMaxContext: UInt32; const ATemplate, ATemplateEnd: PAnsiChar{; const AAddAssistant: Boolean}): Int32;
-function  Model_SaveDefines(const AFilename: PAnsiChar): Boolean;
-function  Model_LoadDefines(const AFilename: PAnsiChar): Boolean;
-procedure Model_ClearStopSequences(const AModelName: PAnsiChar);
-function  Model_AddStopSequence(const AModelName, AToken: PAnsiChar): Int32;
-function  Model_GetStopSequenceCount(const AModelName: PAnsiChar): Int32;
-function  Model_Load(const AModelName: PAnsiChar): Boolean;
-function  Model_IsLoaded(): Boolean;
-procedure Model_Unload();
+function  LME_GetInferenceCancelCallback(): TLMEngine.InferenceCancelCallback;
+procedure LME_SetInferenceCancelCallback(const AHandler: TLMEngine.InferenceCancelCallback; const AUserData: Pointer);
 
-// Inference
-function  Inference_Run(const AModelName: PAnsiChar; const AMaxTokens: UInt32): Boolean;
-function  Inference_Start(const AModelName: PAnsiChar; const AMaxTokens: UInt32): Boolean;
-function  Inference_IsActive(): Boolean;
-function  Inference_GetNextToken(): PAnsiChar;
-procedure Inference_Stop();
-function  Inference_GetResponse(): PAnsiChar;
-procedure Inference_GetUsage(ATokenInputSpeed, ATokenOutputSpeed: System.PSingle;  AInputTokens, AOutputTokens, ATotalTokens: PInteger);
+function  LME_GetInferenceTokenCallback(): TLMEngine.InferenceTokenCallback;
+procedure LME_SetInferenceTokenlCallback(const AHandler: TLMEngine.InferenceTokenCallback; const AUserData: Pointer);
 
+function  LME_GetInfoCallback(): TLMEngine.InfoCallback;
+procedure LME_SetInfoCallback(const AHandler: TLMEngine.InfoCallback; const AUserData: Pointer);
 
-// TokenResponse
-procedure TokenResponse_SetRightMargin(const AMargin: Integer);
-function  TokenResponse_AddToken(const AToken: PAnsiChar): Integer;
-function  TokenResponse_LastWord(const ATrimLeft: Boolean): PAnsiChar;
-function  TokenResponse_Finalize: Boolean;
+function  LME_GetLoadModelProgressCallback(): TLMEngine.LoadModelProgressCallback;
+procedure LME_SetLoadModelProgressCallback(const AHandler: TLMEngine.LoadModelProgressCallback; const AUserData: Pointer);
+
+function  LME_GetLoadModelCallback(): TLMEngine.LoadModelCallback;
+procedure LME_SetLoadModelCallback(const AHandler: TLMEngine.LoadModelCallback; const AUserData: Pointer);
+
+function  LME_GetInferenceStartCallback(): TLMEngine.InferenceStartCallback;
+procedure LME_SetInferenceStartCallback(const AHandler: TLMEngine.InferenceStartCallback; const AUserData: Pointer);
+
+function  LME_GetInferenceEndCallback(): TLMEngine.InferenceEndCallback;
+procedure LME_SetInferenceEndCallback(const AHandler: TLMEngine.InferenceEndCallback; const AUserData: Pointer);
+
+procedure LME_InitConfig(const AModelPath: PWideChar; const ANumGPULayers: Int32);
+function  LME_SaveConfig(const AFilename: PWideChar): Boolean;
+function  LME_LoadConfig(const AFilename: PWideChar): Boolean;
+
+procedure LME_ClearAllMessages();
+function  LME_AddMessage(const ARole, AContent: PWideChar): Int32;
+function  LME_GetLastUserMessage(): PWideChar;
+function  LME_BuildMessageInferencePrompt(const AModelName: PWideChar): PWideChar;
+
+procedure LME_ClearModelDefines();
+function  LME_DefineModel(const AModelFilename, AModelName: PWideChar; const AMaxContext: UInt32; const ATemplate, ATemplateEnd: PWideChar): Int32;
+function  LME_SaveModelDefines(const AFilename: PWideChar): Boolean;
+function  LME_LoadModelDefines(const AFilename: PWideChar): Boolean;
+
+function  LME_LoadModel(const AModelName: PWideChar): Boolean;
+function  LME_IsModelLoaded(): Boolean;
+procedure LME_UnloadModel();
+
+function  LME_RunInference(const AModelName: PWideChar; const AMaxTokens: UInt32): Boolean;
+function  LME_GetInferenceResponse(): PWideChar;
+procedure LME_GetInferenceStats(ATokenInputSpeed: PSingle; ATokenOutputSpeed: PSingle; AInputTokens: PInt32; AOutputTokens: PInt32; ATotalTokens: PInt32);
 
 
 implementation
 
-//--- UTILS -----------------------------------------------------------------
-procedure Utils_ProcessMessages();
-begin
-  Utils.ProcessMessages();
-end;
-
-function  Utils_MaskFirstFoundWord(const AText, AWord: PAnsiChar): PAnsiChar;
-begin
-  Result := Utils.AsUTF8(Utils.ReplaceFirstFoundWord(UTF8ToString(AText), UTF8ToString(AWord), '^'));
-end;
-
-function UTF8_Encode(const AText: PWideChar): PAnsiChar;
 var
-  LText: UTF8String;
+  LLMEngine: TLMEngine = nil;
+
+
+//=== UTILS =================================================================
+procedure LME_Print(const AText: PWideChar; const AColor: Integer);
 begin
-  LText := UTF8Encode(AText);
-  GetMem(Result, Length(LText) + 1);
-  Move(LText[1], Result^, Length(LText));
-  Result[Length(LText)] := #0;
+  Console.Print(string(AText), AColor);
 end;
 
-function UTF8_Decode(const AText: PAnsiChar): PAnsiChar;
-var
-  LText: UTF8String;
-  LWideText: WideString;
+procedure LME_PrintLn(const AText: PWideChar; const AColor: Integer);
 begin
-  LText := UTF8String(AText); // Convert PAnsiChar to UTF8String
-  LWideText := UTF8Decode(LText); // Decode UTF-8 to WideString
-
-  // Allocate memory for the resulting PAnsiChar
-  GetMem(Result, Length(LWideText) * SizeOf(Char) + 1);
-  // Convert WideString to PAnsiChar
-  Move(LWideText[1], Result^, Length(LWideText) * SizeOf(Char));
-  Result[Length(LWideText)] := #0; // Null-terminate the string
+  Console.PrintLn(string(AText), AColor);
 end;
 
-procedure UTF8_Free(APtr: PAnsiChar);
+procedure LME_GetCursorPos(X, Y: PInteger);
 begin
-  if APtr <> nil then
-    FreeMem(APtr);  // Free the memory allocated with GetMem
+  LLMEngine.GetCursorPos(X, Y);
 end;
 
-//--- CONSOLE ---------------------------------------------------------------
-procedure Console_GetCursorPos(X, Y: PInteger);
+procedure LME_SetCursorPos(const X, Y: Integer);
 begin
-  Console.GetCursorPos(X, Y);
+  LLMEngine.SetCursorPos(X, Y);
 end;
 
-procedure Console_SetCursorPos(const X, Y: Integer);
+procedure LME_ClearConsole();
 begin
-  Console.SetCursorPos(X, Y);
+  LLMEngine.ClearConsole();
 end;
 
-procedure Console_Clear();
+procedure LME_ClearConsoleLine(const AColor: WORD);
 begin
-  Console.Clear();
+  LLMEngine.ClearConsoleLine(AColor);
 end;
 
-procedure Console_ClearLine(const AColor: WORD);
+procedure LME_ClearKeyStates();
 begin
-  Console.ClearLine(AColor);
+  LLMEngine.ClearKeyStates();
 end;
 
-procedure Console_ClearKeyStates();
+function  LME_IsKeyPressed(AKey: Byte): Boolean;
 begin
-  Console.ClearKeyStates();
+  Result := LLMEngine.IsKeyPressed(AKey);
 end;
 
-function  Console_IsKeyPressed(AKey: Byte): Boolean;
+function  LME_WasKeyReleased(AKey: Byte): Boolean;
 begin
-  Result := Console.IsKeyPressed(AKey);
+  Result := LLMEngine.WasKeyReleased(AKey);
 end;
 
-function  Console_WasKeyReleased(AKey: Byte): Boolean;
+function  LME_WasKeyPressed(AKey: Byte): Boolean;
 begin
-  Result := Console.WasKeyReleased(AKey);
+  Result := LLMEngine.WasKeyPressed(AKey);
 end;
 
-function  Console_WasKeyPressed(AKey: Byte): Boolean;
+procedure LME_Pause(const AForcePause: Boolean; AColor: WORD; const AText: PWideChar);
 begin
-  Result := Console.WasKeyPressed(AKey);
+  LLMEngine.Pause(AForcePause, AColor, AText);
 end;
 
-procedure Console_Pause(const AForcePause: Boolean; AColor: WORD; const aText: PAnsiChar);
+procedure LME_ProcessMessages();
 begin
-  Console.Pause(AForcePause, AColor, UTF8ToString(AText));
+  LLMEngine.ProcessMessages();
+end;
+
+function  LME_MaskFirstFoundWord(const AText, AWord: PWideChar): PWideChar;
+begin
+  Result := PWideChar(LLMEngine.MaskFirstFoundWord(AText, AWord));
+end;
+
+procedure LME_SetTokenResponseRightMargin(const AMargin: Integer);
+begin
+  LLMEngine.SetTokenResponseRightMargin(AMargin);
+end;
+
+function  LME_AddTokenResponseToken(const AToken: PWideChar): Integer;
+begin
+  Result := LLMEngine.AddTokenResponseToken(AToken);
+end;
+
+function  LME_LastTokenResponseWord(const ATrimLeft: Boolean): PWideChar;
+begin
+  Result := PWideChar(LLMEngine.LastTokenResponseWord(ATrimLeft));
+end;
+
+function  LME_FinalizeTokenResponse(): Boolean;
+begin
+  Result := LLMEngine.FinalizeTokenResponse();
 end;
 
 
-//--- SPEECH ----------------------------------------------------------------
-procedure Speech_SetWordCallback(const ASender: Pointer; const AHandler: Speech.WordEvent);
+
+//=== SPEECH =================================================================
+procedure LME_SetSpeechWordCallback(const AHandler: Speech.WordEvent; const AUserData: Pointer);
 begin
-  Speech.SetOnWordEvent(ASender, AHandler);
+  Speech.SetOnWordEvent(AHandler, AUserData)
 end;
 
-function  Speech_GetWordCallback(): Speech.WordEvent;
+function  LME_GetSpeechWordCallback(): Speech.WordEvent;
 begin
   Result := Speech.GetOnWordEvent();
 end;
 
-function  Speech_GetVoiceCount(): Integer;
+function  LME_GetSpeechVoiceCount(): Integer;
 begin
   Result := Speech.GetVoiceCount();
 end;
 
-function  Speech_GetVoiceAttribute(const AIndex: Integer; const AAttribute: Speech.VoiceAttributeEvent): PAnsiChar;
+function  LME_GetSpeechVoiceAttribute(const AIndex: Integer; const AAttribute: Speech.VoiceAttributeEvent): PWideChar;
 begin
-  Result := Utils.AsUTF8(Speech.GetVoiceAttribute(AIndex, AAttribute));
+  Result := PWideChar(Speech.GetVoiceAttribute(AIndex, AAttribute));
 end;
 
-procedure Speech_ChangeVoice(const AIndex: Integer);
+procedure LME_ChangeSpeechVoice(const AIndex: Integer);
 begin
   Speech.ChangeVoice(AIndex);
 end;
 
-function  Speech_GetVoice(): Integer;
+function  LME_GetSpeechVoice(): Integer;
 begin
   Result := Speech.GetVoice();
 end;
 
-procedure Speech_SetVolume(const AVolume: Single);
+procedure LME_SetSpeechVolume(const AVolume: Single);
 begin
   Speech.SetVolume(AVolume);
 end;
 
-function  Speech_GetVolume(): Single;
+function  LME_GetSpeechVolume(): Single;
 begin
   Result := Speech.GetVolume();
 end;
 
-procedure Speech_SetRate(const ARate: Single);
+procedure LME_SetSpeechRate(const ARate: Single);
 begin
   Speech.SetRate(ARate);
 end;
 
-function  Speech_GetRate(): Single;
+function  LME_GetSpeechRate(): Single;
 begin
   Result := Speech.GetRate();
 end;
 
-procedure Speech_Clear();
+procedure LME_ClearSpeech();
 begin
- Speech.Clear();
+  Speech.Clear();
 end;
 
-procedure Speech_Say(const AText: PAnsiChar; const APurge: Boolean);
+procedure LME_SaySpeech(const AText: PWideChar; const APurge: Boolean);
 begin
-  Speech.Say(UTF8ToString(AText), APurge);
+  Speech.Say(string(AText), APurge)
 end;
 
-function  Speech_Active(): Boolean;
+function  LME_IsSpeechActive(): Boolean;
 begin
   Result := Speech.Active();
 end;
 
-procedure Speech_Pause();
+procedure LME_PauseSpeech();
 begin
   Speech.Pause();
 end;
 
-procedure Speech_Resume();
+procedure LME_ResumeSpeech();
 begin
   Speech.Resume();
 end;
 
-procedure Speech_Reset();
+procedure LME_ResetSpeech();
 begin
   Speech.Reset();
 end;
 
-procedure Speech_SubstituteWord(const AWord, ASubstituteWord: PAnsiChar);
+procedure LME_SubstituteSpeechWord(const AWord, ASubstituteWord: PWideChar);
 begin
-  Speech.SubstituteWord(UTF8ToString(AWord), UTF8ToString(ASubstituteWord));
+  Speech.SubstituteWord(string(AWord), string(ASubstituteWord));
 end;
 
-//--- LMEngine --------------------------------------------------------------
-var
-  LLMEngine: TLMEngine = nil;
-
-// Version
-function  Version_Get(const AType: Byte): PAnsiChar;
+//=== CORE ==================================================================
+function  LME_GetVersion(const AType: Byte): PWideChar;
 begin
-  Result := PUTF8Char(LLMEngine.Version_Get(AType));
+  Result := PWideChar(LLMEngine.GetVersion(AType));
 end;
 
-procedure Error_Clear();
+procedure LME_ClearError();
 begin
-  LLMEngine.Error_Clear();
+  LLMEngine.ClearError();
 end;
 
-procedure Error_Set(const AText: PAnsiChar);
+procedure LME_SetError(const AText: PWideChar);
 begin
-  LLMEngine.Error_Set(UTF8ToString(AText), []);
+  LLMEngine.SetError(string(AText));
 end;
 
-function  Error_Get(): PAnsiChar;
+function  LME_GetError(): PWideChar;
 begin
-  Result := PUTF8Char(LLMEngine.Error_Get());
+  Result := PWideChar(LLMEngine.GetError());
 end;
 
-function  Callback_GetLoadModelProgress(): TLMEngine.LoadModelProgressCallback;
+function  LME_GetInferenceCancelCallback(): TLMEngine.InferenceCancelCallback;
 begin
-  Result := LLMEngine.Callback_GetLoadModelProgress();
+  Result := LLMEngine.GetInferenceCancelCallback();
 end;
 
-procedure Callback_SetLoadModelProgress(const ASender: Pointer; const AHandler: TLMEngine.LoadModelProgressCallback);
+procedure LME_SetInferenceCancelCallback(const AHandler: TLMEngine.InferenceCancelCallback; const AUserData: Pointer);
 begin
-  LLMEngine.Callback_SetLoadModelProgress(ASender, AHandler);
+  LLMEngine.SetInferenceCancelCallback(AHandler, AUserData);
 end;
 
-function  Callback_GetLoadModel(): TLMEngine.LoadModelCallback;
+function  LME_GetInferenceTokenCallback(): TLMEngine.InferenceTokenCallback;
 begin
-  Result := LLMEngine.Callback_GetLoadModel();
+  Result := LLMEngine.GetInferenceTokenCallback();
 end;
 
-procedure Callback_SetLoadModel(const ASender: Pointer; const AHandler: TLMEngine.LoadModelCallback);
+procedure LME_SetInferenceTokenlCallback(const AHandler: TLMEngine.InferenceTokenCallback; const AUserData: Pointer);
 begin
-  LLMEngine.Callback_SetLoadModel(ASender, AHandler);
+  LLMEngine.SetInferenceTokenlCallback(AHandler, AUserData);
 end;
 
-function  Callback_GetInferenceCancel(): TLMEngine.InferenceCancelCallback;
+function  LME_GetInfoCallback(): TLMEngine.InfoCallback;
 begin
-  Result := LLMEngine.Callback_GetInferenceCancel();
+  Result := LLMEngine.GetInfoCallback();
 end;
 
-procedure Callback_SetInferenceCancel(const ASender: Pointer; const AHandler: TLMEngine.InferenceCancelCallback);
+procedure LME_SetInfoCallback(const AHandler: TLMEngine.InfoCallback; const AUserData: Pointer);
 begin
-  LLMEngine.Callback_SetInferenceCancel(ASender, AHandler);
+  LLMEngine.SetInfoCallback(AHandler, AUserData);
 end;
 
-function  Callback_GetInferenceNextToken(): TLMEngine.InferenceGetNextTokenCallback;
+function  LME_GetLoadModelProgressCallback(): TLMEngine.LoadModelProgressCallback;
 begin
-  Result := LLMEngine.Callback_GetInferenceNextToken();
+  Result := LLMEngine.GetLoadModelProgressCallback();
 end;
 
-procedure Callback_SetInferenceNextToken(const ASender: Pointer; const AHandler: TLMEngine.InferenceGetNextTokenCallback);
+procedure LME_SetLoadModelProgressCallback(const AHandler: TLMEngine.LoadModelProgressCallback; const AUserData: Pointer);
 begin
-  LLMEngine.Callback_SetInferenceNextToken(ASender, AHandler);
+  LLMEngine.SetLoadModelProgressCallback(AHandler, AUserData);
 end;
 
-function  Callback_GetInferenceStart(): TLMEngine.InferenceStartCallback;
+function  LME_GetLoadModelCallback(): TLMEngine.LoadModelCallback;
 begin
-  Result := LLMEngine.Callback_GetInferenceStart();
+  Result := LLMEngine.GetLoadModelCallback();
 end;
 
-procedure Callback_SetInferenceStart(const ASender: Pointer; const AHandler: TLMEngine.InferenceStartCallback);
+procedure LME_SetLoadModelCallback(const AHandler: TLMEngine.LoadModelCallback; const AUserData: Pointer);
 begin
-  LLMEngine.Callback_SetInferenceStart(ASender, AHandler);
+  LLMEngine.SetLoadModelCallback(AHandler, AUserData);
 end;
 
-function  Callback_GetInferenceEnd(): TLMEngine.InferenceEndCallback;
+function  LME_GetInferenceStartCallback(): TLMEngine.InferenceStartCallback;
 begin
-  Result := LLMEngine.Callback_GetInferenceEnd();
+  Result := LLMEngine.GetInferenceStartCallback();
 end;
 
-procedure Callback_SetInferenceEnd(const ASender: Pointer; const AHandler: TLMEngine.InferenceEndCallback);
+procedure LME_SetInferenceStartCallback(const AHandler: TLMEngine.InferenceStartCallback; const AUserData: Pointer);
 begin
-  LLMEngine.Callback_SetInferenceEnd(ASender, AHandler);
+  LLMEngine.SetInferenceStartCallback(AHandler, AUserData);
 end;
 
-function  Callback_GetInfo(): TLMEngine.InfoCallback;
+function  LME_GetInferenceEndCallback(): TLMEngine.InferenceEndCallback;
 begin
-  Result := LLMEngine.Callback_GetInfo();
+  Result := LLMEngine.GetInferenceEndCallback();
 end;
 
-procedure Callback_SetInfo(const ASender: Pointer; const AHandler: TLMEngine.InfoCallback);
+procedure LME_SetInferenceEndCallback(const AHandler: TLMEngine.InferenceEndCallback; const AUserData: Pointer);
 begin
-  LLMEngine.Callback_SetInfo(ASender, AHandler);
+  LLMEngine.SetInferenceEndCallback(AHandler, AUserData);
 end;
 
-procedure Config_Init(const AModelPath: PAnsiChar; const ANumGPULayers: Int32);
+procedure LME_InitConfig(const AModelPath: PWideChar; const ANumGPULayers: Int32);
 begin
-  LLMEngine.Config_Init(UTF8ToString(AModelPath), ANumGPULayers);
+  LLMEngine.InitConfig(string(AModelPath), ANumGPULayers)
 end;
 
-function  Config_Save(const AFilename: PAnsiChar): Boolean;
+function  LME_SaveConfig(const AFilename: PWideChar): Boolean;
 begin
-  Result := LLMEngine.Config_Save(UTF8ToString(AFilename));
+  Result := LLMEngine.SaveConfig(string(AFilename));
 end;
 
-function  Config_Load(const AFilename: PAnsiChar): Boolean;
+function  LME_LoadConfig(const AFilename: PWideChar): Boolean;
 begin
-  Result := LLMEngine.Config_Load(UTF8ToString(AFilename));
+  Result := LLMEngine.LoadConfig(string(AFilename));
 end;
 
-procedure Message_ClearAll();
+procedure LME_ClearAllMessages();
 begin
-  LLMEngine.Message_ClearAll();
+  LLMEngine.ClearAllMessages();
 end;
 
-function  Message_Add(const ARole, AContent: PAnsiChar): Int32;
+function  LME_AddMessage(const ARole, AContent: PWideChar): Int32;
 begin
-  Result := LLMEngine.Message_Add(UTF8ToString(ARole), UTF8ToString(AContent));
+  Result := LLMEngine.AddMessage(string(ARole), string(AContent));
 end;
 
-function  Message_AddW(const ARole: PAnsiChar; AContent: PWideChar): Int32;
+function  LME_GetLastUserMessage(): PWideChar;
 begin
-  Result := LLMEngine.Message_Add(UTF8ToString(ARole), string(AContent));
+  Result := PWideChar(LLMEngine.GetLastUserMessage());
 end;
 
-function  Message_GetLastUser(): PAnsiChar;
+function  LME_BuildMessageInferencePrompt(const AModelName: PWideChar): PWideChar;
 begin
-  Result := PUTF8Char(LLMEngine.Message_GetLastUser());
+  Result := PWideChar(LLMEngine.BuildMessageInferencePrompt(AModelName));
 end;
 
-function  Message_BuildInferencePrompt(const AModelName: PAnsiChar): PAnsiChar;
+procedure LME_ClearModelDefines();
 begin
-  Result := PUTF8Char(LLMEngine.Message_BuildInferencePrompt(UTF8ToString(AModelName)));
+  LLMEngine.ClearModelDefines();
 end;
 
-procedure Model_ClearDefines();
+function  LME_DefineModel(const AModelFilename, AModelName: PWideChar; const AMaxContext: UInt32; const ATemplate, ATemplateEnd: PWideChar): Int32;
 begin
-  LLMEngine.Model_ClearDefines();
+  Result := LLMEngine.DefineModel(string(AModelFilename), string(AModelName), AMaxContext, string(ATemplate), string(ATemplateEnd));
 end;
 
-function  Model_Define(const AModelFilename, AModelName: PAnsiChar; const AMaxContext: UInt32; const ATemplate, ATemplateEnd: PAnsiChar{; const AAddAssistant: Boolean}): Int32;
+function  LME_SaveModelDefines(const AFilename: PWideChar): Boolean;
 begin
-  Result := LLMEngine.Model_Define(UTF8ToString(AModelFilename), UTF8ToString(AModelName), AMaxContext, UTF8ToString(ATemplate), UTF8ToString(ATemplateEnd), False);
+  Result := LLMEngine.SaveModelDefines(string(AFilename));
 end;
 
-function  Model_SaveDefines(const AFilename: PAnsiChar): Boolean;
+function  LME_LoadModelDefines(const AFilename: PWideChar): Boolean;
 begin
-  Result := LLMEngine.Model_SaveDefines(UTF8ToString(AFilename));
+  Result := LLMEngine.LoadModelDefines(string(AFilename));
 end;
 
-function  Model_LoadDefines(const AFilename: PAnsiChar): Boolean;
+function  LME_LoadModel(const AModelName: PWideChar): Boolean;
 begin
-  Result := LLMEngine.Model_LoadDefines(UTF8ToString(AFilename));
+  Result := LLMEngine.LoadModel(string(AModelName));
 end;
 
-procedure Model_ClearStopSequences(const AModelName: PAnsiChar);
+function  LME_IsModelLoaded(): Boolean;
 begin
-  LLMEngine.Model_ClearStopSequences(UTF8ToString(AModelName));
+  Result := LLMEngine.IsModelLoaded();
 end;
 
-function  Model_AddStopSequence(const AModelName, AToken: PAnsiChar): Int32;
+procedure LME_UnloadModel();
 begin
-  Result := LLMEngine.Model_AddStopSequence(UTF8ToString(AModelName), UTF8ToString(AToken));
+  LLMEngine.UnloadModel();
 end;
 
-function  Model_GetStopSequenceCount(const AModelName: PAnsiChar): Int32;
+function  LME_RunInference(const AModelName: PWideChar; const AMaxTokens: UInt32): Boolean;
 begin
-  Result := LLMEngine.Model_GetStopSequenceCount(UTF8ToString(AModelName));
+  Result := LLMEngine.RunInference(string(AModelName), AMaxTokens);
 end;
 
-function  Model_Load(const AModelName: PAnsiChar): Boolean;
+function  LME_GetInferenceResponse(): PWideChar;
 begin
-  Result := LLMEngine.Model_Load(UTF8ToString(AModelName));
+  Result := PWideChar(LLMEngine.GetInferenceResponse());
 end;
 
-function  Model_IsLoaded(): Boolean;
+procedure LME_GetInferenceStats(ATokenInputSpeed: PSingle; ATokenOutputSpeed: PSingle; AInputTokens: PInt32; AOutputTokens: PInt32; ATotalTokens: PInt32);
 begin
-  Result := LLMEngine.Model_IsLoaded();
-end;
-
-procedure Model_Unload();
-begin
-  LLMEngine.Model_Unload();
-end;
-
-
-// Inference
-function  Inference_Run(const AModelName: PAnsiChar; const AMaxTokens: UInt32): Boolean;
-begin
-  Result := LLMEngine.Inference_Run(UTF8ToString(AModelName), AMaxTokens)
-end;
-
-function  Inference_Start(const AModelName: PAnsiChar; const AMaxTokens: UInt32): Boolean;
-begin
-  Result := LLMEngine.Inference_Start(UTF8ToString(AModelName), AMaxTokens)
-end;
-
-function  Inference_IsActive(): Boolean;
-begin
-  Result := LLMEngine.Inference_IsActive();
-end;
-
-function  Inference_GetNextToken(): PAnsiChar;
-begin
-  Result := PUTF8Char(LLMEngine.Inference_GetNextToken());
-end;
-
-procedure Inference_Stop();
-begin
-  LLMEngine.Inference_Stop();
-end;
-
-function  Inference_GetResponse(): PAnsiChar;
-begin
-  Result := PUTF8Char(LLMEngine.Inference_GetResponse());
-end;
-
-procedure Inference_GetUsage(ATokenInputSpeed, ATokenOutputSpeed: System.PSingle; AInputTokens, AOutputTokens, ATotalTokens: PInteger);
-begin
-  LLMEngine.Inference_GetUsage(ATokenInputSpeed, ATokenOutputSpeed, AInputTokens, AOutputTokens, ATotalTokens);
-end;
-
-// TokenResponse
-var
-  LTokenResponse: TTokenResponse;
-procedure TokenResponse_SetRightMargin(const AMargin: Integer);
-begin
-  LTokenResponse.SetRightMargin(AMargin);
-end;
-
-function  TokenResponse_AddToken(const AToken: PAnsiChar): Integer;
-begin
-  Result := Ord(LTokenResponse.AddToken(UTF8ToUnicodeString(AToken)));
-end;
-
-function  TokenResponse_LastWord(const ATrimLeft: Boolean): PAnsiChar;
-begin
-  Result := Utils.AsUTF8(LTokenResponse.LastWord(ATrimLeft));
-end;
-
-function  TokenResponse_Finalize: Boolean;
-begin
-  Result := LTokenResponse.Finalize();
+  LLMEngine.GetInferenceStats(ATokenInputSpeed, ATokenOutputSpeed, AInputTokens, AOutputTokens, ATotalTokens);
 end;
 
 
 { --------------------------------------------------------------------------- }
-
-
 initialization
 begin
   LLMEngine := TLMEngine.Create();
@@ -601,4 +514,3 @@ begin
 end;
 
 end.
-

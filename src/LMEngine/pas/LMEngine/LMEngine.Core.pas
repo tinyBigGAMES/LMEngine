@@ -54,10 +54,52 @@ uses
   LMEngine.Deps,
   LMEngine.Utils;
 
+const
+  LMENGINE_DLL = 'LMEngine.dll';
+
 type
   { TLMEngine }
   TLMEngine = class(TBaseObject)
   public const
+    LF   = #10;
+    CR   = #13;
+    CRLF = LF+CR;
+
+    // Virtual Keys
+    VKEY_ESCAPE   = 27;
+    VKEY_SPACE = 32;
+
+    // Primary console colors
+    FG_BLUE         = 1;
+    FG_GREEN        = 2;
+    FG_RED          = 4;
+    FG_INTENSITY    = 8;
+    BG_BLUE         = $10;
+    BG_GREEN        = $20;
+    BG_RED          = $40;
+    BG_INTENSITY    = $80;
+
+    // Custom console color
+    FG_BRIGHTYELLOW = FG_RED OR FG_GREEN OR FG_INTENSITY;
+    FG_YELLOW       = FG_RED OR FG_GREEN;
+    FG_WHITE        = FG_RED OR FG_GREEN OR FG_BLUE;
+    FG_BRIGHTWHITE  = FG_WHITE OR FG_INTENSITY;
+    FG_DARKGREEN    = FG_GREEN;
+    FG_LIGHTGREEN   = FG_GREEN or FG_INTENSITY;
+    FG_DARKGRAY     = FG_INTENSITY;
+    FG_CYAN         = FG_GREEN OR FG_BLUE;
+    FG_MAGENTA      = FG_RED OR FG_BLUE;
+
+    BG_BRIGHTYELLOW = BG_RED OR BG_GREEN OR BG_INTENSITY;
+    BG_YELLOW       = BG_RED OR BG_GREEN;
+    BG_WHITE        = BG_RED OR BG_GREEN OR BG_BLUE;
+    BG_BRIGHTWHITE  = BG_WHITE OR BG_INTENSITY;
+    BG_DARKGREEN    = BG_GREEN;
+    BG_LIGHTGREEN   = BG_GREEN or BG_INTENSITY;
+    BG_DARKGRAY     = BG_INTENSITY;
+    BG_CYAN         = BG_GREEN OR FG_BLUE;
+    BG_MAGENTA      = BG_RED OR FG_BLUE;
+
     ROLE_SYSTEM = 'system';
     ROLE_USER = 'user';
     ROLE_ASSISTANT = 'assistant';
@@ -68,17 +110,49 @@ type
     VERSION_MINOR = 2;
     VERSION_PATCH = 3;
 
+    // Speech Voice Attributes
+    SPEECH_VOICEATTR_DESCRIPTION = 0;
+    SPEECH_VOICEATTR_NAME        = 1;
+    SPEECH_VOICEATTR_VENDOR      = 2;
+    SPEECH_VOICEATTR_AGE         = 3;
+    SPEECH_VOICEATTR_GENDER      = 4;
+    SPEECH_VOICEATTR_LANGUAGE    = 5;
+    SPEECH_VOICEATTR_ID          = 6;
+
+    // Token Response
+    TOKENRESPONSE_WAIT    = 0;
+    TOKENRESPONSE_APPEND  = 1;
+    TOKENRESPONSE_NEWLINE = 2;
+
   public type
-    InferenceCancelCallback = function(const ASender: Pointer): Boolean; cdecl;
-    InferenceGetNextTokenCallback = procedure(const ASender: Pointer; const AToken: PAnsiChar); cdecl;
-    InfoCallback = procedure(const ASender: Pointer; const ALevel: Integer; const AText: PAnsiChar); cdecl;
-    LoadModelProgressCallback = function(const ASender: Pointer; const AModelName: PAnsiChar; const AProgress: Single): Boolean; cdecl;
-    LoadModelCallback = procedure(const ASender: Pointer; const AModelName: PAnsiChar; const ASuccess: Boolean); cdecl;
-    InferenceStartCallback = procedure(const ASender: Pointer); cdecl;
-    InferenceEndCallback = procedure(const ASender: Pointer); cdecl;
-  protected type
-    TError = record
-      Msg: UTF8String;
+    SpeechWordCallback = procedure(const AWord, AText: PWideChar; const AUserData: Pointer); cdecl;
+    InferenceCancelCallback = function(const AUserData: Pointer): Boolean; cdecl;
+    InferenceTokenCallback = procedure(const AToken: PWideChar; const AUserData: Pointer); cdecl;
+    InfoCallback = procedure(const ALevel: Integer; const AText: PWideChar; const AUserData: Pointer); cdecl;
+    LoadModelProgressCallback = function(const AModelName: PWideChar; const AProgress: Single; const AUserData: Pointer): Boolean; cdecl;
+    LoadModelCallback = procedure(const AModelName: PWideChar; const ASuccess: Boolean; const AUserData: Pointer); cdecl;
+    InferenceStartCallback = procedure(const AUserData: Pointer); cdecl;
+    InferenceEndCallback = procedure(const AUserData: Pointer); cdecl;
+  private type
+    TStats = record
+      TokenInputSpeed: Double;
+      TokenOutputSpeed: Double;
+      InputTokens: Int32;
+      OutputTokens: Int32;
+      TotalTokens: Int32;
+    end;
+    TCallback<T> = record
+      Handler: T;
+      UserData: Pointer;
+    end;
+    TCallbacks = record
+      InferenceCancel: TCallback<InferenceCancelCallback>;
+      InferenceToken: TCallback<InferenceTokenCallback>;
+      Info: TCallback<InfoCallback>;
+      LoadModelProgress: TCallback<LoadModelProgressCallback>;
+      LoadModel: TCallback<LoadModelCallback>;
+      InferenceStart: TCallback<InferenceStartCallback>;
+      InferenceEnd: TCallback<InferenceEndCallback>;
     end;
     TConfig = record
       ModelPath: string;
@@ -94,87 +168,48 @@ type
       MaxContext: UInt32;
       Template: string;
       TemplateEnd: string;
-      AddAssistant: Boolean;
       Stop: TArray<string>;
     end;
-    TUsage = record
-      TokenInputSpeed: Double;
-      TokenOutputSpeed: Double;
-      InputTokens: Int32;
-      OutputTokens: Int32;
-      TotalTokens: Int32;
-    end;
-    TCallback<T> = record
-      Sender: Pointer;
-      Handler: T;
+    TVersion = record
+      Full: string;
+      Major: string;
+      Minor: string;
+      Patch: string;
     end;
     TInference = record
       Active: Boolean;
-      TokenList: TArray<llama_token>;
-      CtxNum: UInt32;
-      KVReqNum: UInt32;
-      LenNum: UInt32;
-      Batch: llama_batch;
-      CurNum: UInt32;
-      VocabNum: Int32;
-      Logits: System.PSingle;
-      Candidates: TArray<llama_token_data>;
-      CandidatesP: llama_token_data_array;
-      NewTokenId: llama_token;
-      TokenStr: UTF8String;
-      MaxTokens: int32;
-      Prompt: string;
-      FirstToken: Boolean;
       ModelName: string;
-      PrevToken: string;
-      LTokenBuffer: string;
-      InputTokens: uint32;
-    end;
-    TCallbacks = record
-      InferenceCancel: TCallback<InferenceCancelCallback>;
-      InferenceNextToken: TCallback<InferenceGetNextTokenCallback>;
-      Info: TCallback<InfoCallback>;
-      LoadModelProgress: TCallback<LoadModelProgressCallback>;
-      LoadModel: TCallback<LoadModelCallback>;
-      InferenceStart: TCallback<InferenceStartCallback>;
-      InferenceEnd: TCallback<InferenceEndCallback>;
-    end;
-    TVersion = record
-      Full: UTF8String;
-      Major: UTF8String;
-      Minor: UTF8String;
-      Patch: UTF8String;
+      Prompt: string;
+      Response: string;
     end;
     TMessageList = TList<TMessage>;
     TModelList = TDictionary<string, TModel>;
-  protected
-    FVersion: TVersion;
-    FConfig: TConfig;
-    FMessageList: TMessageList;
-    FModelList: TModelList;
-    FUsage: TUsage;
-    FError: TError;
+  private
+    FError: string;
+    FCallbacks: TCallbacks;
     FModel: Pllama_model;
     FModelParams: llama_model_params;
     FContext: Pllama_context;
     FContextParams: llama_context_params;
-    FLastUserMessage: UTF8String;
-    FCallbacks: TCallbacks;
+    FVersion: TVersion;
+    FConfig: TConfig;
+    FMessageList: TMessageList;
+    FModelList: TModelList;
+    FStats: TStats;
     FInference: TInference;
-    FInferencePrompt: UTF8String;
-    FInferenceResponse: UTF8String;
+    FTokenResponse: TTokenResponse;
+    FLastUserMessage: string;
+  private
+    function MakeVersion(const AVersion: string; const AType: Byte): string;
+    function Tokenize(const AContext: Pllama_context; const AText: string; const AAddSpecial: Boolean; const AParseSpecial: Boolean=False): TVector<llama_token>;
+    function TokenToPiece(const AContext: Pllama_context; const AToken: llama_token; const ASpecial: Boolean=True): string;
+    function ShouldAddBOSToken(const AModel: Pllama_model): Boolean;
 
-    function  MakeVersion(const AVersion: string; const AType: Byte): string;
-
-    function  Tokenize(AContext: Pllama_context; const AText: string; AAddSpecial: Boolean; AParseSpecial: Boolean = False): TArray<llama_token>;
-    function  TokenToPiece(AContext: Pllama_context; AToken: llama_token; ASpecial: Boolean = True): string;
-    procedure BatchAdd(var ABatch: llama_batch; AId: llama_token; APos: llama_pos; const ASeqIDs: TArray<llama_seq_id>; ALogits: Boolean);
-
+    function  OnInferenceCancel(): Boolean;
+    procedure OnInferenceToken(const AToken: string);
+    procedure OnInfo(const ALevel: Integer; const AText: string);
     function  OnLoadModelProgress(const AModelName: string; const AProgress: Single): Boolean;
     procedure OnLoadModel(const AModelName: string; const ASuccess: Boolean);
-    procedure OnInfo(const ALevel: Integer; const AText: string);
-    function  OnInferenceCancel(): Boolean;
-    procedure OnInferenceNextToken();
     procedure OnInferenceStart();
     procedure OnInferenceEnd();
 
@@ -182,71 +217,106 @@ type
     constructor Create(); override;
     destructor Destroy(); override;
 
-    // Version
-    function  Version_Get(const AType: Byte): UTF8String;
+    // Utils
+    procedure Print(const AText: string; const AColor: WORD; const AArgs: array of const);
+    procedure PrintLn(const AText: string; const AColor: WORD; const AArgs: array of const);
+    procedure GetCursorPos(X, Y: PInteger);
+    procedure SetCursorPos(const X, Y: Integer);
+    procedure ClearConsole();
+    procedure ClearConsoleLine(const AColor: WORD);
+    procedure ClearKeyStates();
+    function  IsKeyPressed(AKey: Byte): Boolean;
+    function  WasKeyReleased(AKey: Byte): Boolean;
+    function  WasKeyPressed(AKey: Byte): Boolean;
+    procedure Pause(const AForcePause: Boolean=False; AColor: WORD=FG_WHITE; const AText: string='');
+    procedure ProcessMessages();
+    function  MaskFirstFoundWord(const AText, AWord: string): string;
+    procedure SetTokenResponseRightMargin(const AMargin: Integer);
+    function  AddTokenResponseToken(const AToken: string): Integer;
+    function  LastTokenResponseWord(const ATrimLeft: Boolean): string;
+    function  FinalizeTokenResponse(): Boolean;
 
-    // Error
-    procedure Error_Clear();
-    procedure Error_Set(const AMsg: string; const AArgs: array of const);
-    function  Error_Get(): UTF8String;
+    // Speech
+    procedure SetSpeechWordCallback(const AHandler: SpeechWordCallback; const AUserData: Pointer);
+    function  GetSpeechWordCallback(): SpeechWordCallback;
+    function  GetSpeechVoiceCount(): Integer;
+    function  GetSpeechVoiceAttribute(const AIndex: Integer; const AAttribute: Byte): string;
+    procedure ChangeSpeechVoice(const AIndex: Integer);
+    function  GetSpeechVoice(): Integer;
+    procedure SetSpeechVolume(const AVolume: Single);
+    function  GetSpeechVolume(): Single;
+    procedure SetSpeechRate(const ARate: Single);
+    function  GetSpeechRate(): Single;
+    procedure ClearSpeech();
+    procedure SaySpeech(const AText: string; const APurge: Boolean);
+    function  IsSpeechActive(): Boolean;
+    procedure PauseSpeech();
+    procedure ResumeSpeech();
+    procedure ResetSpeech();
+    procedure SubstituteSpeechWord(const AWord, ASubstituteWord: string);
 
-    // Callback
-    function  Callback_GetLoadModelProgress(): TLMEngine.LoadModelProgressCallback;
-    procedure Callback_SetLoadModelProgress(const ASender: Pointer; const AHandler: TLMEngine.LoadModelProgressCallback);
+    // Core
+    function  GetVersion(const AType: Byte): string;
 
-    function  Callback_GetLoadModel(): TLMEngine.LoadModelCallback;
-    procedure Callback_SetLoadModel(const ASender: Pointer; const AHandler: TLMEngine.LoadModelCallback);
+    procedure ClearError();
+    procedure SetError(const AMsg: string; const AArgs: array of const); overload;
+    procedure SetError(const AText: string); overload;
+    function  GetError(): string;
 
-    function  Callback_GetInferenceCancel(): TLMEngine.InferenceCancelCallback;
-    procedure Callback_SetInferenceCancel(const ASender: Pointer; const AHandler: TLMEngine.InferenceCancelCallback);
+    function  GetInferenceCancelCallback(): TLMEngine.InferenceCancelCallback;
+    procedure SetInferenceCancelCallback(const AHandler: TLMEngine.InferenceCancelCallback; const AUserData: Pointer);
 
-    function  Callback_GetInferenceNextToken(): TLMEngine.InferenceGetNextTokenCallback;
-    procedure Callback_SetInferenceNextToken(const ASender: Pointer; const AHandler: TLMEngine.InferenceGetNextTokenCallback);
+    function  GetInferenceTokenCallback(): TLMEngine.InferenceTokenCallback;
+    procedure SetInferenceTokenlCallback(const AHandler: TLMEngine.InferenceTokenCallback; const AUserData: Pointer);
 
-    function  Callback_GetInferenceStart(): TLMEngine.InferenceStartCallback;
-    procedure Callback_SetInferenceStart(const ASender: Pointer; const AHandler: TLMEngine.InferenceStartCallback);
+    function  GetInfoCallback(): TLMEngine.InfoCallback;
+    procedure SetInfoCallback(const AHandler: TLMEngine.InfoCallback; const AUserData: Pointer);
 
-    function  Callback_GetInferenceEnd(): TLMEngine.InferenceEndCallback;
-    procedure Callback_SetInferenceEnd(const ASender: Pointer; const AHandler: TLMEngine.InferenceEndCallback);
+    function  GetLoadModelProgressCallback(): TLMEngine.LoadModelProgressCallback;
+    procedure SetLoadModelProgressCallback(const AHandler: TLMEngine.LoadModelProgressCallback; const AUserData: Pointer);
 
-    function  Callback_GetInfo(): TLMEngine.InfoCallback;
-    procedure Callback_SetInfo(const ASender: Pointer; const AHandler: TLMEngine.InfoCallback);
+    function  GetLoadModelCallback(): TLMEngine.LoadModelCallback;
+    procedure SetLoadModelCallback(const AHandler: TLMEngine.LoadModelCallback; const AUserData: Pointer);
 
+    function  GetInferenceStartCallback(): TLMEngine.InferenceStartCallback;
+    procedure SetInferenceStartCallback(const AHandler: TLMEngine.InferenceStartCallback; const AUserData: Pointer);
 
-    // Config
-    procedure Config_Init(const AModelPath: string; const ANumGPULayers: Int32);
-    function  Config_Save(const AFilename: string): Boolean;
-    function  Config_Load(const AFilename: string): Boolean;
+    function  GetInferenceEndCallback(): TLMEngine.InferenceEndCallback;
+    procedure SetInferenceEndCallback(const AHandler: TLMEngine.InferenceEndCallback; const AUserData: Pointer);
 
-    // Message
-    procedure Message_ClearAll();
-    function  Message_Add(const ARole, AContent: string): Int32;
-    function  Message_GetLastUser(): UTF8String;
-    function  Message_BuildInferencePrompt(const AModelName: string): UTF8String;
+    procedure InitConfig(const AModelPath: string; const ANumGPULayers: Int32);
+    function  SaveConfig(const AFilename: string): Boolean;
+    function  LoadConfig(const AFilename: string): Boolean;
 
-    // Model
-    procedure Model_ClearDefines();
-    function  Model_Define(const AModelFilename, AModelName: string; const AMaxContext: UInt32; const ATemplate, ATemplateEnd: string; const AAddAssistant: Boolean): Int32;
-    function  Model_SaveDefines(const AFilename: string): Boolean;
-    function  Model_LoadDefines(const AFilename: string): Boolean;
-    procedure Model_ClearStopSequences(const AModelName: string);
-    function  Model_AddStopSequence(const AModelName, AToken: string): Int32;
-    function  Model_GetStopSequenceCount(const AModelName: string): Int32;
-    function  Model_Load(const AModelName: string): Boolean;
-    function  Model_IsLoaded(): Boolean;
-    procedure Model_Unload();
+    procedure ClearAllMessages();
+    function  AddMessage(const ARole, AContent: string): Int32;
+    function  GetLastUserMessage(): string;
+    function  BuildMessageInferencePrompt(const AModelName: string): string;
 
-    // Inference
-    function  Inference_Run(const AModelName: string; const AMaxTokens: UInt32): Boolean;
-    function  Inference_Start(const AModelName: string; const AMaxTokens: UInt32): Boolean;
-    function  Inference_IsActive(): Boolean;
-    function  Inference_GetNextToken(): UTF8String;
-    procedure Inference_Stop();
-    function  Inference_GetResponse(): UTF8String;
-    procedure Inference_GetUsage(const ATokenInputSpeed, ATokenOutputSpeed: System.PSingle; const AInputTokens, AOutputTokens, ATotalTokens: PInteger);
+    procedure ClearModelDefines();
+    function  DefineModel(const AModelFilename, AModelName: string; const AMaxContext: UInt32; const ATemplate, ATemplateEnd: string): Int32;
+    function  SaveModelDefines(const AFilename: string): Boolean;
+    function  LoadModelDefines(const AFilename: string): Boolean;
+    procedure ClearModelStopSequences(const AModelName: string);
+    function  AddModelStopSequence(const AModelName, AToken: string): Int32;
+    function  GetModelStopSequenceCount(const AModelName: string): Int32;
+    function  LoadModel(const AModelName: string): Boolean;
+    function  IsModelLoaded(): Boolean;
+    procedure UnloadModel();
+
+    function  RunInference(const AModelName: string; const AMaxTokens: UInt32): Boolean;
+    function  GetInferenceResponse(): string;
+    procedure GetInferenceStats(ATokenInputSpeed: System.PSingle; ATokenOutputSpeed: System.PSingle; AInputTokens: PInt32; AOutputTokens: PInt32; ATotalTokens: PInt32);
   end;
 
+
 implementation
+
+{ llama sampling }
+function  _llama_sampling_init(): Pointer; cdecl; external LMENGINE_DLL;
+function  _llama_sampling_sample(ctx_sampling: Pointer; ctx_main, ctx_cfg: Pllama_context; idx: integer = -1): llama_token; cdecl; external LMENGINE_DLL;
+procedure _llama_sampling_accept(ctx_sampling: Pointer; ctx_main: Pllama_context; id: llama_token; apply_grammar: Boolean); cdecl; external LMENGINE_DLL;
+procedure _llama_sampling_free(ctx_sampling: Pointer); cdecl; external LMENGINE_DLL;
 
 { TLMEngine }
 function TLMEngine_ModelLoadProgressCallback(AProgress: single; AUserData: pointer): Boolean; cdecl;
@@ -270,12 +340,6 @@ procedure TLMEngine_CErrCallback(const AText: PUTF8Char; AUserData: Pointer); cd
 begin
   if Assigned(AUserData) then
     TLMEngine(AUserData).OnInfo(GGML_LOG_LEVEL_ERROR, Utf8ToString(AText));
-end;
-
-procedure TLMEngine.OnInfo(const ALevel: Integer; const AText: string);
-begin
-  if Assigned(FCallbacks.Info.Handler) then
-    FCallbacks.Info.Handler(FCallbacks.Info.Sender, ALevel, PUTF8Char(UTF8Encode(AText)));
 end;
 
 function  TLMEngine.MakeVersion(const AVersion: string; const AType: Byte): string;
@@ -313,65 +377,119 @@ begin
   end;
 end;
 
-function TLMEngine.Tokenize(AContext: Pllama_context; const AText: string; AAddSpecial: Boolean; AParseSpecial: Boolean): TArray<llama_token>;
+function TLMEngine.Tokenize(const AContext: Pllama_context; const AText: string; const AAddSpecial: Boolean; const AParseSpecial: Boolean): TVector<llama_token>;
 var
   LNumTokens: Integer;
-  LResult: TArray<llama_token>;
+  LResult: TVector<llama_token>;
   LText: UTF8String;
+  LTokens: TArray<llama_token>;
 begin
-  LText := UTF8Encode(AText);
+  Result := nil;
 
-  // upper limit for the number of tokens
-  LNumTokens := Length(LText) + 2 * Ord(AAddSpecial);
-  SetLength(LResult, LNumTokens);
-  LNumTokens := llama_tokenize(llama_get_model(AContext), PUTF8Char(LText), Length(LText), @LResult[0], Length(LResult), AAddSpecial, AParseSpecial);
-  if LNumTokens < 0 then
+  try
+    LResult := TVector<llama_token>.Create;
+    LText := UTF8Encode(AText);
+
+    // Upper limit for the number of tokens
+    LNumTokens := Length(LText) + 2 * Ord(AAddSpecial);
+    SetLength(LTokens, LNumTokens);
+
+    LNumTokens := llama_tokenize(llama_get_model(AContext), PUTF8Char(LText), Length(LText), @LTokens[0], Length(LTokens), AAddSpecial, AParseSpecial);
+
+    if LNumTokens < 0 then
     begin
-      SetLength(LResult, -LNumTokens);
-      LNumTokens := llama_tokenize(llama_get_model(AContext), PUTF8Char(LText), Length(LText), @LResult[0], Length(LResult), AAddSpecial, AParseSpecial);
-      Assert(LNumTokens = -Length(LResult));
+      SetLength(LTokens, -LNumTokens);
+      LNumTokens := llama_tokenize(llama_get_model(AContext), PUTF8Char(LText), Length(LText), @LTokens[0], Length(LTokens), AAddSpecial, AParseSpecial);
+      Assert(LNumTokens = -Length(LTokens));
     end
-  else
+    else
     begin
-      SetLength(LResult, LNumTokens);
+      SetLength(LTokens, LNumTokens);
     end;
-  Result := LResult;
-end;
 
-var
-  TokenToPieceBuffer: array[0..1023] of UTF8Char;
-function TLMEngine.TokenToPiece(AContext: Pllama_context; AToken: llama_token; ASpecial: Boolean): string;
-var
-  LNumTokens: Int32;
-  LCheck: Int32;
-begin
-  LNumTokens := llama_token_to_piece(llama_get_model(AContext), AToken, @TokenToPieceBuffer[0], 8, ASpecial);
-  if LNumTokens < 0 then
+    LResult.Resize(LNumTokens);
+    Move(LTokens[0], LResult.Data^, LNumTokens * SizeOf(llama_token));
+    Result := LResult;
+  except
+    on E: Exception do
     begin
-      LCheck := llama_token_to_piece(llama_get_model(AContext), AToken, @TokenToPieceBuffer[0], -LNumTokens, ASpecial);
-      Assert(LCheck = -LNumTokens);
-      TokenToPieceBuffer[-LNumTokens] := #0;
-    end
-  else
-    begin
-      TokenToPieceBuffer[LNumTokens] := #0;
+      SetError(E.Message);
+      Exit;
     end;
-  Result := UTF8ToString(@TokenToPieceBuffer[0]);
-end;
-
-procedure TLMEngine.BatchAdd(var ABatch: llama_batch; AId: llama_token; APos: llama_pos; const ASeqIDs: TArray<llama_seq_id>; ALogits: Boolean);
-var
-  I: Integer;
-begin
-  Pllama_token(IntPtr(ABatch.token) + ABatch.n_tokens * SizeOf(llama_token))^ := AId;
-  Pllama_pos(IntPtr(ABatch.pos) + ABatch.n_tokens * SizeOf(llama_pos))^ := APos;
-  PInt32(IntPtr(ABatch.n_seq_id) + ABatch.n_tokens * SizeOf(Int32))^ := Length(ASeqIDs);
-  for I := Low(ASeqIDs) to High(ASeqIDs) do
-  begin
-    PPllama_seq_id(IntPtr(ABatch.seq_id) + ABatch.n_tokens * SizeOf(Pllama_seq_id))^^ := ASeqIDs[I];
   end;
-    PInt8(IntPtr(ABatch.logits) + ABatch.n_tokens * SizeOf(Int8))^ := Ord(ALogits);
-  Inc(ABatch.n_tokens);
+end;
+
+function TLMEngine.TokenToPiece(const AContext: Pllama_context; const AToken: llama_token; const ASpecial: Boolean): string;
+var
+  LTokens: Int32;
+  LCheck: Int32;
+  LBuffer: TArray<UTF8Char>;
+begin
+  try
+    SetLength(LBuffer, 9);
+    LTokens := llama_token_to_piece(llama_get_model(AContext), AToken, @LBuffer[0], 8, ASpecial);
+    if LTokens < 0 then
+      begin
+        SetLength(LBuffer, (-LTokens)+1);
+        LCheck := llama_token_to_piece(llama_get_model(AContext), AToken, @LBuffer[0], -LTokens, ASpecial);
+        Assert(LCheck = -LTokens);
+        LBuffer[-LTokens] := #0;
+      end
+    else
+      begin
+        LBuffer[LTokens] := #0;
+      end;
+    Result := UTF8ToString(@LBuffer[0]);
+  except
+    on E: Exception do
+    begin
+      SetError(E.Message);
+      Exit;
+    end;
+  end;
+end;
+
+function TLMEngine.ShouldAddBOSToken(const AModel: Pllama_model): Boolean;
+var
+  LAddBOS: Integer;
+begin
+  LAddBOS := llama_add_bos_token(AModel);
+  if LAddBOS <> -1 then
+    Result := Boolean(LAddBOS)
+  else
+    Result := llama_vocab_type(AModel) = LLAMA_VOCAB_TYPE_SPM;
+end;
+
+function TLMEngine.OnInferenceCancel(): Boolean;
+begin
+  if Assigned(FCallbacks.InferenceCancel.Handler) then
+    begin
+      Result := FCallbacks.InferenceCancel.Handler(FCallbacks.InferenceCancel.UserData);
+    end
+  else
+    begin
+      Result := Console.WasKeyReleased(VK_ESCAPE);
+    end;
+end;
+
+procedure TLMEngine.OnInferenceToken(const AToken: string);
+begin
+  if Assigned(FCallbacks.InferenceToken.Handler) then
+    begin
+      FCallbacks.InferenceToken.Handler(PWideChar(AToken), FCallbacks.InferenceToken.UserData);
+    end
+  else
+    begin
+      Console.Print(AToken);
+    end;
+end;
+
+procedure TLMEngine.OnInfo(const ALevel: Integer; const AText: string);
+begin
+  if Assigned(FCallbacks.Info.Handler) then
+  begin
+    FCallbacks.Info.Handler(ALevel, PWideChar(AText), FCallbacks.Info.UserData);
+  end;
 end;
 
 function  TLMEngine.OnLoadModelProgress(const AModelName: string; const AProgress: Single): Boolean;
@@ -379,35 +497,24 @@ begin
   Result := True;
 
   if Assigned(FCallbacks.LoadModelProgress.Handler) then
-    Result := FCallbacks.LoadModelProgress.Handler(FCallbacks.LoadModelProgress.Sender,  PUTF8Char(UTF8Encode(AModelName)), AProgress)
+    begin
+      Result := FCallbacks.LoadModelProgress.Handler(PWideChar(AModelName), AProgress, FCallbacks.LoadModelProgress.UserData);
+    end
   else
     begin
       Console.Print(Console.CR+'Loading model "%s" (%3.2f%s)...', [AModelName, AProgress*100, '%'], Console.FG_CYAN);
       if AProgress >= 1 then
+      begin
         Console.ClearLine(Console.FG_WHITE);
+      end;
     end;
 end;
 
-procedure TLMEngine.OnLoadModel( const AModelName: string; const ASuccess: Boolean);
+procedure TLMEngine.OnLoadModel(const AModelName: string; const ASuccess: Boolean);
 begin
   if Assigned(FCallbacks.LoadModel.Handler) then
-    FCallbacks.LoadModel.Handler(FCallbacks.LoadModel.Sender,  PUTF8Char(UTF8Encode(AModelName)), ASuccess);
-end;
-
-function  TLMEngine.OnInferenceCancel(): Boolean;
-begin
-  Result := False;
-  if Assigned(FCallbacks.InferenceCancel.Handler) then
   begin
-    Result := FCallbacks.InferenceCancel.Handler(FCallbacks.InferenceCancel.Sender);
-  end;
-end;
-
-procedure TLMEngine.OnInferenceNextToken();
-begin
-  if Assigned(FCallbacks.InferenceNextToken.Handler) then
-  begin
-    FCallbacks.InferenceNextToken.Handler(FCallbacks.InferenceNextToken.Sender, PUTF8Char(FInference.TokenStr));
+    FCallbacks.LoadModel.Handler(PWideChar(AModelName), ASuccess, FCallbacks.LoadModel.UserData);
   end;
 end;
 
@@ -415,7 +522,7 @@ procedure TLMEngine.OnInferenceStart();
 begin
   if Assigned(FCallbacks.InferenceStart.Handler) then
   begin
-    FCallbacks.InferenceStart.Handler(FCallbacks.InferenceStart.Sender);
+    FCallbacks.InferenceStart.Handler(FCallbacks.InferenceStart.UserData);
   end;
 end;
 
@@ -423,7 +530,7 @@ procedure TLMEngine.OnInferenceEnd();
 begin
   if Assigned(FCallbacks.InferenceEnd.Handler) then
   begin
-    FCallbacks.InferenceEnd.Handler(FCallbacks.InferenceEnd.Sender);
+    FCallbacks.InferenceEnd.Handler(FCallbacks.InferenceEnd.UserData);
   end;
 end;
 
@@ -433,10 +540,10 @@ var
 begin
   inherited;
   LVersion := Utils.GetModuleVersionFullStr();
-  FVersion.Full := UTF8Encode(MakeVersion(LVersion, VERSION_FULL));
-  FVersion.Major := UTF8Encode(MakeVersion(LVersion, VERSION_MAJOR));
-  FVersion.Minor := UTF8Encode(MakeVersion(LVersion, VERSION_MINOR));
-  FVersion.Patch := UTF8Encode(MakeVersion(LVersion, VERSION_PATCH));
+  FVersion.Full := MakeVersion(LVersion, VERSION_FULL);
+  FVersion.Major := MakeVersion(LVersion, VERSION_MAJOR);
+  FVersion.Minor := MakeVersion(LVersion, VERSION_MINOR);
+  FVersion.Patch := MakeVersion(LVersion, VERSION_PATCH);
 
   FMessageList := TMessageList.Create();
   FModelList := TModelList.Create();
@@ -444,17 +551,191 @@ end;
 
 destructor TLMEngine.Destroy();
 begin
-  Model_Unload();
+  UnloadModel();
 
   if Assigned(FModelList) then
     FModelList.Free();
 
   if Assigned(FMessageList) then
     FMessageList.Free();
+
   inherited;
 end;
 
-function  TLMEngine.Version_Get(const AType: Byte): UTF8String;
+// Utils
+procedure TLMEngine.Print(const AText: string; const AColor: WORD; const AArgs: array of const);
+begin
+  Console.Print(AText, AArgs, AColor);
+end;
+
+procedure TLMEngine.PrintLn(const AText: string; const AColor: WORD; const AArgs: array of const);
+begin
+  Console.PrintLn(AText, AArgs, AColor);
+end;
+
+procedure TLMEngine.GetCursorPos(X, Y: PInteger);
+begin
+  Console.GetCursorPos(X, Y);
+end;
+
+procedure TLMEngine.SetCursorPos(const X, Y: Integer);
+begin
+  Console.SetCursorPos(X, Y);
+end;
+
+procedure TLMEngine.ClearConsole();
+begin
+  Console.Clear();
+end;
+
+procedure TLMEngine.ClearConsoleLine(const AColor: WORD);
+begin
+  Console.ClearLine(AColor);
+end;
+
+procedure TLMEngine.ClearKeyStates();
+begin
+  Console.ClearKeyStates();
+end;
+
+function  TLMEngine.IsKeyPressed(AKey: Byte): Boolean;
+begin
+  Result := Console.IsKeyPressed(AKey);
+end;
+
+function  TLMEngine.WasKeyReleased(AKey: Byte): Boolean;
+begin
+  Result := Console.WasKeyReleased(AKey);
+end;
+
+function  TLMEngine.WasKeyPressed(AKey: Byte): Boolean;
+begin
+  Result := Console.WasKeyPressed(AKey);
+end;
+
+procedure TLMEngine.Pause(const AForcePause: Boolean; AColor: WORD; const AText: string);
+begin
+  Console.Pause(AForcePause, AColor, AText);
+end;
+
+procedure TLMEngine.ProcessMessages();
+begin
+  Utils.ProcessMessages();
+end;
+
+function  TLMEngine.MaskFirstFoundWord(const AText, AWord: string): string;
+begin
+  Result := Utils.ReplaceFirstFoundWord(AText, AWord, '^');
+end;
+
+procedure TLMEngine.SetTokenResponseRightMargin(const AMargin: Integer);
+begin
+  FTokenResponse.SetRightMargin(AMargin);
+end;
+
+function  TLMEngine.AddTokenResponseToken(const AToken: string): Integer;
+begin
+  Result := Ord(FTokenResponse.AddToken(AToken));
+end;
+
+function  TLMEngine.LastTokenResponseWord(const ATrimLeft: Boolean): string;
+begin
+  Result := FTokenResponse.LastWord(ATrimLeft);
+end;
+
+function  TLMEngine.FinalizeTokenResponse(): Boolean;
+begin
+  Result := FTokenResponse.Finalize;
+end;
+
+// Speech
+procedure TLMEngine.SetSpeechWordCallback(const AHandler: SpeechWordCallback; const AUserData: Pointer);
+begin
+  Speech.SetOnWordEvent(AHandler, AUserData);
+end;
+
+function  TLMEngine.GetSpeechWordCallback(): SpeechWordCallback;
+begin
+  Result := Speech.GetOnWordEvent();
+end;
+
+function  TLMEngine.GetSpeechVoiceCount(): Integer;
+begin
+  Result := Speech.GetVoiceCount();
+end;
+
+function  TLMEngine.GetSpeechVoiceAttribute(const AIndex: Integer; const AAttribute: Byte): string;
+begin
+  Result := Speech.GetVoiceAttribute(AIndex, Speech.VoiceAttributeEvent(AAttribute));
+end;
+
+procedure TLMEngine.ChangeSpeechVoice(const AIndex: Integer);
+begin
+  Speech.ChangeVoice(AIndex);
+end;
+
+function  TLMEngine.GetSpeechVoice(): Integer;
+begin
+  Result := Speech.GetVoice();
+end;
+
+procedure TLMEngine.SetSpeechVolume(const AVolume: Single);
+begin
+  Speech.SetVolume(AVolume);
+end;
+
+function  TLMEngine.GetSpeechVolume(): Single;
+begin
+  Result := Speech.GetVolume();
+end;
+
+procedure TLMEngine.SetSpeechRate(const ARate: Single);
+begin
+  Speech.SetRate(ARate);
+end;
+
+function  TLMEngine.GetSpeechRate(): Single;
+begin
+  Result := Speech.GetRate();
+end;
+
+procedure TLMEngine.ClearSpeech();
+begin
+  Speech.Clear();
+end;
+
+procedure TLMEngine.SaySpeech(const AText: string; const APurge: Boolean);
+begin
+  Speech.Say(AText, APurge);
+end;
+
+function  TLMEngine.IsSpeechActive(): Boolean;
+begin
+  Result := Speech.Active();
+end;
+
+procedure TLMEngine.PauseSpeech();
+begin
+  Speech.Pause();
+end;
+
+procedure TLMEngine.ResumeSpeech();
+begin
+  Speech.Resume();
+end;
+
+procedure TLMEngine.ResetSpeech();
+begin
+  Speech.Reset();
+end;
+
+procedure TLMEngine.SubstituteSpeechWord(const AWord, ASubstituteWord: string);
+begin
+  Speech.SubstituteWord(AWord, ASubstituteWord);
+end;
+
+// Core
+function  TLMEngine.GetVersion(const AType: Byte): string;
 begin
   case AType of
     VERSION_FULL:
@@ -481,100 +762,104 @@ begin
   end;
 end;
 
-procedure TLMEngine.Error_Clear();
+procedure TLMEngine.ClearError();
 begin
-  FError.Msg := '';
+  FError := '';
 end;
 
-procedure TLMEngine.Error_Set(const AMsg: string; const AArgs: array of const);
+procedure TLMEngine.SetError(const AMsg: string; const AArgs: array of const);
 begin
-  FError.Msg := UTF8Encode(Format(AMsg, AArgs));
+  FError := Format(AMsg, AArgs);
 end;
 
-function  TLMEngine.Error_Get(): UTF8String;
+procedure TLMEngine.SetError(const AText: string);
 begin
-  Result := FError.Msg;
+  FError := AText;
 end;
 
-function  TLMEngine.Callback_GetLoadModelProgress(): TLMEngine.LoadModelProgressCallback;
+function  TLMEngine.GetError(): string;
 begin
-  Result := FCallbacks.LoadModelProgress.Handler;
+  Result := FError;
 end;
 
-procedure TLMEngine.Callback_SetLoadModelProgress(const ASender: Pointer; const AHandler: TLMEngine.LoadModelProgressCallback);
-begin
-  FCallbacks.LoadModelProgress.Sender := ASender;
-  FCallbacks.LoadModelProgress.Handler := AHandler;
-end;
-
-function  TLMEngine.Callback_GetLoadModel(): TLMEngine.LoadModelCallback;
-begin
-  Result := FCallbacks.LoadModel.Handler;
-end;
-
-procedure TLMEngine.Callback_SetLoadModel(const ASender: Pointer; const AHandler: TLMEngine.LoadModelCallback);
-begin
-  FCallbacks.LoadModel.Sender := ASender;
-  FCallbacks.LoadModel.Handler := AHandler;
-end;
-
-function  TLMEngine.Callback_GetInferenceCancel(): TLMEngine.InferenceCancelCallback;
+function  TLMEngine.GetInferenceCancelCallback(): TLMEngine.InferenceCancelCallback;
 begin
   Result := FCallbacks.InferenceCancel.Handler;
 end;
 
-procedure TLMEngine.Callback_SetInferenceCancel(const ASender: Pointer; const AHandler: TLMEngine.InferenceCancelCallback);
+procedure TLMEngine.SetInferenceCancelCallback(const AHandler: TLMEngine.InferenceCancelCallback; const AUserData: Pointer);
 begin
-  FCallbacks.InferenceCancel.Sender := ASender;
   FCallbacks.InferenceCancel.Handler := AHandler;
+  FCallbacks.InferenceCancel.UserData := AUserData;
 end;
 
-function  TLMEngine.Callback_GetInferenceNextToken(): TLMEngine.InferenceGetNextTokenCallback;
+function  TLMEngine.GetInferenceTokenCallback(): TLMEngine.InferenceTokenCallback;
 begin
-  Result := FCallbacks.InferenceNextToken.Handler;
+  Result := FCallbacks.InferenceToken.Handler;
 end;
 
-procedure TLMEngine.Callback_SetInferenceNextToken(const ASender: Pointer; const AHandler: TLMEngine.InferenceGetNextTokenCallback);
+procedure TLMEngine.SetInferenceTokenlCallback(const AHandler: TLMEngine.InferenceTokenCallback; const AUserData: Pointer);
 begin
-  FCallbacks.InferenceNextToken.Sender := ASender;
-  FCallbacks.InferenceNextToken.Handler := AHandler;
+  FCallbacks.InferenceToken.Handler := AHandler;
+  FCallbacks.InferenceToken.UserData := AUserData;
 end;
 
-function  TLMEngine.Callback_GetInferenceStart(): TLMEngine.InferenceStartCallback;
-begin
-  Result := FCallbacks.InferenceStart.Handler;
-end;
-
-procedure TLMEngine.Callback_SetInferenceStart(const ASender: Pointer; const AHandler: TLMEngine.InferenceStartCallback);
-begin
-  FCallbacks.InferenceStart.Sender := ASender;
-  FCallbacks.InferenceStart.Handler := AHandler;
-end;
-
-
-function  TLMEngine.Callback_GetInferenceEnd(): TLMEngine.InferenceEndCallback;
-begin
-  Result := FCallbacks.InferenceEnd.Handler;
-end;
-
-procedure TLMEngine.Callback_SetInferenceEnd(const ASender: Pointer; const AHandler: TLMEngine.InferenceEndCallback);
-begin
-  FCallbacks.InferenceEnd.Sender := ASender;
-  FCallbacks.InferenceEnd.Handler := AHandler;
-end;
-
-function  TLMEngine.Callback_GetInfo(): TLMEngine.InfoCallback;
+function  TLMEngine.GetInfoCallback(): TLMEngine.InfoCallback;
 begin
   Result := FCallbacks.Info.Handler;
 end;
 
-procedure TLMEngine.Callback_SetInfo(const ASender: Pointer; const AHandler: TLMEngine.InfoCallback);
+procedure TLMEngine.SetInfoCallback(const AHandler: TLMEngine.InfoCallback; const AUserData: Pointer);
 begin
-  FCallbacks.Info.Sender := ASender;
   FCallbacks.Info.Handler := AHandler;
+  FCallbacks.Info.UserData := AUserData;
 end;
 
-procedure TLMEngine.Config_Init(const AModelPath: string; const ANumGPULayers: Int32);
+function  TLMEngine.GetLoadModelProgressCallback(): TLMEngine.LoadModelProgressCallback;
+begin
+  Result := FCallbacks.LoadModelProgress.Handler;
+end;
+
+procedure TLMEngine.SetLoadModelProgressCallback(const AHandler: TLMEngine.LoadModelProgressCallback; const AUserData: Pointer);
+begin
+  FCallbacks.LoadModelProgress.Handler := AHandler;
+  FCallbacks.LoadModelProgress.UserData := AUserData;
+end;
+
+function  TLMEngine.GetLoadModelCallback(): TLMEngine.LoadModelCallback;
+begin
+  Result := FCallbacks.LoadModel.Handler;
+end;
+
+procedure TLMEngine.SetLoadModelCallback(const AHandler: TLMEngine.LoadModelCallback; const AUserData: Pointer);
+begin
+  FCallbacks.LoadModel.Handler := AHandler;
+  FCallbacks.LoadModel.UserData := AUserData;
+end;
+
+function  TLMEngine.GetInferenceStartCallback(): TLMEngine.InferenceStartCallback;
+begin
+  Result := FCallbacks.InferenceStart.Handler;
+end;
+
+procedure TLMEngine.SetInferenceStartCallback(const AHandler: TLMEngine.InferenceStartCallback; const AUserData: Pointer);
+begin
+  FCallbacks.InferenceStart.Handler := AHandler;
+  FCallbacks.InferenceStart.UserData := AUserData;
+end;
+
+function  TLMEngine.GetInferenceEndCallback(): TLMEngine.InferenceEndCallback;
+begin
+  Result := FCallbacks.InferenceEnd.Handler;
+end;
+
+procedure TLMEngine.SetInferenceEndCallback(const AHandler: TLMEngine.InferenceEndCallback; const AUserData: Pointer);
+begin
+  FCallbacks.InferenceEnd.Handler := AHandler;
+  FCallbacks.InferenceEnd.UserData := AUserData;
+end;
+
+procedure TLMEngine.InitConfig(const AModelPath: string; const ANumGPULayers: Int32);
 var
   LNumGPULayers: Int32;
 begin
@@ -587,7 +872,7 @@ begin
   FConfig.NumGPULayers := EnsureRange(LNumGPULayers, 0, MaxInt);
 end;
 
-function  TLMEngine.Config_Save(const AFilename: string): Boolean;
+function  TLMEngine.SaveConfig(const AFilename: string): Boolean;
 var
   LJson: TJsonObject;
   LFilename: string;
@@ -596,7 +881,7 @@ begin
 
   if AFilename.IsEmpty then
   begin
-    Error_Set('[%s] %s', ['Config_Save', 'Filename can not be blank']);
+    SetError('[%s] %s', ['SaveConfig', 'Filename can not be blank']);
     Exit;
   end;
 
@@ -617,13 +902,13 @@ begin
   except
     on E: Exception do
     begin
-      Error_Set('[%s] %s', ['Config_Save', E.Message]);
+      SetError('[%s] %s', ['SaveConfig', E.Message]);
       Result := False;
     end;
   end;
 end;
 
-function  TLMEngine.Config_Load(const AFilename: string): Boolean;
+function  TLMEngine.LoadConfig(const AFilename: string): Boolean;
 var
   LFilename: string;
   LJson: TJsonObject;
@@ -635,7 +920,7 @@ begin
 
   if not TFile.Exists(LFilename) then
   begin
-    Error_Set('[%s] File was not found: %s', ['Config_Load', LFilename]);
+    SetError('[%s] File was not found: %s', ['LoadConfig', LFilename]);
     Exit;
   end;
 
@@ -649,7 +934,7 @@ begin
         end
       else
         begin
-          Error_Set('[%s] "model_path" field was not found', ['Config_Load']);
+          SetError('[%s] "model_path" field was not found', ['LoadConfig']);
           Exit;
         end;
 
@@ -659,11 +944,11 @@ begin
         end
       else
         begin
-          Error_Set('[%s] "gpu_layers" field was not found', ['Config_Load']);
+          SetError('[%s] "gpu_layers" field was not found', ['LoadConfig']);
           Exit;
         end;
 
-      Config_Init(LConfig.ModelPath, LConfig.NumGPULayers);
+      InitConfig(LConfig.ModelPath, LConfig.NumGPULayers);
 
       Result := True;
 
@@ -673,18 +958,18 @@ begin
   except
     on E: Exception do
     begin
-      Error_Set('[%s] %s', ['Config_Load', E.Message]);
+      SetError('[%s] %s', ['LoadConfig', E.Message]);
       Result := False;
     end;
   end;
 end;
 
-procedure TLMEngine.Message_ClearAll();
+procedure TLMEngine.ClearAllMessages();
 begin
   FMessageList.Clear();
 end;
 
-function TLMEngine.Message_Add(const ARole, AContent: string): Int32;
+function TLMEngine.AddMessage(const ARole, AContent: string): Int32;
 var
   LMessage: TMessage;
 begin
@@ -693,15 +978,15 @@ begin
   FMessageList.Add(LMessage);
   Result := FMessageList.Count;
   if Utils.ContainsText(ARole, 'user') then
-    FLastUserMessage := UTF8Encode(AContent);
+    FLastUserMessage := AContent;
 end;
 
-function  TLMEngine.Message_GetLastUser(): UTF8String;
+function  TLMEngine.GetLastUserMessage(): string;
 begin
   Result := FLastUserMessage;
 end;
 
-function  TLMEngine.Message_BuildInferencePrompt(const AModelName: string): UTF8String;
+function  TLMEngine.BuildMessageInferencePrompt(const AModelName: string): string;
 var
   LModel: TModel;
   LMessage: TMessage;
@@ -712,20 +997,20 @@ begin
   begin
     for LMessage in FMessageList do
     begin
-      FInferencePrompt := FInferencePrompt + UTF8Encode(LModel.Template.Replace('{role}', LMessage.Role).Replace('{content}', LMessage.Content).Trim);
+      FInference.Prompt := FInference.Prompt + LModel.Template.Replace('{role}', LMessage.Role).Replace('{content}', LMessage.Content).Trim;
     end;
-    FInferencePrompt := FInferencePrompt + UTF8Encode(LModel.TemplateEnd);
+    FInference.Prompt := FInference.Prompt + LModel.TemplateEnd;
   end;
 
-  Result := FInferencePrompt;
+  Result := FInference.Prompt;
 end;
 
-procedure TLMEngine.Model_ClearDefines();
+procedure TLMEngine.ClearModelDefines();
 begin
   FModelList.Clear();
 end;
 
-function TLMEngine.Model_Define(const AModelFilename, AModelName: string; const AMaxContext: UInt32; const ATemplate, ATemplateEnd: string; const AAddAssistant: Boolean): Int32;
+function TLMEngine.DefineModel(const AModelFilename, AModelName: string; const AMaxContext: UInt32; const ATemplate, ATemplateEnd: string): Int32;
 var
   LModel: TModel;
 begin
@@ -735,12 +1020,11 @@ begin
   LModel.MaxContext := AMaxContext;
   LModel.Template := ATemplate;
   LModel.TemplateEnd := ATemplateEnd;
-  LModel.AddAssistant := AAddAssistant;
   FModelList.AddOrSetValue(AModelName, LModel);
   Result := FModelList.Count
 end;
 
-function  TLMEngine.Model_SaveDefines(const AFilename: string): Boolean;
+function  TLMEngine.SaveModelDefines(const AFilename: string): Boolean;
 var
   LFilename: string;
   LJson: TJsonObject;
@@ -751,7 +1035,7 @@ begin
 
   if AFilename.IsEmpty then
   begin
-    Error_Set('[%s] %s', ['Model_SaveDefines', 'Filename can not be blank']);
+    SetError('[%s] %s', ['SaveModelDefines', 'Filename can not be blank']);
     Exit;
   end;
 
@@ -770,7 +1054,6 @@ begin
           LObject.I['max_context'] := LModel.Value.MaxContext;
           LObject.S['template'] := LModel.Value.Template;
           LObject.S['template_end'] := LModel.Value.TemplateEnd;
-          LObject.B['add_assistant'] := LModel.Value.AddAssistant;
           Add(LObject);
         end;
       end;
@@ -786,14 +1069,14 @@ begin
   except
     on E: Exception do
     begin
-      Error_Set('[%s] %s', ['Model_SaveDefines', E.Message]);
+      SetError('[%s] %s', ['SaveModelDefines', E.Message]);
       Result := False;
     end;
   end;
 
 end;
 
-function  TLMEngine.Model_LoadDefines(const AFilename: string): Boolean;
+function  TLMEngine.LoadModelDefines(const AFilename: string): Boolean;
 var
   LFilename: string;
   LJson: TJsonObject;
@@ -807,19 +1090,19 @@ begin
 
   if not TFile.Exists(LFilename) then
   begin
-    Error_Set('[%s] File was not found: %s', ['Model_LoadDefines', LFilename]);
+    SetError('[%s] File was not found: %s', ['LoadModelDefines', LFilename]);
     Exit;
   end;
 
   try
     LJson := TJsonObject.Parse(TFile.ReadAllText(LFilename, TEncoding.UTF8));
 
-    Model_ClearDefines();
+    ClearModelDefines();
 
     try
       if not LJson.Contains('models') then
       begin
-        Error_Set('[%s] "models" field was not found', ['Model_LoadDefines']);
+        SetError('[%s] "models" field was not found', ['LoadModelDefines']);
         Exit;
       end;
 
@@ -833,7 +1116,7 @@ begin
           end
         else
           begin
-            Error_Set('[%s] "filename" field was not found', ['Model_LoadDefines']);
+            SetError('[%s] "filename" field was not found', ['LoadModelDefines']);
             Exit;
           end;
 
@@ -843,7 +1126,7 @@ begin
           end
         else
           begin
-            Error_Set('[%s] "name" field was not found', ['Model_LoadDefines']);
+            SetError('[%s] "name" field was not found', ['LoadModelDefines']);
             Exit;
           end;
 
@@ -853,7 +1136,7 @@ begin
           end
         else
           begin
-            Error_Set('[%s] "max_context" field was not found', ['Model_LoadDefines']);
+            SetError('[%s] "max_context" field was not found', ['LoadModelDefines']);
             Exit;
           end;
 
@@ -863,7 +1146,7 @@ begin
           end
         else
           begin
-            Error_Set('[%s] "template" field was not found', ['Model_LoadDefines']);
+            SetError('[%s] "template" field was not found', ['LoadModelDefines']);
             Exit;
           end;
 
@@ -873,21 +1156,11 @@ begin
           end
         else
           begin
-            Error_Set('[%s] "template_end" field was not found', ['Model_LoadDefines']);
+            SetError('[%s] "template_end" field was not found', ['LoadModelDefines']);
             Exit;
           end;
 
-        if LJson.A['models'].Items[I].FindValue('add_assistant') <> nil then
-          begin
-            LModel.AddAssistant := LJson.A['models'].Items[I].FindValue('add_assistant').Value.ToBoolean;
-          end
-        else
-          begin
-            Error_Set('[%s] "add_assistant" field was not found', ['Model_LoadDefines']);
-            Exit;
-          end;
-
-        Model_Define(LModel.Filename, LModel.Name, LModel.MaxContext, LModel.Template, LModel.TemplateEnd, LModel.AddAssistant);
+        DefineModel(LModel.Filename, LModel.Name, LModel.MaxContext, LModel.Template, LModel.TemplateEnd);
       end;
 
       Result := True;
@@ -898,13 +1171,13 @@ begin
   except
     on E: Exception do
     begin
-      Error_Set('[%s] %s', ['Model_LoadDefines', E.Message]);
+      SetError('[%s] %s', ['LoadModelDefines', E.Message]);
       Result := False;
     end;
   end;
 end;
 
-procedure TLMEngine.Model_ClearStopSequences(const AModelName: string);
+procedure TLMEngine.ClearModelStopSequences(const AModelName: string);
 var
   LModel: TModel;
 begin
@@ -915,7 +1188,7 @@ begin
   end;
 end;
 
-function  TLMEngine.Model_AddStopSequence(const AModelName, AToken: string): Int32;
+function  TLMEngine.AddModelStopSequence(const AModelName, AToken: string): Int32;
 var
   LModel: TModel;
   I: Integer;
@@ -929,7 +1202,7 @@ begin
     FModelList.AddOrSetValue(AModelName, LModel);
   end;
 end;
-function  TLMEngine.Model_GetStopSequenceCount(const AModelName: string): Int32;
+function  TLMEngine.GetModelStopSequenceCount(const AModelName: string): Int32;
 var
   LModel: TModel;
 begin
@@ -940,11 +1213,9 @@ begin
   end;
 end;
 
-function  TLMEngine.Model_Load(const AModelName: string): Boolean;
+function  TLMEngine.LoadModel(const AModelName: string): Boolean;
 var
   LModel: TModel;
-  //LModelParams: llama_model_params;
-  //LContextParams: llama_context_params;
   LFilename: string;
 begin
   Result := False;
@@ -953,12 +1224,12 @@ begin
     // check for valid model name
     if not FModelList.TryGetValue(AModelName, LModel) then
     begin
-      Error_Set('[%s] Model not found: "%s"', ['Model_Load', AModelName]);
+      SetError('[%s] Model not found: "%s"', ['LoadModel', AModelName]);
       Exit;
     end;
 
     // Model already loaded
-    if Model_IsLoaded then
+    if IsModelLoaded() then
     begin
       if SameText(LModel.Name, AModelName) then
       begin
@@ -967,8 +1238,17 @@ begin
       end;
 
       // currently loaded model is not AModelName, so unload and load requested one
-      Model_Unload();
+      UnloadModel();
     end;
+
+
+    LFilename := TPath.Combine(FConfig.ModelPath, LModel.Filename);
+    if not TFile.Exists(LFilename) then
+    begin
+      SetError('[LoadModel] Model file was not found: "%s"', [LFilename]);
+      Exit;
+    end;
+    FInference.ModelName := AModelName;
 
     redirect_cerr_to_callback(TLMEngine_CErrCallback, Self);
     llama_log_set(TLMEngine_LogCallback, Self);
@@ -976,26 +1256,23 @@ begin
     llama_numa_init(GGML_NUMA_STRATEGY_DISTRIBUTE);
 
     FModelParams := llama_model_default_params();
-    FInference.ModelName := AModelName;
     FModelParams.progress_callback_user_data := Self;
     FModelParams.progress_callback := TLMEngine_ModelLoadProgressCallback;
     FModelParams.n_gpu_layers := FConfig.NumGPULayers;
-    LFilename := TPath.Combine(FConfig.ModelPath, LModel.Filename);
     FModel := llama_load_model_from_file(Utils.AsUTF8(LFilename), FModelParams);
     if not Assigned(FModel) then
     begin
-      OnLoadModel(AModelName, False);
+      OnLoadModel(FInference.ModelName, False);
       llama_backend_free();
-      restore_cerr();
-      Error_Set('[%s] Failed to load model "%s"', ['Model_Load', LFilename]);
+      SetError('[LoadModel] Failed to load model file: "%s"', [LFilename]);
       Exit;
     end;
-
-    OnLoadModel(AModelName, True);
+    OnLoadModel(FInference.ModelName, True);
 
     FContextParams := llama_context_default_params();
+    //FContextParams.flash_attn := true;
     FContextParams.offload_kqv := true;
-    FContextParams.seed  := MaxInt;
+    FContextParams.seed  := 1234;
     FContextParams.n_ctx := LModel.MaxContext;
     FContextParams.n_threads := Utils.GetPhysicalProcessorCount();
     FContextParams.n_threads_batch := FContextParams.n_threads;
@@ -1003,75 +1280,55 @@ begin
     if not Assigned(FContext) then
     begin
       llama_free_model(FModel);
-      FModel := nil;
       llama_backend_free();
-      restore_cerr();
-
-      Error_Set('[%s] Failed to create context for model "%s"', ['Model_Load', LFilename]);
+      SetError('[LoadModel] Failed to load model file: "%s"', [LFilename]);
       Exit;
     end;
 
-    Result := Model_IsLoaded();
+    Result := IsModelLoaded();
   except
     on E: Exception do
     begin
-      Error_Set('[%s] %s', ['Model_Load', E.Message]);
-      Result := False;
-      OnLoadModel(AModelName, False);
+      SetError(E.Message);
+      Exit;
     end;
   end;
 end;
 
-function  TLMEngine.Model_IsLoaded(): Boolean;
+function  TLMEngine.IsModelLoaded(): Boolean;
 begin
   Result := Boolean(Assigned(FModel) and Assigned(FContext));
 end;
 
-procedure TLMEngine.Model_Unload();
+procedure TLMEngine.UnloadModel();
 begin
-  if not Model_IsLoaded() then
-  begin
-    Exit;
-  end;
-
-  Inference_Stop();
-
+  if not IsModelLoaded() then Exit;
   llama_free(FContext);
   FContext := nil;
-
   llama_free_model(FModel);
   FModel := nil;
-
   llama_backend_free();
   restore_cerr();
 end;
 
-function  TLMEngine.Inference_Run(const AModelName: string; const AMaxTokens: UInt32): Boolean;
-begin
-  try
-    Result := Inference_Start(AModelName, AMaxTokens);
-
-    if Result = True then
-    begin
-      while Inference_IsActive() do
-      begin
-        Inference_GetNextToken();
-      end;
-    end;
-
-  except
-    on E: Exception do
-    begin
-      Error_Set('[%s] %s', ['Inference_Run', E.Message]);
-      Result := False;
-    end;
-end;
-
-end;
-
-function  TLMEngine.Inference_Start(const AModelName: string; const AMaxTokens: UInt32): Boolean;
+function  TLMEngine.RunInference(const AModelName: string; const AMaxTokens: UInt32): Boolean;
 var
-  I: Integer;
+  LPast: UInt32;
+  LRemain: UInt32;
+  LConsumed: UInt32;
+  LSamplingContext: Pointer;
+  I: UInt32;
+  LPredict: UInt32;
+  LBatch: UInt32;
+  LEval: UInt32;
+  LId: llama_token;
+  LMaxEmbedSize: UInt32;
+  LSkippedTokens: UInt32;
+  LEmbedInput: TVector<llama_token>;
+  LEmbed: TVector<llama_token>;
+  LTimings: llama_timings;
+  LTokenStr: string;
+  LFirstToken: Boolean;
 begin
   Result := False;
 
@@ -1079,7 +1336,7 @@ begin
     // check if inference is already runnig
     if FInference.Active then
     begin
-      Error_Set('[%s] Inference already active', ['Inference_Start']);
+      SetError('[%s] Inference already active', ['RunInference']);
       Exit;
     end;
 
@@ -1087,291 +1344,166 @@ begin
     FInference := Default(TInference);
 
     // check if model not loaded
-    if not Model_Load(AModelName) then
+    if not LoadModel(AModelName) then
     begin
       Exit;
     end;
 
     // build prompt message
-    FInference.Prompt := UTF8ToString(Message_BuildInferencePrompt(AModelName));
+    FInference.Prompt := BuildMessageInferencePrompt(AModelName);
     if FInference.Prompt.IsEmpty then
     begin
-      Error_Set('[%s] Inference prompt was empty', ['Inference_Start']);
+      SetError('[%s] Inference prompt was empty', ['RunInference']);
       Exit;
     end;
 
-    // generate token list
-    FInference.TokenList := Tokenize(FContext, FInference.Prompt, true, true);
-    FInference.InputTokens := Length(FInference.TokenList);
-
-    FInference.MaxTokens := AMaxTokens;
-    FInference.CtxNum    := llama_n_ctx(FContext);
-
-    if FInference.InputTokens > FInference.CtxNum then
-    //if FInference.InputTokens > 100 then
-    begin
-      Error_Set('[%s] Max context of %d reached! Reduce input tokens', ['Inference_Start', FInference.CtxNum]);
-      Exit;
-    end;
-
-    FInference.LenNum :=  EnsureRange(FInference.MaxTokens, 512, FInference.CtxNum);
-    FInference.KVReqNum := FInference.InputTokens + (FInference.LenNum -  FInference.InputTokens);
-
-    if FInference.KVReqNum > FInference.CtxNum then
-    begin
-      FInference.TokenList := nil;
-
-      Error_Set('[%s] n_kv_req > n_ctx', ['Inference_Start']);
-      Exit;
-    end;
-
-    //FInference.Batch := llama_batch_init(FContextParams.n_batch, 0, 2);
-    FInference.Batch := llama_batch_init(FInference.InputTokens, 0, 1);
-
-    for I := 0 to FInference.InputTokens-1 do
-    begin
-      BatchAdd(FInference.Batch, FInference.TokenList[I], I, [0], false);
-    end;
-
-    PInt8(IntPtr(FInference.Batch.logits) + (FInference.Batch.n_tokens-1) * SizeOf(Int8))^ := 1;
-
-    if llama_decode(FContext, FInference.Batch) <> 0 then
-    begin
-      Inference_Stop();
-
-      Error_Set('[%s] Failed to decoderence already active', ['Inference_Start']);
-      Exit;
-    end;
-
-    FInference.CurNum := FInference.Batch.n_tokens;
-
-    FInference.VocabNum := llama_n_vocab(FModel);
-    SetLength(FInference.Candidates, FInference.VocabNum);
-
-    FInference.FirstToken := True;
     FInference.Active := True;
-    FInferenceResponse := '';
-
-    Result := True;
+    FInference.Response := '';
 
     OnInferenceStart();
+    try
+      LEmbedInput := tokenize(FContext, FInference.Prompt, true, true);
+      try
+        if LEmbedInput.empty() then
+          LEmbedInput.Add(llama_token_bos(FModel));
 
+        LMaxEmbedSize := llama_n_ctx(FContext) - 4;
+        if LEmbedInput.Count() > LMaxEmbedSize then
+        begin
+          LSkippedTokens := LEmbedInput.count() - LMaxEmbedSize;
+          SetError('[%s] Input too long: %d tokens over max context of %d', ['RunInference', LSkippedTokens, LMaxEmbedSize]);
+          Exit;
+        end;
+
+        LEmbed := TVector<llama_token>.Create();
+        try
+          LSamplingContext := _llama_sampling_init();
+          try
+            LPredict := AMaxTokens;
+            LBatch := FContextParams.n_ubatch;
+
+            LPast := 0;
+            LRemain := LPredict;
+            LConsumed := 0;
+            LFirstToken := True;
+
+            llama_reset_timings(FContext);
+            while LRemain <> 0 do
+            begin
+              if OnInferenceCancel() then
+              begin
+                Break;
+              end;
+
+              if LEmbed.Count <> 0 then
+              begin
+                I := 0;
+                while I < LEmbed.Count do
+                begin
+                  LEval := LEmbed.Count - I;
+                  if LEval > LBatch then
+                    LEval := LBatch;
+
+                  if llama_decode(FContext, llama_batch_get_one(@LEmbed.FItems[I], LEval, LPast, 0)) <> 0 then
+                  begin
+                    Break;
+                  end;
+
+                  Inc(LPast, LEval);
+                  Inc(I, LBatch);
+                end;
+                LEmbed.Clear;
+              end;
+
+              if LEmbedInput.Count <= LConsumed then
+                begin
+                  LId := _llama_sampling_sample(LSamplingContext, FContext, nil);
+                  if llama_token_is_eog(FModel, LId) then
+                  begin
+                    Break;
+                  end;
+
+                  _llama_sampling_accept(LSamplingContext, FContext, LId, True);
+                  LEmbed.Add(LId);
+                  Dec(LRemain);
+
+                  LTokenStr := TokenToPiece(FContext, LId, False);
+                  if LFirstToken then
+                  begin
+                    LFirstToken := False;
+                    LTokenStr := LTokenStr.TrimLeft();
+                  end;
+
+                  FInference.Response := FInference.Response + LTokenStr;
+                  OnInferenceToken(LTokenStr);
+
+                end
+              else
+                begin
+                  while LEmbedInput.Count > LConsumed do
+                  begin
+                    LEmbed.Add(LEmbedInput[LConsumed]);
+                    _llama_sampling_accept(LSamplingContext, FContext, LEmbedInput[LConsumed], False);
+                    Inc(LConsumed);
+                    if LEmbed.Count >= LBatch then
+                    begin
+                      Break;
+                    end;
+                  end;
+                end;
+            end;
+
+            // get usage
+            LTimings := llama_get_timings(FContext);
+            FStats.InputTokens := LTimings.n_p_eval;
+            FStats.OutputTokens := LTimings.n_eval;
+            FStats.TokenInputSpeed := 1e3 / LTimings.t_p_eval_ms * LTimings.n_p_eval;
+            FStats.TokenOutputSpeed := 1e3 / LTimings.t_eval_ms * LTimings.n_eval;
+            FStats.TotalTokens := FStats.InputTokens + FStats.OutputTokens;
+            Result := True;
+          finally
+            _llama_sampling_free(LSamplingContext);
+          end;
+        finally
+          LEmbed.Free();
+        end;
+      finally
+        LEmbedInput.Free();
+      end;
+    finally
+      FInference.Active := False;
+      OnInferenceEnd();
+    end;
   except
     on E: Exception do
     begin
-      Error_Set('[%s] %s', ['Inference_Start', E.Message]);
-      Result := False;
-    end;
-  end;
-
-end;
-
-function  TLMEngine.Inference_IsActive(): Boolean;
-begin
-  Result := FInference.Active;
-end;
-
-function  TLMEngine.Inference_GetNextToken(): UTF8String;
-var
-  I: Integer;
-  LTokenStr: string;
-  LSkip: Boolean;
-
-  procedure GetUsage();
-  var
-    LTimings: llama_timings;
-  begin
-    // get usage
-    LTimings := llama_get_timings(FContext);
-    FUsage.InputTokens := LTimings.n_p_eval;
-    FUsage.OutputTokens := LTimings.n_eval;
-    FUsage.TokenInputSpeed := 1e3 / LTimings.t_p_eval_ms * LTimings.n_p_eval;
-    FUsage.TokenOutputSpeed := 1e3 / LTimings.t_eval_ms * LTimings.n_eval;
-    FUsage.TotalTokens := FUsage.InputTokens + FUsage.OutputTokens;
-  end;
-
-  function IsPartEndsWith(const MainStr: string; const AStopTokens: TArray<string>): Boolean;
-  var
-    i: Integer;
-    LStopToken: string;
-  begin
-    Result := False;
-
-    for LStopToken in AStopTokens do
-    begin
-      for i := 0 to Length(LStopToken)-1 do
-      begin
-        if MainStr.EndsWith(LStopToken.Substring(0, i+1)) then
-        begin
-          Result := True;
-          Break;
-        end;
-      end;
-    end;
-  end;
-
-  function IsAStopToken(const AText: string; const AStopTokens: TArray<string>): Boolean;
-  var
-    LStopToken: string;
-  begin
-    Result := False;
-
-    for LStopToken in AStopTokens do
-    begin
-      if AText.EndsWith(LStopToken) then
-      begin
-        Exit(True);
-      end;
-    end;
-  end;
-
-begin
-  Result := '';
-
-  try
-
-    // check if inference is runnig
-    if not FInference.Active then
-    begin
-      Error_Set('[%s] Inference was not started', ['Inference_GetNextToken']);
+      SetError(E.Message);
       Exit;
     end;
-
-    if (FInference.CurNum <= FInference.LenNum) then
-    begin
-      GetUsage();
-      if OnInferenceCancel() then
-      begin
-        Inference_Stop();
-        Exit;
-      end;
-
-      FInference.Logits  := llama_get_logits_ith(FContext, FInference.Batch.n_tokens - 1);
-
-      for I := 0 to FInference.VocabNum-1 do
-      begin
-        FInference.Candidates[I].id := I;
-        FInference.Candidates[I].logit := PSingle(IntPtr(FInference.Logits) + I*SizeOf(Single))^;
-        FInference.Candidates[I].p := 0;
-      end;
-
-      FInference.CandidatesP.data := @FInference.Candidates[0];
-      FInference.CandidatesP.size := FInference.VocabNum;
-      FInference.CandidatesP.sorted := false;
-
-      llama_sample_softmax(FContext, @FInference.CandidatesP);
-      FInference.NewTokenId := llama_sample_token_greedy(FContext, @FInference.CandidatesP);
-
-
-      if llama_token_is_eog(FModel, FInference.NewTokenId) then
-      begin
-        // <EOG>
-        GetUsage();
-        Inference_Stop();
-        Exit;
-      end;
-
-      if (FInference.CurNum = FInference.LenNum) then
-      begin
-        // <MAX_TOKENS_REACHED>
-        GetUsage();
-        Inference_Stop();
-        Exit;
-      end;
-
-      LTokenStr := Utils.SanitizeFromJson(TokenToPiece(FContext, FInference.NewTokenId, false));
-
-      // User code is responsible to remove the leading whitespace of the first
-      // non-BOS token when decoding multiple tokens.
-      if FInference.FirstToken then
-      begin
-        if FInference.NewTokenId <> llama_token_bos(FModel) then
-        begin
-          LTokenStr := LTokenStr.TrimLeft;
-        end;
-        FInference.FirstToken := False;
-      end;
-
-      FInference.LTokenBuffer := FInference.LTokenBuffer + LTokenStr;
-
-      LSkip := False;
-      if IsPartEndsWith(FInference.LTokenBuffer, ['\n', '\r', '\b', '\t', '\f']) then
-      begin
-        FInference.PrevToken := FInference.PrevToken + LTokenStr;
-        if IsAStopToken(FInference.LTokenBuffer, ['\n', '\r', '\b', '\t', '\f']) then
-          begin
-            LTokenStr := FInference.PrevToken;
-            LTokenStr := Utils.SanitizeFromJson(LTokenStr);
-            FInference.PrevToken := '';
-          end
-        else
-          LSkip := True;
-      end;
-
-      if not LSkip then
-      begin
-      FInference.TokenStr := UTF8Encode(LTokenStr);
-
-      FInferenceResponse := FInferenceResponse + FInference.TokenStr;
-
-      OnInferenceNextToken();
-
-      Result := FInference.TokenStr;
-      end;
-
-      FInference.Batch.n_tokens := 0;
-
-      BatchAdd(FInference.Batch, FInference.NewTokenId, FInference.CurNum, [0], true);
-      inc(FInference.CurNum);
-
-      if llama_decode(FContext, FInference.Batch) = 1 then
-      begin
-        Inference_Stop();
-        Exit;
-      end;
-    end;
-  except
-    on E: Exception do
-    begin
-      Error_Set('[%s] %s', ['Inference_GetNextToken', E.Message]);
-      Result := '';
-    end;
-  end;
-
-end;
-
-procedure TLMEngine.Inference_Stop();
-begin
-  if FInference.Active then
-  begin
-    llama_batch_free(FInference.Batch);
-    FInference := Default(TInference);
-    OnInferenceEnd();
   end;
 end;
 
-function  TLMEngine.Inference_GetResponse(): UTF8String;
+function  TLMEngine.GetInferenceResponse(): string;
 begin
-  Result := FInferenceResponse;
+  Result := FInference.Response;
 end;
 
-procedure TLMEngine.Inference_GetUsage(const ATokenInputSpeed, ATokenOutputSpeed: System.PSingle; const AInputTokens, AOutputTokens, ATotalTokens: PInteger);
+procedure TLMEngine.GetInferenceStats(ATokenInputSpeed: System.PSingle; ATokenOutputSpeed: System.PSingle; AInputTokens: PInt32; AOutputTokens: PInt32; ATotalTokens: PInt32);
 begin
   if Assigned(ATokenInputSpeed) then
-    ATokenInputSpeed^ := FUsage.TokenInputSpeed;
+    ATokenInputSpeed^ := FStats.TokenInputSpeed;
 
   if Assigned(ATokenOutputSpeed) then
-    ATokenOutputSpeed^ := FUsage.TokenOutputSpeed;
+    ATokenOutputSpeed^ := FStats.TokenOutputSpeed;
 
   if Assigned(AInputTokens) then
-    AInputTokens^ := FUsage.InputTokens;
+    AInputTokens^ := FStats.InputTokens;
 
   if Assigned(AOutputTokens) then
-    AOutputTokens^ := FUsage.OutputTokens;
+    AOutputTokens^ := FStats.OutputTokens;
 
   if Assigned(ATotalTokens) then
-    ATotalTokens^ := FUsage.TotalTokens;
-
+    ATotalTokens^ := FStats.TotalTokens;
 end;
 
 end.

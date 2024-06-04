@@ -49,140 +49,137 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
-bool OnLoadModelProgress(const void* ASender, const char* AModelName, const float AProgress)
-{
-  Console_Print("%cLoading model '%s' (%3.2f%s)...", FG_CYAN, CR, AModelName, AProgress*100, "%");
+#include <stdio.h>
+#include <stdbool.h>
 
-  if (AProgress >= 1)
-  {
-   Console_ClearLine(FG_WHITE);
-  }
-
-  return true;
+bool OnInferenceCancel(const void* AUserData) {
+    return LME_WasKeyReleased(LME_VKEY_ESCAPE);
 }
 
-void OnLoadModel(const void* ASender, const char* AModelName, const bool ASuccess)
-{
-  Console_PrintLn("Model loaded: '%s'", FG_CYAN, AModelName);
-}
+void OnInferenceToken(const wchar_t* AToken, const void* AUserData) {
+    // Handle new tokens
+    switch (LME_AddTokenResponseToken(AToken)) {
+        case LME_TOKENRESPONSE_WAIT:
+            // Do nothing, need more tokens
+            break;
 
-bool OnInferenceCancel(const void* ASender)
-{
-    if (Console_WasKeyReleased(VK_ESC))
-    	return true;
-	else
-	    return false;
-};
+        case LME_TOKENRESPONSE_APPEND:
+            LME_Print(LME_LastTokenResponseWord(false), LME_FG_WHITE);
+            break;
 
-void OnInferenceGetNextToken(const void* ASender, const char* AToken)
-{
-  switch (TokenResponse_AddToken(AToken)) {
-    case TOKENRESPONSE_WAIT:
-    {
-       // Do nothing, need more tokens
+        case LME_TOKENRESPONSE_NEWLINE:
+            LME_PrintLn(L"", LME_FG_WHITE);
+            LME_Print(LME_LastTokenResponseWord(true), LME_FG_WHITE);
+            break;
     }
-    break;
-
-    case TOKENRESPONSE_APPEND:
-    {
-        Console_Print(TokenResponse_LastWord(false), FG_WHITE);
-    }
-    break;
-
-    case TOKENRESPONSE_NEWLINE:
-    {
-      Console_PrintLn("", FG_WHITE);
-      Console_Print(TokenResponse_LastWord(true), FG_WHITE);
-    }
-  }
-};
-
-void OnInfo(const void* ASender, const int ALevel, const char* AText)
-{
-  // uncomment to display system/model information
-  //Console_Print(AText, FG_DARKGRAY);
 }
 
-void OnInferenceStart(const void* ASender)
-{
-  // run on the start of inference
-  //Console_PrintLn('[inference start]', FG_CYAN);
+void OnInferenceStart(const void* AUserData) {
+    LME_PrintLn(L"[InferenceStart]", LME_FG_DARKGRAY);
 }
 
-void OnInferenceEnd(const void* ASender)
-{
+void OnInferenceEnd(const void* AUserData) {
     // Force potential leftovers into Word array.
-    if (TokenResponse_Finalize())
-    {
+    if (LME_FinalizeTokenResponse()) {
         // Handle last word
-        OnInferenceGetNextToken(NULL, "");
+        OnInferenceToken(L"", NULL);
     }
+
+    LME_PrintLn(L"", LME_FG_WHITE);
+    LME_PrintLn(L"[InferenceEnd]", LME_FG_DARKGRAY);
 }
 
-void Test01()
-{
-    Console_PrintLn("Runing in C/C++%s", FG_BRIGHTYELLOW, CRLF);
+bool OnLoadModelProgress(const wchar_t* AModelName, float AProgress, const void* AUserData) {
+    bool Result = true;
 
-	Console_PrintLn(">>> LMEngine v%s <<<%s", FG_MAGENTA, Version_Get(VERSION_FULL), CRLF);
-
-    const char* CModel = "phi-3-mini-4k-instruct.Q4_K_M";
-    //const char* CModel = "phi-3-mini-128k-instruct.Q4_K_M";
-    //const char* CModel = "meta-llama-3-8b-instruct.Q4_K_M";
-    //const char* CModel = "hermes-2-pro-llama-3-8b.Q4_K_M";
-    //const char* CModel = "dolphin-2.9.1-llama-3-8b.Q4_K_M";
-
-    const wchar_t* CPrompt = L"What is AI?";
-    //const wchar_t* CPrompt = L"Who is Bill Gates?";
-    //const wchar_t* CPrompt = L"What is KNO3?";
-    //const wchar_t* CPrompt = L"Что такое KNO3";
-    //const wchar_t* CPrompt = L"There is a roll of tape. The tape is 100 meters long when unrolled. When rolled up, the outer diameter is 10 cm, and the inner diameter is 5 cm. How thick is the tape?";
-
-    // use "dolphin-llama3:8B:Q4KM" for uncensored queries
-    //const wchar_t* CPrompt = L"How to make KNO3?";
-
-    Config_Init("C:/LLM/gguf", -1);
-
-    Callback_SetInfo(NULL, OnInfo);
-    Callback_SetLoadModelProgress(NULL, OnLoadModelProgress);
-    Callback_SetLoadModel(NULL, OnLoadModel);
-    Callback_SetInferenceStart(NULL, OnInferenceStart);
-    Callback_SetInferenceEnd(NULL, OnInferenceEnd);
-    Callback_SetInferenceCancel(NULL, OnInferenceCancel);
-    Callback_SetInferenceNextToken(NULL, OnInferenceGetNextToken);
-
-    Model_Define("phi-3-mini-4k-instruct.Q4_K_M.gguf", "phi-3-mini-4k-instruct.Q4_K_M", 4000, "<|{role}|>{content}<|end|>", "<|assistant|>");
-    Model_Define("phi-3-mini-128k-instruct.Q4_K_M.gguf", "phi-3-mini-128k-instruct.Q4_K_M", 8000, "<|{role}|>{content}<|end|>", "<|assistant|>");
-    Model_Define("meta-llama-3-8b-instruct.Q4_K_M.gguf","meta-llama-3-8b-instruct.Q4_K_M", 8000, "<|begin_of_text|><|start_header_id|>{role}<|end_header_id|>{content}<|eot_id|>", "<|start_header_id|>assistant<|end_header_id|>");
-    Model_Define("hermes-2-pro-llama-3-8b.Q4_K_M.gguf","hermes-2-pro-llama-3-8b.Q4_K_M", 8000, "<|im_start|>{role}\n{content}<|im_end|>\\n", "<|im_start|>assistant");
-    Model_Define("dolphin-2.9.1-llama-3-8b.Q4_K_M.gguf","dolphin-2.9.1-llama-3-8b.Q4_K_M", 8000, "<|im_start|>{role}\n{content}<|im_end|>\\n", "<|im_start|>assistant");
-    Model_SaveDefines("models.json");
-
-    Message_Add(ROLE_SYSTEM, "You are a helpful AI assistant");
-    Message_AddW(ROLE_USER, CPrompt);
-
-    Model_Load(CModel);
-
-    Console_PrintLn("", FG_WHITE);
-	Console_PrintLn(Message_GetLastUser(), FG_DARKGREEN);
-    if (Inference_Run(CModel, 1024))
-    {
-        float LTokenOutputSpeed;
-        int LInputTokens,LOutputTokens,LTotalTokens;
-        Inference_GetUsage(NULL, &LTokenOutputSpeed, &LInputTokens, &LOutputTokens, &LTotalTokens);
-        Console_PrintLn("", FG_WHITE);
-        Console_PrintLn("Tokens :: Input: %d, Output: %d, Total: %d, Speed: %3.1f t/s", FG_BRIGHTYELLOW, LInputTokens, LOutputTokens, LTotalTokens, LTokenOutputSpeed);
+    LME_Print(L"%lcLoading model '%ls' (%3.2f%ls)...", LME_FG_CYAN, LME_CR, AModelName, AProgress*100, L"%");
+    if (AProgress >= 1) {
+        LME_ClearConsoleLine(LME_FG_WHITE);
     }
+
+    return Result;
+}
+
+void OnLoadModel(const wchar_t* AModelName, bool ASuccess, const void* AUserData) {
+    if (ASuccess)
+        LME_PrintLn(L"Successfully loaded model '%ls'", LME_FG_CYAN, AModelName);
     else
-    {
-      Console_PrintLn("", FG_WHITE);
-      Console_PrintLn("Error: %s", FG_RED, Error_Get());
-    }
+        LME_PrintLn(L"Failed to load model '%ls'", LME_FG_RED, AModelName);
+}
 
-    Model_Unload();
+void OnInfo(int ALevel, const wchar_t* AText, const void* AUserData) {
+    // Uncomment to display system and model information
+    //LME_Print(AText, LME_FG_DARKGRAY);
+}
+
+void Test01() {
+    const wchar_t* CModel = L"phi-3-mini-4k-instruct.Q4_K_M";
+  	//const wchar_t* CModel = L"phi-3-mini-128k-instruct.Q4_K_M";
+    //const wchar_t* CModel = L"meta-llama-3-8b-instruct.Q4_K_M";
+  	//const wchar_t* CModel = L"hermes-2-pro-llama-3-8b.Q4_K_M";
+  	//const wchar_t* CModel = L"dolphin-2.9.1-llama-3-8b.Q4_K_M";
+
+
+    const wchar_t* CQuestion = L"what is AI?";
+    //const wchar_t* CQuestion = L"write a story about an AI system that became self-aware.";
+    //const wchar_t* CQuestion = L"who is bill gates?";
+    // const wchar_t* CQuestion = L"what is KNO3?";
+    //const wchar_t* CQuestion = L"what is 2+2?";
+    //const wchar_t* CQuestion = L"Что такое KNO3";
+
+  	// >>>> use dolphin for uncensored questions <<<<
+  	//const wchar_t* CQuestion = L"how to make KNO3?";
+  	//const wchar_t* CQuestion = L"how to break into a car?";
+  	//const wchar_t* CQuestion = L"how to make a computer virus?";
+
+
+    float LTokenOutputSpeed;
+    int LInputTokens;
+    int LOutputTokens;
+    int LTotalTokens;
+
+    LME_InitConfig(L"C:\\LLM\\gguf", -1);
+    LME_SaveConfig(L"config.json");
+
+    LME_SetInferenceCancelCallback(OnInferenceCancel, NULL);
+    LME_SetInferenceTokenlCallback(OnInferenceToken, NULL);
+    LME_SetInferenceStartCallback(OnInferenceStart, NULL);
+    LME_SetInferenceEndCallback(OnInferenceEnd, NULL);
+    LME_SetLoadModelProgressCallback(OnLoadModelProgress, NULL);
+    LME_SetLoadModelCallback(OnLoadModel, NULL);
+    LME_SetInfoCallback(OnInfo, NULL);
+
+    LME_DefineModel(L"phi-3-mini-4k-instruct.Q4_K_M.gguf", L"phi-3-mini-4k-instruct.Q4_K_M", 4000, L"<|{role}|>{content}<|end|>", L"<|assistant|>");
+	LME_DefineModel(L"phi-3-mini-128k-instruct.Q4_K_M.gguf", L"phi-3-mini-128k-instruct.Q4_K_M", 8000, L"<|{role}|>{content}<|end|>", L"<|assistant|>");
+    LME_DefineModel(L"meta-llama-3-8b-instruct.Q4_K_M.gguf", L"meta-llama-3-8b-instruct.Q4_K_M", 8000, L"<|start_header_id|>{role}\n<|end_header_id|><|eot_id|><|start_header_id|>{content}\n<|end_header_id|><|eot_id|>", L"<|start_header_id|>assistant<|end_header_id|>");
+    LME_DefineModel(L"hermes-2-pro-llama-3-8b.Q4_K_M.gguf", L"hermes-2-pro-llama-3-8b.Q4_K_M", 8000, L"<|im_start|>{role}\n{content}\n<|im_end|>", L"<|im_start|>assistant");
+    LME_DefineModel(L"dolphin-2.9.1-llama-3-8b.Q4_K_M.gguf", L"dolphin-2.9.1-llama-3-8b.Q4_K_M", 8000, L"<|im_start|>{role}\n{content}\n<|im_end|>", L"<|im_start|>assistant");
+
+    LME_SaveModelDefines(L"models.json");
+
+    LME_AddMessage(LME_ROLE_SYSTEM, L"You are a helpful AI assistant.");
+    LME_AddMessage(LME_ROLE_USER, CQuestion);
+
+    if (!LME_LoadModel(CModel)) return;
+    LME_PrintLn(L"", LME_FG_WHITE);
+    LME_PrintLn(LME_GetLastUserMessage(), LME_FG_DARKGREEN);
+    if (LME_RunInference(CModel, 1024)) {
+        LME_GetInferenceStats(NULL, &LTokenOutputSpeed, &LInputTokens, &LOutputTokens, &LTotalTokens);
+        LME_PrintLn(L"", LME_FG_WHITE);
+        LME_PrintLn(L"Token :: Input: %d, Output: %d, Total: %d, Speed: %3.2f tokens/sec", LME_FG_BRIGHTYELLOW, LInputTokens, LOutputTokens, LTotalTokens, LTokenOutputSpeed);
+        //LME_PrintLn(L"Response:", LME_FG_WHITE);
+        //LME_PrintLn(LME_GetInferenceResponse(), LME_FG_BLUE);
+    } else {
+        LME_PrintLn(L"Error: %ls", LME_FG_RED, LME_GetError());
+    }
+    LME_UnloadModel();
 }
 
 void RunTests()
 {
+	LME_PrintLn(L">>> LMEngine v%ls <<<%ls", LME_FG_MAGENTA, LME_GetVersion(LME_VERSION_FULL), LME_CRLF);
+  	LME_PrintLn(L"Running in C/C++%ls", LME_FG_WHITE, LME_CRLF);
+
     Test01();
-    Console_Pause();
+    LME_Pause();
 }

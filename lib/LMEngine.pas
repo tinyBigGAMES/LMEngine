@@ -52,235 +52,179 @@ unit LMEngine;
 interface
 
 const
-  /// <summary>
-  ///   Name of inference DLL
-  /// </summary>
+  // Infero DLL
   LMENGINE_DLL = 'LMEngine.dll';
 
   // Console linefeed & carriage return
-  LF   = AnsiChar(#10);
-  CR   = AnsiChar(#13);
-  CRLF = LF+CR;
+  LME_LF   = AnsiChar(#10);
+  LME_CR   = AnsiChar(#13);
+  LME_CRLF = LME_LF+LME_CR;
 
   // Virtual Keys
-
-  /// <summary>
-  ///   Keycode for escape key
-  /// </summary>
-  VK_ESC = 27;
+  LME_VKEY_ESCAPE  = 27;
+  LME_VKEY_SPACE  = 32;
 
   // Primary console colors
-  FG_BLUE         = 1;
-  FG_GREEN        = 2;
-  FG_RED          = 4;
-  FG_INTENSITY    = 8;
-  BG_BLUE         = $10;
-  BG_GREEN        = $20;
-  BG_RED          = $40;
-  BG_INTENSITY    = $80;
+  LME_FG_BLUE         = 1;
+  LME_FG_GREEN        = 2;
+  LME_FG_RED          = 4;
+  LME_FG_INTENSITY    = 8;
+  LME_BG_BLUE         = $10;
+  LME_BG_GREEN        = $20;
+  LME_BG_RED          = $40;
+  LME_BG_INTENSITY    = $80;
 
   // Custom console color
-  FG_BRIGHTYELLOW = FG_RED OR FG_GREEN OR FG_INTENSITY;
-  FG_YELLOW       = FG_RED OR FG_GREEN;
-  FG_WHITE        = FG_RED OR FG_GREEN OR FG_BLUE;
-  FG_BRIGHTWHITE  = FG_WHITE OR FG_INTENSITY;
-  FG_DARKGREEN    = FG_GREEN;
-  FG_LIGHTGREEN   = FG_GREEN or FG_INTENSITY;
-  FG_DARKGRAY     = FG_INTENSITY;
-  FG_CYAN         = FG_GREEN OR FG_BLUE;
-  FG_MAGENTA      = FG_RED OR FG_BLUE;
+  LME_FG_BRIGHTYELLOW = LME_FG_RED OR LME_FG_GREEN OR LME_FG_INTENSITY;
+  LME_FG_YELLOW       = LME_FG_RED OR LME_FG_GREEN;
+  LME_FG_WHITE        = LME_FG_RED OR LME_FG_GREEN OR LME_FG_BLUE;
+  LME_FG_BRIGHTWHITE  = LME_FG_WHITE OR LME_FG_INTENSITY;
+  LME_FG_DARKGREEN    = LME_FG_GREEN;
+  LME_FG_LIGHTGREEN   = LME_FG_GREEN or LME_FG_INTENSITY;
+  LME_FG_DARKGRAY     = LME_FG_INTENSITY;
+  LME_FG_CYAN         = LME_FG_GREEN OR LME_FG_BLUE;
+  LME_FG_MAGENTA      = LME_FG_RED OR LME_FG_BLUE;
 
-  BG_BRIGHTYELLOW = BG_RED OR BG_GREEN OR BG_INTENSITY;
-  BG_YELLOW       = BG_RED OR BG_GREEN;
-  BG_WHITE        = BG_RED OR BG_GREEN OR BG_BLUE;
-  BG_BRIGHTWHITE  = BG_WHITE OR BG_INTENSITY;
-  BG_DARKGREEN    = BG_GREEN;
-  BG_LIGHTGREEN   = BG_GREEN or BG_INTENSITY;
-  BG_DARKGRAY     = BG_INTENSITY;
-  BG_CYAN         = BG_GREEN OR FG_BLUE;
-  BG_MAGENTA      = BG_RED OR FG_BLUE;
+  LME_BG_BRIGHTYELLOW = LME_BG_RED OR LME_BG_GREEN OR LME_BG_INTENSITY;
+  LME_BG_YELLOW       = LME_BG_RED OR LME_BG_GREEN;
+  LME_BG_WHITE        = LME_BG_RED OR LME_BG_GREEN OR LME_BG_BLUE;
+  LME_BG_BRIGHTWHITE  = LME_BG_WHITE OR LME_BG_INTENSITY;
+  LME_BG_DARKGREEN    = LME_BG_GREEN;
+  LME_BG_LIGHTGREEN   = LME_BG_GREEN or LME_BG_INTENSITY;
+  LME_BG_DARKGRAY     = LME_BG_INTENSITY;
+  LME_BG_CYAN         = LME_BG_GREEN OR LME_FG_BLUE;
+  LME_BG_MAGENTA      = LME_BG_RED OR LME_FG_BLUE;
 
   // Message roles
-  ROLE_SYSTEM    = 'system';
-  ROLE_USER      = 'user';
-  ROLE_ASSISTANT = 'assistant';
-  ROLE_TOOL      = 'tool';
+  LME_ROLE_SYSTEM    = 'system';
+  LME_ROLE_USER      = 'user';
+  LME_ROLE_ASSISTANT = 'assistant';
+  LME_ROLE_TOOL      = 'tool';
 
   // Speech Voice Attributes
-  SPEECH_VOICEATTR_DESCRIPTION = 0;
-  SPEECH_VOICEATTR_NAME        = 1;
-  SPEECH_VOICEATTR_VENDOR      = 2;
-  SPEECH_VOICEATTR_AGE         = 3;
-  SPEECH_VOICEATTR_GENDER      = 4;
-  SPEECH_VOICEATTR_LANGUAGE    = 5;
-  SPEECH_VOICEATTR_ID          = 6;
+  LME_SPEECH_VOICEATTR_DESCRIPTION = 0;
+  LME_SPEECH_VOICEATTR_NAME        = 1;
+  LME_SPEECH_VOICEATTR_VENDOR      = 2;
+  LME_SPEECH_VOICEATTR_AGE         = 3;
+  LME_SPEECH_VOICEATTR_GENDER      = 4;
+  LME_SPEECH_VOICEATTR_LANGUAGE    = 5;
+  LME_SPEECH_VOICEATTR_ID          = 6;
 
   // Token Response
-  TOKENRESPONSE_WAIT    = 0;
-  TOKENRESPONSE_APPEND  = 1;
-  TOKENRESPONSE_NEWLINE = 2;
+  LME_TOKENRESPONSE_WAIT    = 0;
+  LME_TOKENRESPONSE_APPEND  = 1;
+  LME_TOKENRESPONSE_NEWLINE = 2;
 
   // Version
-  VERSION_FULL  = 0;
-  VERSION_MAJOR = 1;
-  VERSION_MINOR = 2;
-  VERSION_PATCH = 3;
+  LME_VERSION_FULL  = 0;
+  LME_VERSION_MAJOR = 1;
+  LME_VERSION_MINOR = 2;
+  LME_VERSION_PATCH = 3;
 
 type
+  PInt32 = ^PInteger;
+
   // Callbacks
-  SpeechWordCallback = procedure(const ASender: Pointer; const AWord, AText: PAnsiChar); cdecl;
-  LoadModelProgressCallback = function(const ASender: Pointer; const AModelName: PAnsiChar; const AProgress: Single): Boolean; cdecl;
-  LoadModelCallback = procedure(const ASender: Pointer; const AModelName: PAnsiChar; const ASuccess: Boolean); cdecl;
-  InferenceCancelCallback = function(const ASender: Pointer): Boolean; cdecl;
-  InferenceNextTokenCallback = procedure(const ASender: Pointer; const AToken: PAnsiChar); cdecl;
-  InfoCallback = procedure(const ASender: Pointer; const ALevel: Integer; const AText: PAnsiChar); cdecl;
-  InferenceStartCallback = procedure(const ASender: Pointer); cdecl;
-  InferenceEndCallback = procedure(const ASender: Pointer); cdecl;
+  LME_SpeechWordCallback = procedure(const AWord, AText: PWideChar;
+    const AUserData: Pointer); cdecl;
+
+  LME_InferenceCancelCallback = function(
+    const AUserData: Pointer): Boolean; cdecl;
+
+  LME_InferenceTokenCallback = procedure(const AToken: PWideChar;
+    const AUserData: Pointer); cdecl;
+
+  LME_InfoCallback = procedure(const ALevel: Integer; const AText: PWideChar;
+    const AUserData: Pointer); cdecl;
+
+  LME_LoadModelProgressCallback = function(const AModelName: PWideChar;
+    const AProgress: Single; const AUserData: Pointer): Boolean; cdecl;
+
+  LME_LoadModelCallback = procedure(const AModelName: PWideChar;
+    const ASuccess: Boolean; const AUserData: Pointer); cdecl;
+
+  LME_InferenceStartCallback = procedure(const AUserData: Pointer); cdecl;
+
+  LME_InferenceEndCallback = procedure(const AUserData: Pointer); cdecl;
 
 /// <summary>
-///   Process Windows messages. This function processes Windows messages.
-/// </summary>
-procedure Utils_ProcessMessages(); cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   This function masks out the first occurrence of a specified word found in the given text.
-/// </summary>
-/// <param name="AText">
-///   The text in which to search for the word.
-/// </param>
-/// <param name="AWord">
-///   The word to be masked out.
-/// </param>
-/// <returns>
-///   A modified string with the first occurrence of the word masked out.
-/// </returns>
-function Utils_MaskFirstFoundWord(const AText, AWord: PAnsiChar): PAnsiChar; cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Encode a wide string to a UTF-8 string, return pointer to buffer.
-///   This function encodes a wide string (wchar_t) to a UTF-8 string and returns a pointer to the buffer containing the UTF-8 encoded string.
-/// </summary>
-/// <param name="AText">
-///   The wide string (wchar_t) to be encoded.
-/// </param>
-/// <returns>
-///   Pointer to the buffer containing the UTF-8 encoded string.
-/// </returns>
-function UTF8_Encode(const AText: PWideChar): PAnsiChar; cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Decode a UTF-8 string buffer to ANSI string.
-///   This function decodes a UTF-8 string buffer to an ANSI string and returns a pointer to the buffer containing the ANSI string.
-/// </summary>
-/// <param name="AText">
-///   The UTF-8 string buffer to be decoded.
-/// </param>
-/// <returns>
-///   Pointer to the buffer containing the ANSI string.
-/// </returns>
-function UTF8_Decode(const AText: PAnsiChar): PAnsiChar; cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Free memory allocated by UTF8_Encode/UTF8_Decode.
-///   This function frees the memory allocated by the UTF8_Encode and UTF8_Decode functions.
-/// </summary>
-/// <param name="AText">
-///   Pointer to the buffer to be freed.
-/// </param>
-procedure UTF8_Free(const AText: PAnsiChar); cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Get the cursor XY position on the console.
-///   This function retrieves the current cursor XY position on the console.
-/// </summary>
-/// <param name="X">
-///   Pointer to an integer to receive the X coordinate of the cursor.
-/// </param>
-/// <param name="Y">
-///   Pointer to an integer to receive the Y coordinate of the cursor.
-/// </param>
-procedure Console_GetCursorPos(X, Y: PInteger); cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Set the cursor XY position on the console.
-///   This function sets the cursor XY position on the console.
-/// </summary>
-/// <param name="X">
-///   The X coordinate to set the cursor to.
-/// </param>
-/// <param name="Y">
-///   The Y coordinate to set the cursor to.
-/// </param>
-procedure Console_SetCursorPos(const X, Y: Integer); cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Clear the console.
-///   This function clears the console.
-/// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
-procedure Console_Clear(); cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Clear the current line of the console to a specified color.
-///   This function clears the current line of the console and sets it to the specified color.
-/// </summary>
-/// <param name="AColor">
-///   The color to set the cleared line to (default is FG_WHITE).
-/// </param>
-procedure Console_ClearLine(const AColor: WORD=FG_WHITE); cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Print text to the console in a specified color.
-///   This function prints the specified text to the console in the given color.
+///   Prints text to the console.
 /// </summary>
 /// <param name="AText">
 ///   The text to be printed.
 /// </param>
 /// <param name="AColor">
-///   The color to print the text in.
+///   The color of the text.
 /// </param>
-procedure Console_Print(const AText: PAnsiChar; const AColor: WORD); cdecl; varargs; external LMENGINE_DLL;
+procedure LME_Print(const AText: PWideChar; const AColor: Integer); cdecl;
+  varargs; external LMENGINE_DLL;
 
 /// <summary>
-///   Print text to the console in a specified color with a linefeed.
-///   This function prints the specified text to the console in the given color and appends a linefeed.
+///   Prints text to the console with a line feed and carriage return.
 /// </summary>
 /// <param name="AText">
 ///   The text to be printed.
 /// </param>
 /// <param name="AColor">
-///   The color to print the text in.
+///   The color of the text.
 /// </param>
-procedure Console_PrintLn(const AText: PAnsiChar; const AColor: WORD); cdecl; varargs; external LMENGINE_DLL;
+procedure LME_PrintLn(const AText: PWideChar; const AColor: Integer); cdecl;
+  varargs; external LMENGINE_DLL;
 
 /// <summary>
-///   Clear keyboard states.
-///   This function clears the current keyboard states.
+///   Gets the console cursor X and Y position.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
+/// <param name="X">
+///   The X position of the cursor.
 /// </param>
-procedure Console_ClearKeyStates(); cdecl; external LMENGINE_DLL;
+/// <param name="Y">
+///   The Y position of the cursor.
+/// </param>
+procedure LME_GetCursorPos(X, Y: PInteger); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Check if a key is being held down.
-///   This function checks if a specified key is currently being held down.
+///   Sets the console cursor X and Y position.
+/// </summary>
+/// <param name="X">
+///   The X position of the cursor.
+/// </param>
+/// <param name="Y">
+///   The Y position of the cursor.
+/// </param>
+procedure LME_SetCursorPos(const X, Y: Integer); cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Clears the current console screen.
+/// </summary>
+procedure LME_ClearConsole(); cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Clears the current console line.
+/// </summary>
+/// <param name="AColor">
+///   The color to use when clearing the line.
+/// </param>
+procedure LME_ClearConsoleLine(const AColor: WORD); cdecl;
+  external LMENGINE_DLL;
+
+/// <summary>
+///   Clears the keyboard states.
+/// </summary>
+procedure LME_ClearKeyStates(); cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Checks if a key is currently held down.
 /// </summary>
 /// <param name="AKey">
 ///   The key to check.
 /// </param>
 /// <returns>
-///   True if the key is being held down, otherwise False.
+///   True if the key is held down, otherwise False.
 /// </returns>
-function Console_IsKeyPressed(AKey: Byte): Boolean; cdecl; external LMENGINE_DLL;
+function LME_IsKeyPressed(AKey: Byte): Boolean; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Check if a key was released.
-///   This function checks if a specified key was released.
+///   Checks if a key was recently released.
 /// </summary>
 /// <param name="AKey">
 ///   The key to check.
@@ -288,11 +232,10 @@ function Console_IsKeyPressed(AKey: Byte): Boolean; cdecl; external LMENGINE_DLL
 /// <returns>
 ///   True if the key was released, otherwise False.
 /// </returns>
-function Console_WasKeyReleased(AKey: Byte): Boolean; cdecl; external LMENGINE_DLL;
+function LME_WasKeyReleased(AKey: Byte): Boolean; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Check if a key was pressed.
-///   This function checks if a specified key was pressed.
+///   Checks if a key was recently pressed.
 /// </summary>
 /// <param name="AKey">
 ///   The key to check.
@@ -300,67 +243,118 @@ function Console_WasKeyReleased(AKey: Byte): Boolean; cdecl; external LMENGINE_D
 /// <returns>
 ///   True if the key was pressed, otherwise False.
 /// </returns>
-function Console_WasKeyPressed(AKey: Byte): Boolean; cdecl; external LMENGINE_DLL;
+function LME_WasKeyPressed(AKey: Byte): Boolean; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Display a message on the console and wait for a key to be pressed to continue.
-///   This function displays a message on the console and waits for a key to be pressed to continue. Optionally, it can force a pause and set the text color.
+///   Pauses execution until any key is pressed.
 /// </summary>
 /// <param name="AForcePause">
-///   Whether to force a pause (default is False).
+///   If True, forces a pause.
 /// </param>
 /// <param name="AColor">
-///   The color of the message text (default is FG_WHITE).
+///   The color to use during the pause.
 /// </param>
 /// <param name="AText">
-///   The message text to display (default is nil).
+///   The text to display during the pause.
 /// </param>
-procedure Console_Pause(const AForcePause: Boolean=False; AColor: WORD=FG_WHITE; const AText: PAnsiChar=nil); cdecl; external LMENGINE_DLL;
+procedure LME_Pause(const AForcePause: Boolean=False; AColor: WORD=LME_FG_WHITE;
+  const AText: PWideChar=nil); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Set a callback for each word spoken.
-///   This function sets a callback handler that is invoked for each word spoken.
+///   Processes Windows messages.
 /// </summary>
-/// <param name="ASender">
-///   Pointer to the sender object.
+procedure LME_ProcessMessages(); cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Masks out the first word found in a text string.
+/// </summary>
+/// <param name="AText">
+///   The text to search.
 /// </param>
+/// <param name="AWord">
+///   The word to mask.
+/// </param>
+/// <returns>
+///   The modified text with the first found word masked.
+/// </returns>
+function LME_MaskFirstFoundWord(const AText, AWord: PWideChar): PWideChar;
+  cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Sets the token response right margin.
+/// </summary>
+/// <param name="AMargin">
+///   The right margin value.
+/// </param>
+procedure LME_SetTokenResponseRightMargin(const AMargin: Integer); cdecl;
+  external LMENGINE_DLL;
+
+/// <summary>
+///   Adds a new token to token response.
+/// </summary>
+/// <param name="AToken">
+///   The token to add.
+/// </param>
+/// <returns>
+///   An integer representing the token response.
+/// </returns>
+function LME_AddTokenResponseToken(const AToken: PWideChar): Integer; cdecl;
+  external LMENGINE_DLL;
+
+/// <summary>
+///   Gets the last word from token response.
+/// </summary>
+/// <param name="ATrimLeft">
+///   If True, trims the left side.
+/// </param>
+/// <returns>
+///   The last word from the token response.
+/// </returns>
+function LME_LastTokenResponseWord(const ATrimLeft: Boolean): PWideChar; cdecl;
+  external LMENGINE_DLL;
+
+/// <summary>
+///   Checks if all words have been processed in token response.
+/// </summary>
+/// <returns>
+///   True if all words have been processed, otherwise False.
+/// </returns>
+function LME_FinalizeTokenResponse(): Boolean; cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Sets the speech word callback.
+/// </summary>
 /// <param name="AHandler">
-///   The callback handler for the spoken words.
+///   The callback handler.
 /// </param>
-procedure Speech_SetWordCallback(const ASender: Pointer; const AHandler: SpeechWordCallback); cdecl; external LMENGINE_DLL;
+/// <param name="AUserData">
+///   User data to pass to the callback.
+/// </param>
+procedure LME_SetSpeechWordCallback(const AHandler: LME_SpeechWordCallback;
+  const AUserData: Pointer); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Get the word callback.
-///   This function retrieves the current callback handler for spoken words.
+///   Gets the speech word callback.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
 /// <returns>
-///   The current SpeechWordCallback handler.
+///   The current speech word callback.
 /// </returns>
-function Speech_GetWordCallback(): SpeechWordCallback; cdecl; external LMENGINE_DLL;
+function LME_GetSpeechWordCallback(): LME_SpeechWordCallback; cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Get the number of voices on the system.
-///   This function returns the total number of voices available on the system.
+///   Gets the speech voice count.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
 /// <returns>
-///   The number of voices on the system as an integer.
+///   The number of available speech voices.
 /// </returns>
-function Speech_GetVoiceCount(): Integer; cdecl; external LMENGINE_DLL;
+function LME_GetSpeechVoiceCount(): Integer; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Get an attribute for a voice.
-///   This function retrieves a specific attribute of a voice by its index.
+///   Gets a speech voice attribute.
 /// </summary>
 /// <param name="AIndex">
-///   The index of the voice.
+///   The index of the speech voice.
 /// </param>
 /// <param name="AAttribute">
 ///   The attribute to retrieve.
@@ -368,484 +362,377 @@ function Speech_GetVoiceCount(): Integer; cdecl; external LMENGINE_DLL;
 /// <returns>
 ///   The attribute value as a string.
 /// </returns>
-function Speech_GetVoiceAttribute(const AIndex: Integer; const AAttribute: Byte): PAnsiChar; cdecl; external LMENGINE_DLL;
+function LME_GetSpeechVoiceAttribute(const AIndex: Integer;
+  const AAttribute: Byte): PWideChar; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Change to a specified voice.
-///   This function changes the current voice to the specified voice by its index.
+///   Changes the speech voice speed.
 /// </summary>
 /// <param name="AIndex">
-///   The index of the voice to change to.
+///   The index of the speech voice.
 /// </param>
-procedure Speech_ChangeVoice(const AIndex: Integer); cdecl; external LMENGINE_DLL;
+procedure LME_ChangeSpeechVoice(const AIndex: Integer); cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Get index of active voice.
-///   This function retrieves the index of the currently active voice.
+///   Gets the current speech voice.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
 /// <returns>
-///   The index of the active voice as an integer.
+///   The index of the current speech voice.
 /// </returns>
-function Speech_GetVoice(): Integer; cdecl; external LMENGINE_DLL;
+function LME_GetSpeechVoice(): Integer; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Set the voice volume (0-1).
-///   This function sets the volume of the voice, with a range from 0 to 1.
+///   Sets the current speech voice volume.
 /// </summary>
 /// <param name="AVolume">
-///   The volume level to set (0-1).
+///   The volume level to set.
 /// </param>
-procedure Speech_SetVolume(const AVolume: Single); cdecl; external LMENGINE_DLL;
+procedure LME_SetSpeechVolume(const AVolume: Single); cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Get the voice volume (0-1).
-///   This function retrieves the current volume level of the voice.
+///   Gets the current speech voice volume.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
 /// <returns>
-///   The volume level as a single (0-1).
+///   The current volume level.
 /// </returns>
-function Speech_GetVolume(): Single; cdecl; external LMENGINE_DLL;
+function LME_GetSpeechVolume(): Single; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Set the voice speaking rate.
-///   This function sets the speaking rate of the voice.
+///   Sets the current speech voice rate.
 /// </summary>
 /// <param name="ARate">
-///   The speaking rate to set.
+///   The rate to set.
 /// </param>
-procedure Speech_SetRate(const ARate: Single); cdecl; external LMENGINE_DLL;
+procedure LME_SetSpeechRate(const ARate: Single); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Get the voice speaking rate.
-///   This function retrieves the current speaking rate of the voice.
+///   Gets the current speech voice rate.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
 /// <returns>
-///   The speaking rate as a single.
+///   The current rate.
 /// </returns>
-function Speech_GetRate(): Single; cdecl; external LMENGINE_DLL;
+function LME_GetSpeechRate(): Single; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Clear the currently speaking voice.
-///   This function clears the currently speaking voice.
+///   Clears the current speech voice.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
-procedure Speech_Clear(); cdecl; external LMENGINE_DLL;
+procedure LME_ClearSpeech(); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Speak the text in the current voice, with the option to first purge any currently active speech.
-///   This function speaks the given text in the current voice, with an option to purge any currently active speech before speaking.
+///   Speaks text in the current speech voice.
 /// </summary>
 /// <param name="AText">
 ///   The text to be spoken.
 /// </param>
 /// <param name="APurge">
-///   Boolean indicating whether to purge current speech first.
+///   If True, purges the current speech before speaking.
 /// </param>
-procedure Speech_Say(const AText: PAnsiChar; const APurge: Boolean); cdecl; external LMENGINE_DLL;
+procedure LME_SaySpeech(const AText: PWideChar; const APurge: Boolean); cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Check if any voice is currently active.
-///   This function checks if there is any active voice currently speaking.
+///   Checks if the current speech voice is active.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
 /// <returns>
-///   True if any voice is active, otherwise False.
+///   True if the speech voice is active, otherwise False.
 /// </returns>
-function Speech_Active(): Boolean; cdecl; external LMENGINE_DLL;
+function LME_IsSpeechActive(): Boolean; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Pause the active voice.
-///   This function pauses the currently active voice.
+///   Pauses the current speech voice.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
-procedure Speech_Pause(); cdecl; external LMENGINE_DLL;
+procedure LME_PauseSpeech(); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Resume the active voice that was paused.
-///   This function resumes the currently paused voice.
+///   Resumes the current speech voice.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
-procedure Speech_Resume(); cdecl; external LMENGINE_DLL;
+procedure LME_ResumeSpeech(); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Reset speech to a default and known state.
-///   This function resets the speech system to a default and known state.
+///   Resets the current speech voice.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
-procedure Speech_Reset(); cdecl; external LMENGINE_DLL;
+procedure LME_ResetSpeech(); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Add a word phrase to be substituted.
-///   This function adds a word or phrase to be substituted. Sometimes to make a word sound better, you have to alter the spelling. If that altered word is detected, it will substitute the defined word in the word callback.
+///   Adds a word phrase to be substituted in speech.
 /// </summary>
 /// <param name="AWord">
 ///   The word to be substituted.
 /// </param>
 /// <param name="ASubstituteWord">
-///   The substitute word to be used.
+///   The substitute word.
 /// </param>
-procedure Speech_SubstituteWord(const AWord, ASubstituteWord: PAnsiChar); cdecl; external LMENGINE_DLL;
+procedure LME_SubstituteSpeechWord(const AWord, ASubstituteWord: PWideChar);
+  cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Return the version information string (full, major, minor, patch).
-///   This function retrieves the version information string based on the specified type.
+///   Gets the version information.
 /// </summary>
 /// <param name="AType">
-///   The type of version information to retrieve (full, major, minor, patch).
+///   The type of version information to retrieve.
 /// </param>
 /// <returns>
-///   The version information string.
+///   The version information as a string.
 /// </returns>
-function Version_Get(const AType: Byte): PAnsiChar; cdecl; external LMENGINE_DLL;
+function LME_GetVersion(const AType: Byte): PWideChar; cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Clear the current error message.
-///   This function clears the current error message.
+///   Clears the last error message.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
-procedure Error_Clear(); cdecl; external LMENGINE_DLL;
+procedure LME_ClearError(); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Set the current error message.
-///   This function sets the current error message to the specified text.
+///   Sets an error message.
 /// </summary>
 /// <param name="AText">
-///   The error message text to set.
+///   The error message to set.
 /// </param>
-procedure Error_Set(const AText: PAnsiChar); cdecl; external LMENGINE_DLL;
+procedure LME_SetError(const AText: PWideChar); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Get the current error message.
-///   This function retrieves the current error message.
+///   Gets the last error message.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
 /// <returns>
-///   The current error message as a string.
+///   The last error message as a string.
 /// </returns>
-function Error_Get(): PAnsiChar; cdecl; external LMENGINE_DLL;
+function LME_GetError(): PWideChar; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Get the load model progress callback.
-///   This function retrieves the current callback handler for load model progress.
+///   Gets the inference cancel callback.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
 /// <returns>
-///   The current LoadModelProgressCallback handler.
+///   The inference cancel callback.
 /// </returns>
-function Callback_GetLoadModelProgress(): LoadModelProgressCallback; cdecl; external LMENGINE_DLL;
+function LME_GetInferenceCancelCallback(): LME_InferenceCancelCallback; cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Set the load model progress callback.
-///   This function sets the callback handler for load model progress.
+///   Sets the inference cancel callback.
 /// </summary>
-/// <param name="ASender">
-///   Pointer to the sender object.
-/// </param>
 /// <param name="AHandler">
-///   The callback handler for load model progress.
+///   The callback handler.
 /// </param>
-procedure Callback_SetLoadModelProgress(const ASender: Pointer; const AHandler: LoadModelProgressCallback); cdecl; external LMENGINE_DLL;
+/// <param name="AUserData">
+///   User data to pass to the callback.
+/// </param>
+procedure LME_SetInferenceCancelCallback(
+  const AHandler: LME_InferenceCancelCallback; const AUserData: Pointer);
+  cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Get the load model callback.
-///   This function retrieves the current callback handler for loading models.
+///   Gets the inference token callback.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
 /// <returns>
-///   The current LoadModelCallback handler.
+///   The inference token callback.
 /// </returns>
-function Callback_GetLoadModel(): LoadModelCallback; cdecl; external LMENGINE_DLL;
+function LME_GetInferenceTokenCallback(): LME_InferenceTokenCallback; cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Set the load model callback.
-///   This function sets the callback handler for loading models.
+///   Sets the inference token callback.
 /// </summary>
-/// <param name="ASender">
-///   Pointer to the sender object.
-/// </param>
 /// <param name="AHandler">
-///   The callback handler for loading models.
+///   The callback handler.
 /// </param>
-procedure Callback_SetLoadModel(const ASender: Pointer; const AHandler: LoadModelCallback); cdecl; external LMENGINE_DLL;
+/// <param name="AUserData">
+///   User data to pass to the callback.
+/// </param>
+procedure LME_SetInferenceTokenlCallback(
+  const AHandler: LME_InferenceTokenCallback; const AUserData: Pointer); cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Get the inference cancel callback.
-///   This function retrieves the current callback handler for inference cancellation.
+///   Gets the information callback.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
 /// <returns>
-///   The current InferenceCancelCallback handler.
+///   The information callback.
 /// </returns>
-function Callback_GetInferenceCancel(): InferenceCancelCallback; cdecl; external LMENGINE_DLL;
+function LME_GetInfoCallback(): LME_InfoCallback; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Set the inference cancel callback.
-///   This function sets the callback handler for inference cancellation.
+///   Sets the information callback.
 /// </summary>
-/// <param name="ASender">
-///   Pointer to the sender object.
-/// </param>
 /// <param name="AHandler">
-///   The callback handler for inference cancellation.
+///   The callback handler.
 /// </param>
-procedure Callback_SetInferenceCancel(const ASender: Pointer; const AHandler: InferenceCancelCallback); cdecl; external LMENGINE_DLL;
+/// <param name="AUserData">
+///   User data to pass to the callback.
+/// </param>
+procedure LME_SetInfoCallback(const AHandler: LME_InfoCallback;
+  const AUserData: Pointer); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Get the inference next token callback.
-///   This function retrieves the current callback handler for the next token in inference.
+///   Gets the load model progress callback.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
 /// <returns>
-///   The current InferenceNextTokenCallback handler.
+///   The load model progress callback.
 /// </returns>
-function Callback_GetInferenceNextToken(): InferenceNextTokenCallback; cdecl; external LMENGINE_DLL;
+function LME_GetLoadModelProgressCallback(): LME_LoadModelProgressCallback;
+  cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Set the inference next token callback.
-///   This function sets the callback handler for the next token in inference.
+///   Sets the load model progress callback.
 /// </summary>
-/// <param name="ASender">
-///   Pointer to the sender object.
-/// </param>
 /// <param name="AHandler">
-///   The callback handler for the next token in inference.
+///   The callback handler.
 /// </param>
-procedure Callback_SetInferenceNextToken(const ASender: Pointer; const AHandler: InferenceNextTokenCallback); cdecl; external LMENGINE_DLL;
+/// <param name="AUserData">
+///   User data to pass to the callback.
+/// </param>
+procedure LME_SetLoadModelProgressCallback(
+  const AHandler: LME_LoadModelProgressCallback; const AUserData: Pointer);
+  cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Get the inference start callback.
-///   This function retrieves the current callback handler for the start of inference.
+///   Gets the load model callback.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
 /// <returns>
-///   The current InferenceStartCallback handler.
+///   The load model callback.
 /// </returns>
-function Callback_GetInferenceStart(): InferenceStartCallback; cdecl; external LMENGINE_DLL;
+function LME_GetLoadModelCallback(): LME_LoadModelCallback; cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Set the inference start callback.
-///   This function sets the callback handler for the start of inference.
+///   Sets the load model callback.
 /// </summary>
-/// <param name="ASender">
-///   Pointer to the sender object.
-/// </param>
 /// <param name="AHandler">
-///   The callback handler for the start of inference.
+///   The callback handler.
 /// </param>
-procedure Callback_SetInferenceStart(const ASender: Pointer; const AHandler: InferenceStartCallback); cdecl; external LMENGINE_DLL;
+/// <param name="AUserData">
+///   User data to pass to the callback.
+/// </param>
+procedure LME_SetLoadModelCallback(const AHandler: LME_LoadModelCallback;
+  const AUserData: Pointer); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Get the inference end callback.
-///   This function retrieves the current callback handler for the end of inference.
+///   Gets the inference start callback.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
 /// <returns>
-///   The current InferenceEndCallback handler.
+///   The inference start callback.
 /// </returns>
-function Callback_GetInferenceEnd(): InferenceEndCallback; cdecl; external LMENGINE_DLL;
+function LME_GetInferenceStartCallback(): LME_InferenceStartCallback; cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Set the inference end callback.
-///   This function sets the callback handler for the end of inference.
+///   Sets the inference start callback.
 /// </summary>
-/// <param name="ASender">
-///   Pointer to the sender object.
-/// </param>
 /// <param name="AHandler">
-///   The callback handler for the end of inference.
+///   The callback handler.
 /// </param>
-procedure Callback_SetInferenceEnd(const ASender: Pointer; const AHandler: InferenceEndCallback); cdecl; external LMENGINE_DLL;
+/// <param name="AUserData">
+///   User data to pass to the callback.
+/// </param>
+procedure LME_SetInferenceStartCallback(
+  const AHandler: LME_InferenceStartCallback; const AUserData: Pointer); cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Get the info callback.
-///   This function retrieves the current info callback handler.
+///   Gets the inference end callback.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
 /// <returns>
-///   The current InfoCallback handler.
+///   The inference end callback.
 /// </returns>
-function Callback_GetInfo(): InfoCallback; cdecl; external LMENGINE_DLL;
+function LME_GetInferenceEndCallback(): LME_InferenceEndCallback; cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Set the info callback.
-///   This function sets the info callback handler.
+///   Sets the inference end callback.
 /// </summary>
-/// <param name="ASender">
-///   Pointer to the sender object.
-/// </param>
 /// <param name="AHandler">
-///   The callback handler for info.
+///   The callback handler.
 /// </param>
-procedure Callback_SetInfo(const ASender: Pointer; const AHandler: InfoCallback); cdecl; external LMENGINE_DLL;
+/// <param name="AUserData">
+///   User data to pass to the callback.
+/// </param>
+procedure LME_SetInferenceEndCallback(const AHandler: LME_InferenceEndCallback;
+  const AUserData: Pointer); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Set configuration information (model path, GPU layers).
-///   This function sets configuration information including the model path and the number of GPU layers.
+///   Initializes configuration settings.
 /// </summary>
 /// <param name="AModelPath">
 ///   The path to the model.
 /// </param>
 /// <param name="ANumGPULayers">
-///   The number of GPU layers to use.
+///   The number of GPU layers.
 /// </param>
-procedure Config_Init(const AModelPath: PAnsiChar; const ANumGPULayers: Int32); cdecl; external LMENGINE_DLL;
+procedure LME_InitConfig(const AModelPath: PWideChar;
+  const ANumGPULayers: Int32); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Save configuration information to a JSON file.
-///   This function saves the current configuration information to a specified JSON file.
+///   Saves configuration settings to a JSON file on disk.
 /// </summary>
 /// <param name="AFilename">
-///   The name of the file to save the configuration to.
+///   The filename to save the configuration to.
 /// </param>
 /// <returns>
 ///   True if the configuration was saved successfully, otherwise False.
 /// </returns>
-function Config_Save(const AFilename: PAnsiChar): Boolean; cdecl; external LMENGINE_DLL;
+function LME_SaveConfig(const AFilename: PWideChar): Boolean; cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Load configuration information from a JSON file.
-///   This function loads configuration information from a specified JSON file.
+///   Loads configuration settings from a JSON file on disk.
 /// </summary>
 /// <param name="AFilename">
-///   The name of the file to load the configuration from.
+///   The filename to load the configuration from.
 /// </param>
 /// <returns>
 ///   True if the configuration was loaded successfully, otherwise False.
 /// </returns>
-function Config_Load(const AFilename: PAnsiChar): Boolean; cdecl; external LMENGINE_DLL;
+function LME_LoadConfig(const AFilename: PWideChar): Boolean; cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Clear all inference messages.
-///   This function clears all messages related to inference.
+///   Clears all inference messages.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
-procedure Message_ClearAll(); cdecl; external LMENGINE_DLL;
+procedure LME_ClearAllMessages(); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Add a new inference message (system, user, assistant, tool).
-///   This function adds a new inference message with the specified role and content.
+///   Adds a new inference message.
 /// </summary>
 /// <param name="ARole">
-///   The role of the message (system, user, assistant, tool).
+///   The role of the message.
 /// </param>
 /// <param name="AContent">
 ///   The content of the message.
 /// </param>
 /// <returns>
-///   The Index of the added message.
+///   The message ID.
 /// </returns>
-function Message_Add(const ARole, AContent: PAnsiChar): Int32; cdecl; external LMENGINE_DLL;
+function LME_AddMessage(const ARole, AContent: PWideChar): Int32; cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Add a new inference unicode message (system, user, assistant, tool).
-///   This function adds a new inference unicode message with the specified role and content.
+///   Gets the last user role inference message.
 /// </summary>
-/// <param name="ARole">
-///   The role of the message (system, user, assistant, tool).
-/// </param>
-/// <param name="AContent">
-///   The content of the message.
-/// </param>
 /// <returns>
-///   The Index of the added message.
+///   The last user role inference message.
 /// </returns>
-function  Message_AddW(const ARole: PAnsiChar; AContent: PWideChar): Int32; cdecl; external LMENGINE_DLL;
+function LME_GetLastUserMessage(): PWideChar; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Get the last user message added.
-///   This function retrieves the last user message that was added.
-/// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
-/// <returns>
-///   The last user message as a string.
-/// </returns>
-function Message_GetLastUser(): PAnsiChar; cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Build a prompt of messages that can be sent to the LLM to do inference on.
-///   This function builds a prompt from the messages that can be sent to the language model for inference.
+///   Returns an inference prompt for the specified model from current messages.
 /// </summary>
 /// <param name="AModelName">
-///   The name of the model to use for building the prompt.
+///   The name of the model.
 /// </param>
 /// <returns>
-///   The built prompt as a string.
+///   The inference prompt.
 /// </returns>
-function Message_BuildInferencePrompt(const AModelName: PAnsiChar): PAnsiChar; cdecl; external LMENGINE_DLL;
+function LME_BuildMessageInferencePrompt(
+  const AModelName: PWideChar): PWideChar; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Clear all model defines.
-///   This function clears all model definitions.
+///   Clears all model definitions.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
-procedure Model_ClearDefines(); cdecl; external LMENGINE_DLL;
+procedure LME_ClearModelDefines(); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Define a model that can be used by the system for doing inference.
-///   This function defines a model with the specified parameters that can be used by the system for inference.
+///   Adds a model definition.
 /// </summary>
 /// <param name="AModelFilename">
 ///   The filename of the model.
@@ -854,223 +741,114 @@ procedure Model_ClearDefines(); cdecl; external LMENGINE_DLL;
 ///   The name of the model.
 /// </param>
 /// <param name="AMaxContext">
-///   The maximum context size for the model.
+///   The maximum context size.
 /// </param>
-/// <param name="ACustomTemplate">
-///   The custom template to use for the model.
+/// <param name="ATemplate">
+///   The template for the model.
 /// </param>
-/// <param name="ACustomTemplateEnd">
-///   The custom end template to use for the model.
+/// <param name="ATemplateEnd">
+///   The end template for the model.
 /// </param>
 /// <returns>
-///   The index of the defined model.
+///   The model ID.
 /// </returns>
-function Model_Define(const AModelFilename, AModelName: PAnsiChar; const AMaxContext: UInt32; const ACustomTemplate, ACustomTemplateEnd: PAnsiChar): Int32; cdecl; external LMENGINE_DLL;
+function LME_DefineModel(const AModelFilename, AModelName: PWideChar;
+  const AMaxContext: UInt32; const ATemplate,
+  ATemplateEnd: PWideChar): Int32; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Save all the model defines to a JSON file.
-///   This function saves all the model definitions to a specified JSON file.
+///   Saves all model definitions to a JSON file on disk.
 /// </summary>
 /// <param name="AFilename">
-///   The name of the file to save the model definitions to.
+///   The filename to save the definitions to.
 /// </param>
 /// <returns>
-///   True if the model definitions were saved successfully, otherwise False.
+///   True if the definitions were saved successfully, otherwise False.
 /// </returns>
-function Model_SaveDefines(const AFilename: PAnsiChar): Boolean; cdecl; external LMENGINE_DLL;
+function LME_SaveModelDefines(const AFilename: PWideChar): Boolean; cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Load model defines from a JSON file.
-///   This function loads model definitions from a specified JSON file.
+///   Loads model definitions from a JSON file on disk.
 /// </summary>
 /// <param name="AFilename">
-///   The name of the file to load the model definitions from.
+///   The filename to load the definitions from.
 /// </param>
 /// <returns>
-///   True if the model definitions were loaded successfully, otherwise False.
+///   True if the definitions were loaded successfully, otherwise False.
 /// </returns>
-function Model_LoadDefines(const AFilename: PAnsiChar): Boolean; cdecl; external LMENGINE_DLL;
+function LME_LoadModelDefines(const AFilename: PWideChar): Boolean; cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Load a model that has been defined from its reference name.
-///   This function loads a model that has been defined using its reference name.
+///   Loads the specified model.
 /// </summary>
 /// <param name="AModelName">
-///   The reference name of the model to load.
+///   The name of the model.
 /// </param>
 /// <returns>
 ///   True if the model was loaded successfully, otherwise False.
 /// </returns>
-function Model_Load(const AModelName: PAnsiChar): Boolean; cdecl; external LMENGINE_DLL;
+function LME_LoadModel(const AModelName: PWideChar): Boolean; cdecl;
+  external LMENGINE_DLL;
 
 /// <summary>
-///   Check if a model has been loaded.
-///   This function checks if a model is currently loaded.
+///   Checks if a model is currently loaded.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
 /// <returns>
 ///   True if a model is loaded, otherwise False.
 /// </returns>
-function Model_IsLoaded(): Boolean; cdecl; external LMENGINE_DLL;
+function LME_IsModelLoaded(): Boolean; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Unload loaded model, releasing all allocated resources.
-///   This function unloads the currently loaded model and releases all allocated resources.
+///   Unloads the currently loaded model.
 /// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
-procedure Model_Unload(); cdecl; external LMENGINE_DLL;
+procedure LME_UnloadModel(); cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Run inference on messages until complete. If the model is currently not loaded, it will automatically load.
-///   This function runs inference on the messages until completion. If the model is not currently loaded, it will automatically load the model.
+///   Runs inference on the currently loaded model.
 /// </summary>
 /// <param name="AModelName">
-///   The name of the model to use for inference.
+///   The name of the model.
 /// </param>
 /// <param name="AMaxTokens">
-///   The maximum number of tokens for inference.
+///   The maximum number of tokens.
 /// </param>
 /// <returns>
-///   True if inference was successful, otherwise False.
+///   True if the inference was run successfully, otherwise False.
 /// </returns>
-function Inference_Run(const AModelName: PAnsiChar; const AMaxTokens: UInt32): Boolean; cdecl; external LMENGINE_DLL;
+function LME_RunInference(const AModelName: PWideChar;
+  const AMaxTokens: UInt32): Boolean; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Start inference on messages. If the model is currently not loaded, it will automatically load.
-///   This function starts inference on the messages. If the model is not currently loaded, it will automatically load the model.
+///   Gets the inference response from the currently loaded model.
 /// </summary>
-/// <param name="AModelName">
-///   The name of the model to use for inference.
-/// </param>
-/// <param name="AMaxTokens">
-///   The maximum number of tokens for inference.
-/// </param>
 /// <returns>
-///   True if inference started successfully, otherwise False.
+///   The inference response.
 /// </returns>
-function Inference_Start(const AModelName: PAnsiChar; const AMaxTokens: UInt32): Boolean; cdecl; external LMENGINE_DLL;
+function LME_GetInferenceResponse(): PWideChar; cdecl; external LMENGINE_DLL;
 
 /// <summary>
-///   Check if inference is currently active.
-///   This function checks if inference is currently active.
-/// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
-/// <returns>
-///   True if inference is active, otherwise False.
-/// </returns>
-function Inference_IsActive(): Boolean; cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Get the next token of the currently active inference session.
-///   This function retrieves the next token from the currently active inference session.
-/// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
-/// <returns>
-///   The next token as a string.
-/// </returns>
-function Inference_GetNextToken(): PAnsiChar; cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Stop active inference processing.
-///   This function stops the currently active inference processing.
-/// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
-procedure Inference_Stop(); cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Return the entire inference response.
-///   This function returns the entire response from the inference session.
-/// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
-/// <returns>
-///   The entire inference response as a string.
-/// </returns>
-function Inference_GetResponse(): PAnsiChar; cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Return usage about the last inference (input/output/total tokens, input/output speed).
-///   This function returns usage information about the last inference, including input/output/total tokens and input/output speed.
+///   Returns inference statistics.
 /// </summary>
 /// <param name="ATokenInputSpeed">
-///   Pointer to receive the token input speed.
+///   The input token speed.
 /// </param>
 /// <param name="ATokenOutputSpeed">
-///   Pointer to receive the token output speed.
+///   The output token speed.
 /// </param>
 /// <param name="AInputTokens">
-///   Pointer to receive the number of input tokens.
+///   The number of input tokens.
 /// </param>
 /// <param name="AOutputTokens">
-///   Pointer to receive the number of output tokens.
+///   The number of output tokens.
 /// </param>
 /// <param name="ATotalTokens">
-///   Pointer to receive the total number of tokens.
+///   The total number of tokens.
 /// </param>
-procedure Inference_GetUsage(ATokenInputSpeed, ATokenOutputSpeed: System.PSingle; AInputTokens, AOutputTokens, ATotalTokens: PInteger); cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Set the right console margin for token output response.
-///   This function sets the right margin for token output response on the console.
-/// </summary>
-/// <param name="AMargin">
-///   The right margin to set.
-/// </param>
-procedure TokenResponse_SetRightMargin(const AMargin: Integer); cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Add a new token for response.
-///   This function adds a new token for the response.
-/// </summary>
-/// <param name="AToken">
-///   The token to add.
-/// </param>
-/// <returns>
-///   The index of the added token.
-/// </returns>
-function TokenResponse_AddToken(const AToken: PAnsiChar): Integer; cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Get the last word of token response.
-///   This function retrieves the last word from the token response.
-/// </summary>
-/// <param name="ATrimLeft">
-///   Boolean indicating whether to trim the left side of the word.
-/// </param>
-/// <returns>
-///   The last word as a string.
-/// </returns>
-function TokenResponse_LastWord(const ATrimLeft: Boolean): PAnsiChar; cdecl; external LMENGINE_DLL;
-
-/// <summary>
-///   Check if there are more tokens to respond to.
-///   This function checks if there are more tokens to respond to.
-/// </summary>
-/// <param name="">
-/// 
-///   None.
-/// </param>
-/// <returns>
-///   True if there are more tokens, otherwise False.
-/// </returns>
-function TokenResponse_Finalize(): Boolean; cdecl; external LMENGINE_DLL;
+procedure LME_GetInferenceStats(ATokenInputSpeed: PSingle;
+  ATokenOutputSpeed: PSingle; AInputTokens: PInt32; AOutputTokens: PInt32;
+  ATotalTokens: PInt32); cdecl; external LMENGINE_DLL;
 
 implementation
 

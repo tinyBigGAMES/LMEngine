@@ -46,112 +46,93 @@
 
 #include <wchar.h>
 #include "LMEngine.Utils.hpp"
+#include "common.h"
 
 //---------------------------------------------------------------------------
 
-#define LMENGINE_API extern "C" __declspec(dllexport)
+//=== UTILS =================================================================
+LMENGINE_API void __cdecl LME_Print(const System::WideChar * AText, const int AColor, ...);
+LMENGINE_API void __cdecl LME_PrintLn(const System::WideChar * AText, const int AColor, ...);
+LMENGINE_API void __cdecl LME_GetCursorPos(System::PInteger X, System::PInteger Y);
+LMENGINE_API void __cdecl LME_SetCursorPos(const int X, const int Y);
+LMENGINE_API void __cdecl LME_ClearConsole();
+LMENGINE_API void __cdecl LME_ClearConsoleLine(const System::Word AColor);
+LMENGINE_API void __cdecl LME_ClearKeyStates();
+LMENGINE_API bool __cdecl LME_IsKeyPressed(const System::Byte AKey);
+LMENGINE_API bool __cdecl LME_WasKeyReleased(const System::Byte AKey);
+LMENGINE_API bool __cdecl LME_WasKeyPressed(const System::Byte AKey);
+LMENGINE_API void __cdecl LME_Pause(const bool AForcePause, System::Word AColor, const System::WideChar * AText);
+LMENGINE_API void __cdecl LME_ProcessMessages();
+LMENGINE_API System::WideChar * __cdecl LME_MaskFirstFoundWord(const System::WideChar * AText, const System::WideChar * AWord);
 
-//--- UTILS -----------------------------------------------------------------
-LMENGINE_API void __cdecl Utils_ProcessMessages();
-LMENGINE_API const char * __cdecl Utils_MaskFirstFoundWord(const char * AText, const char * AWord);
+LMENGINE_API void __cdecl LME_SetTokenResponseRightMargin(const int AMargin);
+LMENGINE_API int __cdecl LME_AddTokenResponseToken(const System::WideChar *  AToken);
+LMENGINE_API System::WideChar * __cdecl LME_LastTokenResponseWord(const bool ATrimLeft);
+LMENGINE_API bool __cdecl LME_FinalizeTokenResponse();
 
-//--- UTF8 ------------------------------------------------------------------
-LMENGINE_API char * __cdecl UTF8_Encode(const wchar_t * AText);
-LMENGINE_API char * __cdecl UTF8_Decode(const char * AText);
-LMENGINE_API void __cdecl UTF8_Free(char * AText);
+//=== SPEECH ================================================================
+LMENGINE_API void __cdecl LME_SetSpeechWordCallback(const Lmengine::Utils::Speech::WordEvent AHandler, const void * AUserData);
+LMENGINE_API Lmengine::Utils::Speech::WordEvent __cdecl LME_GetSpeechWordCallback();
+LMENGINE_API int __cdecl LME_GetSpeechVoiceCount();
+LMENGINE_API System::WideChar * __cdecl LME_GetSpeechVoiceAttribute(const int AIndex, const Lmengine::Utils::Speech::VoiceAttributeEvent AAttribute);
+LMENGINE_API void __cdecl LME_ChangeSpeechVoice(const int AIndex);
+LMENGINE_API int __cdecl LME_GetSpeechVoice();
+LMENGINE_API void __cdecl LME_SetSpeechVolume(const float AVolume);
+LMENGINE_API float __cdecl LME_GetSpeechVolume();
+LMENGINE_API void __cdecl LME_SetSpeechRate(const float ARate);
+LMENGINE_API float __cdecl LME_GetSpeechRate();
+LMENGINE_API void __cdecl LME_ClearSpeech();
+LMENGINE_API void __cdecl LME_SaySpeech(const System::WideChar * AText, const bool APurge);
+LMENGINE_API bool __cdecl LME_IsSpeechActive();
+LMENGINE_API void __cdecl LME_PauseSpeech();
+LMENGINE_API void __cdecl LME_ResumeSpeech();
+LMENGINE_API void __cdecl LME_ResetSpeech();
+LMENGINE_API void __cdecl LME_SubstituteSpeechWord(const System::WideChar * AWord, const System::WideChar * ASubstituteWord);
 
-//--- CONSOLE ---------------------------------------------------------------
-LMENGINE_API void __cdecl Console_GetCursorPos(System::PInteger X, System::PInteger Y);
-LMENGINE_API void __cdecl Console_SetCursorPos(const int X, const int Y);
-LMENGINE_API void __cdecl Console_Clear();
-LMENGINE_API void __cdecl Console_ClearLine(const System::Word AColor);
-LMENGINE_API void __cdecl Console_Print(const PAnsiChar AText, const System::Word AColor,  ...);
-LMENGINE_API void __cdecl Console_PrintW(const System::WideChar * AText, const System::Word AColor, ...);
-LMENGINE_API void __cdecl Console_PrintLn(const PAnsiChar AText, const System::Word AColor, ...);
-LMENGINE_API void __cdecl Console_PrintLnW(const System::WideChar * AText, const System::Word AColor, ...);
-LMENGINE_API void __cdecl Console_ClearKeyStates();
-LMENGINE_API bool __cdecl Console_IsKeyPressed(System::Byte AKey);
-LMENGINE_API bool __cdecl Console_WasKeyReleased(System::Byte AKey);
-LMENGINE_API bool __cdecl Console_WasKeyPressed(System::Byte AKey);
-LMENGINE_API void __cdecl Console_Pause(const bool AForcePause, System::Word AColor, const char * AText);
+//=== CORE ==================================================================
+LMENGINE_API System::WideChar * __cdecl LME_GetVersion(const System::Byte AType);
 
-//--- SPEECH ----------------------------------------------------------------
-LMENGINE_API void __cdecl Speech_SetWordCallback(const void * ASender, const Lmengine::Utils::Speech::WordEvent AHandler);
-LMENGINE_API Lmengine::Utils::Speech::WordEvent __cdecl Speech_GetWordCallback();
-LMENGINE_API int __cdecl Speech_GetVoiceCount();
-LMENGINE_API const char * __cdecl Speech_GetVoiceAttribute(const int AIndex, unsigned char AAttribute);
-LMENGINE_API void __cdecl Speech_ChangeVoice(const int AIndex);
-LMENGINE_API int __cdecl Speech_GetVoice();
-LMENGINE_API void __cdecl Speech_SetVolume(const float AVolume);
-LMENGINE_API float __cdecl Speech_GetVolume();
-LMENGINE_API void __cdecl Speech_SetRate(const float ARate);
-LMENGINE_API float __cdecl Speech_GetRate();
-LMENGINE_API void __cdecl Speech_Clear();
-LMENGINE_API void __cdecl Speech_Say(const char * AText, const bool APurge);
-LMENGINE_API bool __cdecl Speech_Active();
-LMENGINE_API void __cdecl Speech_Pause();
-LMENGINE_API void __cdecl Speech_Resume();
-LMENGINE_API void __cdecl Speech_Reset();
-LMENGINE_API void __cdecl Speech_SubstituteWord(const char * AWord, const char * ASubstituteWord);
+LMENGINE_API void __cdecl LME_ClearError();
+LMENGINE_API void __cdecl LME_SetError(const System::WideChar * AText);
+LMENGINE_API System::WideChar * __cdecl LME_GetError();
 
-//--- CORE -----------------------------------------------------------------
-LMENGINE_API const char * __cdecl Version_Get(const System::Byte AType);
+LMENGINE_API Lmengine::Core::TLMEngine::InferenceCancelCallback __cdecl LME_GetInferenceCancelCallback();
+LMENGINE_API void __cdecl LME_SetInferenceCancelCallback(const Lmengine::Core::TLMEngine::InferenceCancelCallback AHandler, const void * AUserData);
 
-LMENGINE_API void __cdecl Error_Clear();
-LMENGINE_API void __cdecl Error_Set(const char * AText);
-LMENGINE_API const char * __cdecl Error_Get();
+LMENGINE_API Lmengine::Core::TLMEngine::InferenceTokenCallback __cdecl LME_GetInferenceTokenCallback();
+LMENGINE_API void __cdecl LME_SetInferenceTokenlCallback(const Lmengine::Core::TLMEngine::InferenceTokenCallback AHandler, const void * AUserData);
 
-LMENGINE_API Lmengine::Core::TLMEngine::LoadModelProgressCallback __cdecl Callback_GetLoadModelProgress();
-LMENGINE_API void __cdecl Callback_SetLoadModelProgress(const void * ASender, const Lmengine::Core::TLMEngine::LoadModelProgressCallback AHandler);
-LMENGINE_API Lmengine::Core::TLMEngine::LoadModelCallback __cdecl Callback_GetLoadModel();
-LMENGINE_API void __cdecl Callback_SetLoadModel(const void * ASender, const Lmengine::Core::TLMEngine::LoadModelCallback AHandler);
+LMENGINE_API Lmengine::Core::TLMEngine::InfoCallback __cdecl LME_GetInfoCallback();
+LMENGINE_API void __cdecl LME_SetInfoCallback(const Lmengine::Core::TLMEngine::InfoCallback AHandler, const void * AUserData);
+LMENGINE_API Lmengine::Core::TLMEngine::LoadModelProgressCallback __cdecl LME_GetLoadModelProgressCallback();
+LMENGINE_API void __cdecl LME_SetLoadModelProgressCallback(const Lmengine::Core::TLMEngine::LoadModelProgressCallback AHandler, const void * AUserData);
+LMENGINE_API Lmengine::Core::TLMEngine::LoadModelCallback __cdecl LME_GetLoadModelCallback();
+LMENGINE_API void __cdecl LME_SetLoadModelCallback(const Lmengine::Core::TLMEngine::LoadModelCallback AHandler, const void * AUserData);
+LMENGINE_API Lmengine::Core::TLMEngine::InferenceStartCallback __cdecl LME_GetInferenceStartCallback();
+LMENGINE_API void __cdecl LME_SetInferenceStartCallback(const Lmengine::Core::TLMEngine::InferenceStartCallback AHandler, const void * AUserData);
+LMENGINE_API Lmengine::Core::TLMEngine::InferenceEndCallback __cdecl LME_GetInferenceEndCallback();
+LMENGINE_API void __cdecl LME_SetInferenceEndCallback(const Lmengine::Core::TLMEngine::InferenceEndCallback AHandler, const void * AUserData);
 
-LMENGINE_API Lmengine::Core::TLMEngine::InferenceCancelCallback __cdecl Callback_GetInferenceCancel();
-LMENGINE_API void __cdecl Callback_SetInferenceCancel(const void * ASender, const Lmengine::Core::TLMEngine::InferenceCancelCallback AHandler);
+LMENGINE_API void __cdecl LME_InitConfig(const System::WideChar * AModelPath, const System::Int32 ANumGPULayers);
+LMENGINE_API bool __cdecl LME_SaveConfig(const System::WideChar * AFilename);
+LMENGINE_API bool __cdecl LME_LoadConfig(const System::WideChar * AFilename);
+LMENGINE_API void __cdecl LME_ClearAllMessages();
+LMENGINE_API System::Int32 __cdecl LME_AddMessage(const System::WideChar * ARole, const System::WideChar * AContent);
+LMENGINE_API System::WideChar * __cdecl LME_GetLastUserMessage();
+LMENGINE_API System::WideChar * __cdecl LME_BuildMessageInferencePrompt(const System::WideChar * AModelName);
+LMENGINE_API void __cdecl LME_ClearModelDefines();
+LMENGINE_API System::Int32 __cdecl LME_DefineModel(const System::WideChar * AModelFilename, const System::WideChar * AModelName, const System::UInt32 AMaxContext, const System::WideChar * ATemplate, const System::WideChar * ATemplateEnd);
+LMENGINE_API bool __cdecl LME_SaveModelDefines(const System::WideChar * AFilename);
+LMENGINE_API bool __cdecl LME_LoadModelDefines(const System::WideChar * AFilename);
 
-LMENGINE_API Lmengine::Core::TLMEngine::InferenceGetNextTokenCallback __cdecl Callback_GetInferenceNextToken();
-LMENGINE_API void __cdecl Callback_SetInferenceNextToken(const void * ASender, const Lmengine::Core::TLMEngine::InferenceGetNextTokenCallback AHandler);
+LMENGINE_API bool __cdecl LME_LoadModel(const System::WideChar * AModelName);
+LMENGINE_API bool __cdecl LME_IsModelLoaded();
+LMENGINE_API void __cdecl LME_UnloadModel();
 
-LMENGINE_API Lmengine::Core::TLMEngine::InferenceStartCallback __cdecl Callback_GetInferenceStart();
-LMENGINE_API void __cdecl Callback_SetInferenceStart(const void * ASender, const Lmengine::Core::TLMEngine::InferenceStartCallback AHandler);
+LMENGINE_API bool __cdecl LME_RunInference(const System::WideChar * AModelName, const System::UInt32 AMaxTokens);
+LMENGINE_API System::WideChar * __cdecl LME_GetInferenceResponse();
+LMENGINE_API void __cdecl LME_GetInferenceStats(System::PSingle ATokenInputSpeed, System::PSingle ATokenOutputSpeed, Lmengine::Deps::PInt32 AInputTokens, Lmengine::Deps::PInt32 AOutputTokens, Lmengine::Deps::PInt32 ATotalTokens);
 
-LMENGINE_API Lmengine::Core::TLMEngine::InferenceEndCallback __cdecl Callback_GetInferenceEnd();
-LMENGINE_API void __cdecl Callback_SetInferenceEnd(const void * ASender, const Lmengine::Core::TLMEngine::InferenceEndCallback AHandler);
-
-LMENGINE_API Lmengine::Core::TLMEngine::InfoCallback __cdecl Callback_GetInfo();
-LMENGINE_API void __cdecl Callback_SetInfo(const void * ASender, const Lmengine::Core::TLMEngine::InfoCallback AHandler);
-
-LMENGINE_API void __cdecl Config_Init(const char * AModelPath, const System::Int32 ANumGPULayers);
-LMENGINE_API bool __cdecl Config_Save(const char * AFilename);
-LMENGINE_API bool __cdecl Config_Load(const char * AFilename);
-LMENGINE_API void __cdecl Message_ClearAll();
-LMENGINE_API System::Int32 __cdecl Message_Add(const char * ARole, const char * AContent);
-LMENGINE_API System::Int32 __cdecl Message_AddW(const char * ARole, System::WideChar * AContent);
-LMENGINE_API const char * __cdecl Message_GetLastUser();
-LMENGINE_API const char * __cdecl Message_BuildInferencePrompt(const char * AModelName);
-LMENGINE_API void __cdecl Model_ClearDefines();
-LMENGINE_API System::Int32 __cdecl Model_Define(const char * AModelFilename, const char * AModelName, const System::UInt32 AMaxContext, const char * ATemplate, const char * ATemplateEnd/*, const bool AAddAssistant*/);
-LMENGINE_API bool __cdecl Model_SaveDefines(const char * AFilename);
-LMENGINE_API bool __cdecl Model_LoadDefines(const char * AFilename);
-LMENGINE_API void __cdecl Model_ClearStopSequences(const char * AModelName);
-LMENGINE_API System::Int32 __cdecl Model_AddStopSequence(const char * AModelName, const char * AToken);
-LMENGINE_API System::Int32 __cdecl Model_GetStopSequenceCount(const char * AModelName);
-LMENGINE_API bool __cdecl Model_Load(const char * AModelName);
-LMENGINE_API bool __cdecl Model_IsLoaded();
-LMENGINE_API void __cdecl Model_Unload();
-LMENGINE_API bool __cdecl Inference_Run(const char * AModelName, const System::UInt32 AMaxTokens);
-LMENGINE_API bool __cdecl Inference_Start(const char * AModelName, const System::UInt32 AMaxTokens);
-LMENGINE_API bool __cdecl Inference_IsActive();
-LMENGINE_API const char * __cdecl Inference_GetNextToken();
-LMENGINE_API void __cdecl Inference_Stop();
-LMENGINE_API const char * __cdecl Inference_GetResponse();
-LMENGINE_API void __cdecl Inference_GetUsage(System::PSingle ATokenInputSpeed, System::PSingle ATokenOutputSpeed, System::PInteger AInputTokens, System::PInteger AOutputTokens, System::PInteger ATotalTokens);
-
-// TokenResponse
-LMENGINE_API void __cdecl TokenResponse_SetRightMargin(const int AMargin);
-LMENGINE_API int __cdecl TokenResponse_AddToken(const char * AToken);
-LMENGINE_API const char * __cdecl TokenResponse_LastWord(const bool ATrimLastWord);
-LMENGINE_API bool __cdecl TokenResponse_Finalize();
 
 
 #endif

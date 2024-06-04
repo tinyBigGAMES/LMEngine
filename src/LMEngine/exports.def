@@ -40,7 +40,6 @@ ggml_element_size
 ggml_is_quantized
 ggml_ftype_to_ggml_type
 ggml_is_transposed
-ggml_is_contiguous
 ggml_is_permuted
 ggml_is_empty
 ggml_is_scalar
@@ -48,6 +47,10 @@ ggml_is_vector
 ggml_is_matrix
 ggml_is_3d
 ggml_n_dims
+ggml_is_contiguous
+ggml_is_contiguous_0
+ggml_is_contiguous_1
+ggml_is_contiguous_2
 ggml_are_same_shape
 ggml_are_same_stride
 ggml_tensor_overhead
@@ -200,6 +203,7 @@ ggml_rope_ext
 ggml_rope_ext_inplace
 ggml_rope_custom
 ggml_rope_custom_inplace
+ggml_rope_xpos_inplace
 ggml_rope_yarn_corr_dims
 ggml_rope_back
 ggml_clamp
@@ -363,6 +367,7 @@ ggml_cpu_has_gpublas
 ggml_cpu_has_sse3
 ggml_cpu_has_ssse3
 ggml_cpu_has_sycl
+ggml_cpu_has_rpc
 ggml_cpu_has_vsx
 ggml_cpu_has_matmul_int8
 ggml_internal_get_type_traits

@@ -39,6 +39,7 @@
                  See LICENSE file for license information
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+
 //---------------------------------------------------------------------------
 
 #pragma hdrstop
@@ -50,491 +51,407 @@
 #include "LMEngine.Export.hpp"
 #include "LMEngine.Utils.hpp"
 #include "exports.h"
-
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
-//--- UTILS -----------------------------------------------------------------
-LMENGINE_API void __cdecl Utils_ProcessMessages()
-{
-    Lmengine::Export::Utils_ProcessMessages();
-}
+// Console
 
-LMENGINE_API const char * __cdecl Utils_MaskFirstFoundWord(const char * AText, const char * AWord)
-{
-	return Lmengine::Export::Utils_MaskFirstFoundWord(AText, AWord);
-}
-
-//--- UTF8 ------------------------------------------------------------------
-LMENGINE_API char * __cdecl UTF8_Encode(const wchar_t * AText)
-{
-    return Lmengine::Export::UTF8_Encode(AText);
-}
-
-LMENGINE_API char * __cdecl UTF8_Decode(const char * AText)
-{
-    return Lmengine::Export::UTF8_Decode(AText);
-}
-
-LMENGINE_API void __cdecl UTF8_Free(char * AText)
-{
-    Lmengine::Export::UTF8_Free(AText);
-}
-
-//--- CONSOLE ---------------------------------------------------------------
-LMENGINE_API void __cdecl Console_GetCursorPos(System::PInteger X, System::PInteger Y)
-{
-    Lmengine::Export::Console_GetCursorPos(X, Y);
-}
-
-LMENGINE_API void __cdecl Console_SetCursorPos(const int X, const int Y)
-{
-	Lmengine::Export::Console_SetCursorPos(X, Y);
-}
-
-LMENGINE_API void __cdecl Console_Clear()
-{
-    Lmengine::Export::Console_Clear();
-}
-
-LMENGINE_API void __cdecl Console_ClearLine(const System::Word AColor)
-{
-    Lmengine::Export::Console_ClearLine(AColor);
-}
-
-LMENGINE_API void __cdecl Console_Print(const PAnsiChar AText, const System::Word AColor, ...)
+LMENGINE_API void __cdecl LME_Print(const wchar_t* AText, const int AColor, ...)
 {
     int count;
     va_list args;
-    va_start(args, count);
 
-    // Set console text color
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, AColor);
-
-    // Print the main text
-    vprintf(AText, args);
-
-    // Reset console text color to default
-    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-
-    va_end(args);
-}
-
-LMENGINE_API void __cdecl Console_PrintW(const wchar_t* AText, const unsigned short AColor, ...)
-{
-    va_list args;
     va_start(args, AColor);
-
-    // Set console text color
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, AColor);
-
-    // Print the main text
-    vwprintf(AText, args);
-
-    // Reset console text color to default
-    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-
+    count = _vscwprintf(AText, args);
     va_end(args);
+
+    if (count < 1) {
+		Lmengine::Export::LME_Print(L"", AColor);
+        return;
+    }
+
+	printf("%c", '\0');  //TODO: This is nuts, without this printf, "%f"
+                         //      floating point formatting will always be zero
+                         //      when the dll is compiled in debug mode. Need
+                         //      to figure out what is going on with this.
+
+    wchar_t* buffer = (wchar_t*)malloc((count + 1) * sizeof(wchar_t));
+    if (buffer)
+    {
+	    va_start(args, AColor);
+        vswprintf(buffer, (count + 1), AText, args);
+	    va_end(args);
+        Lmengine::Export::LME_Print((wchar_t*)buffer, AColor);
+        free(buffer);
+    }
 }
 
-LMENGINE_API void __cdecl Console_PrintLn(const PAnsiChar AText, const System::Word AColor, ...)
+LMENGINE_API void __cdecl LME_PrintLn(const System::WideChar * AText, const int AColor, ...)
 {
-	int count;
+    int count;
     va_list args;
-    va_start(args, count);
 
-    // Set console text color
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, AColor);
-
-    // Print the formatted text
-    vprintf(AText, args);
-
-    // Print the newline
-    printf("\n");
-
-    // Reset console text color to default
-    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-
-    // Clean up the variable argument list
-    va_end(args);
-}
-
-LMENGINE_API void __cdecl Console_PrintLnW(const System::WideChar * AText, const unsigned short AColor, ...)
-{
-    va_list args;
     va_start(args, AColor);
-
-    // Set console text color
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, AColor);
-
-    // Print the formatted text
-    vwprintf(AText, args);
-
-    // Print the newline
-    wprintf(L"\n");
-
-    // Reset console text color to default
-    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-
-    // Clean up the variable argument list
+    count = _vscwprintf(AText, args);
     va_end(args);
-}
 
-LMENGINE_API void __cdecl Console_ClearKeyStates()
-{
-	Lmengine::Export::Console_ClearKeyStates();
-}
+    if (count < 1) {
+		Lmengine::Export::LME_PrintLn(L"", AColor);
+        return;
+    }
 
-LMENGINE_API bool __cdecl Console_IsKeyPressed(System::Byte AKey)
-{
-	return Lmengine::Export::Console_IsKeyPressed(AKey);
+	printf("%c", '\0');  //TODO: This is nuts, without this printf, "%f"
+                         //      floating point formatting will always be zero
+                         //      when the dll is compiled in debug mode. Need
+                         //      to figure out what is going on with this.
+
+    wchar_t* buffer = (wchar_t*)malloc((count + 1) * sizeof(wchar_t));
+    if (buffer)
+    {
+	    va_start(args, AColor);
+        vswprintf(buffer, (count + 1), AText, args);
+		va_end(args);
+        Lmengine::Export::LME_PrintLn(buffer, AColor);
+        free(buffer);
+    }
 }
 
-LMENGINE_API bool __cdecl Console_WasKeyReleased(System::Byte AKey)
+LMENGINE_API void __cdecl LME_GetCursorPos(System::PInteger X, System::PInteger Y)
 {
-	return Lmengine::Export::Console_WasKeyReleased(AKey);
+	Lmengine::Export::LME_GetCursorPos(X, Y);
 }
 
-LMENGINE_API bool __cdecl Console_WasKeyPressed(System::Byte AKey)
+LMENGINE_API void __cdecl LME_SetCursorPos(const int X, const int Y)
 {
-	return Lmengine::Export::Console_WasKeyPressed(AKey);
+	Lmengine::Export::LME_SetCursorPos(X, Y);
 }
 
-LMENGINE_API void __cdecl Console_Pause(const bool AForcePause, System::Word AColor, const char * AText)
+LMENGINE_API void __cdecl LME_ClearConsole()
 {
-    Lmengine::Export::Console_Pause(AForcePause, AColor, AText);
+	Lmengine::Export::LME_ClearConsole();
 }
 
-//--- SPEECH ----------------------------------------------------------------
-LMENGINE_API void __cdecl Speech_SetWordCallback(const void * ASender, const Lmengine::Utils::Speech::WordEvent AHandler)
+LMENGINE_API void __cdecl LME_ClearConsoleLine(const System::Word AColor)
 {
-    Lmengine::Export::Speech_SetWordCallback(ASender, AHandler);
+	Lmengine::Export::LME_ClearConsoleLine(AColor);
 }
 
-LMENGINE_API Lmengine::Utils::Speech::WordEvent __cdecl Speech_GetWordEvent()
+LMENGINE_API void __cdecl LME_ClearKeyStates()
 {
-    return Lmengine::Export::Speech_GetWordCallback();
+	Lmengine::Export::LME_ClearKeyStates();
 }
 
-LMENGINE_API int __cdecl Speech_GetVoiceCount()
+LMENGINE_API bool __cdecl LME_IsKeyPressed(const System::Byte AKey)
 {
-    return Lmengine::Export::Speech_GetVoiceCount();
+	return Lmengine::Export::LME_IsKeyPressed(AKey);
 }
 
-LMENGINE_API const char * __cdecl Speech_GetVoiceAttribute(const int AIndex, unsigned char AAttribute)
+LMENGINE_API bool __cdecl LME_WasKeyReleased(const System::Byte AKey)
 {
-    if (AAttribute > 6)
-        return "";
-    else
-	    return Lmengine::Export::Speech_GetVoiceAttribute(AIndex, (Lmengine::Utils::Speech::VoiceAttributeEvent)AAttribute);
+	return Lmengine::Export::LME_WasKeyReleased(AKey);
 }
 
-LMENGINE_API void __cdecl Speech_ChangeVoice(const int AIndex)
+LMENGINE_API bool __cdecl LME_WasKeyPressed(const System::Byte AKey)
 {
-    Lmengine::Export::Speech_ChangeVoice(AIndex);
+	return Lmengine::Export::LME_WasKeyPressed(AKey);
 }
 
-LMENGINE_API int __cdecl Speech_GetVoice()
+LMENGINE_API void __cdecl LME_Pause(const bool AForcePause, System::Word AColor, const System::WideChar * AText)
 {
-    return Lmengine::Export::Speech_GetVoice();
+	Lmengine::Export::LME_Pause(AForcePause, AColor, AText);
 }
 
-LMENGINE_API void __cdecl Speech_SetVolume(const float AVolume)
+LMENGINE_API void __cdecl LME_ProcessMessages()
 {
-    Lmengine::Export::Speech_SetVolume(AVolume);
+	Lmengine::Export::LME_ProcessMessages();
 }
 
-LMENGINE_API float __cdecl Speech_GetVolume()
+LMENGINE_API System::WideChar * __cdecl LME_MaskFirstFoundWord(const System::WideChar * AText, const System::WideChar * AWord)
 {
-    return Lmengine::Export::Speech_GetVolume();
+	return Lmengine::Export::LME_MaskFirstFoundWord(AText, AWord);
 }
 
-LMENGINE_API void __cdecl Speech_SetRate(const float ARate)
+LMENGINE_API void __cdecl LME_SetTokenResponseRightMargin(const int AMargin)
 {
-    Lmengine::Export::Speech_SetRate(ARate);
+	Lmengine::Export::LME_SetTokenResponseRightMargin(AMargin);
 }
 
-LMENGINE_API float __cdecl Speech_GetRate()
+LMENGINE_API int __cdecl LME_AddTokenResponseToken(const System::WideChar *  AToken)
 {
-    return Lmengine::Export::Speech_GetRate();
+	return Lmengine::Export::LME_AddTokenResponseToken(AToken);
 }
 
-LMENGINE_API void __cdecl Speech_Clear()
+LMENGINE_API System::WideChar * __cdecl LME_LastTokenResponseWord(const bool ATrimLeft)
 {
-    Lmengine::Export::Speech_Clear();
+	return Lmengine::Export::LME_LastTokenResponseWord(ATrimLeft);
 }
 
-LMENGINE_API void __cdecl Speech_Say(const char * AText, const bool APurge)
+LMENGINE_API bool __cdecl LME_FinalizeTokenResponse()
 {
-    Lmengine::Export::Speech_Say(AText, APurge);
+	return Lmengine::Export::LME_FinalizeTokenResponse();
 }
 
-LMENGINE_API bool __cdecl Speech_Active()
+
+//=== SPEECH ================================================================
+LMENGINE_API void __cdecl LME_SetSpeechWordCallback(const Lmengine::Utils::Speech::WordEvent AHandler, const void * AUserData)
 {
-    return Lmengine::Export::Speech_Active();
+	Lmengine::Export::LME_SetSpeechWordCallback(AHandler, AUserData);
 }
 
-LMENGINE_API void __cdecl Speech_Pause()
+LMENGINE_API Lmengine::Utils::Speech::WordEvent __cdecl LME_GetSpeechWordCallback()
 {
-    Lmengine::Export::Speech_Pause();
+	return Lmengine::Export::LME_GetSpeechWordCallback();
 }
 
-LMENGINE_API void __cdecl Speech_Resume()
+LMENGINE_API int __cdecl LME_GetSpeechVoiceCount()
 {
-    Lmengine::Export::Speech_Resume();
+	return Lmengine::Export::LME_GetSpeechVoiceCount();
 }
 
-LMENGINE_API void __cdecl Speech_Reset()
+LMENGINE_API System::WideChar * __cdecl LME_GetSpeechVoiceAttribute(const int AIndex, const Lmengine::Utils::Speech::VoiceAttributeEvent AAttribute)
 {
-    Lmengine::Export::Speech_Reset();
+	return Lmengine::Export::LME_GetSpeechVoiceAttribute(AIndex, AAttribute);
 }
 
-LMENGINE_API void __cdecl Speech_SubstituteWord(const char * AWord, const char * ASubstituteWord)
+LMENGINE_API void __cdecl LME_ChangeSpeechVoice(const int AIndex)
 {
-    Lmengine::Export::Speech_SubstituteWord(AWord, ASubstituteWord);
+    Lmengine::Export::LME_ChangeSpeechVoice(AIndex);
 }
 
-//--- CORE ------------------------------------------------------------------
-LMENGINE_API const char * __cdecl Version_Get(const System::Byte AType)
+LMENGINE_API int __cdecl LME_GetSpeechVoice()
 {
-    return Lmengine::Export::Version_Get(AType);
+	return Lmengine::Export::LME_GetSpeechVoice();
 }
 
-LMENGINE_API void __cdecl Error_Clear()
+LMENGINE_API void __cdecl LME_SetSpeechVolume(const float AVolume)
 {
-	Lmengine::Export::Error_Clear();
+   Lmengine::Export::LME_SetSpeechVolume(AVolume);
 }
 
-LMENGINE_API void __cdecl Error_Set(const char * AText)
+LMENGINE_API float __cdecl LME_GetSpeechVolume()
 {
-	Lmengine::Export::Error_Set(AText);
+	return Lmengine::Export::LME_GetSpeechVolume();
 }
 
-LMENGINE_API const char * __cdecl Error_Get()
+LMENGINE_API void __cdecl LME_SetSpeechRate(const float ARate)
 {
-	return Lmengine::Export::Error_Get();
+	Lmengine::Export::LME_SetSpeechRate(ARate);
 }
 
-LMENGINE_API Lmengine::Core::TLMEngine::LoadModelProgressCallback __cdecl Callback_GetLoadModelProgress()
+LMENGINE_API float __cdecl LME_GetSpeechRate()
 {
-    return Lmengine::Export::Callback_GetLoadModelProgress();
+	return Lmengine::Export::LME_GetSpeechRate();
 }
 
-LMENGINE_API void __cdecl Callback_SetLoadModelProgress(const void * ASender, const Lmengine::Core::TLMEngine::LoadModelProgressCallback AHandler)
+LMENGINE_API void __cdecl LME_ClearSpeech()
 {
-	Lmengine::Export::Callback_SetLoadModelProgress(ASender, AHandler);
+	Lmengine::Export::LME_ClearSpeech();
 }
 
-LMENGINE_API Lmengine::Core::TLMEngine::LoadModelCallback __cdecl Callback_GetLoadModel()
+LMENGINE_API void __cdecl LME_SaySpeech(const System::WideChar * AText, const bool APurge)
 {
-    return Lmengine::Export::Callback_GetLoadModel();
+	Lmengine::Export::LME_SaySpeech(AText, APurge);
 }
 
-LMENGINE_API void __cdecl Callback_SetLoadModel(const void * ASender, const Lmengine::Core::TLMEngine::LoadModelCallback AHandler)
+LMENGINE_API bool __cdecl LME_IsSpeechActive()
 {
-	Lmengine::Export::Callback_SetLoadModel(ASender, AHandler);
+	return Lmengine::Export::LME_IsSpeechActive();
 }
 
-LMENGINE_API Lmengine::Core::TLMEngine::InferenceCancelCallback __cdecl Callback_GetInferenceCancel()
+LMENGINE_API void __cdecl LME_PauseSpeech()
 {
-	return Lmengine::Export::Callback_GetInferenceCancel();
+	Lmengine::Export::LME_PauseSpeech();
 }
 
-LMENGINE_API void __cdecl Callback_SetInferenceCancel(const void * ASender, const Lmengine::Core::TLMEngine::InferenceCancelCallback AHandler)
+LMENGINE_API void __cdecl LME_ResumeSpeech()
 {
-	Lmengine::Export::Callback_SetInferenceCancel(ASender, AHandler);
+	Lmengine::Export::LME_ResumeSpeech();
 }
 
-LMENGINE_API Lmengine::Core::TLMEngine::InferenceGetNextTokenCallback __cdecl Callback_GetInferenceNextToken()
+LMENGINE_API void __cdecl LME_ResetSpeech()
 {
-	return Lmengine::Export::Callback_GetInferenceNextToken();
+	Lmengine::Export::LME_ResetSpeech();
 }
 
-LMENGINE_API void __cdecl Callback_SetInferenceNextToken(const void * ASender, const Lmengine::Core::TLMEngine::InferenceGetNextTokenCallback AHandler)
+LMENGINE_API void __cdecl LME_SubstituteSpeechWord(const System::WideChar * AWord, const System::WideChar * ASubstituteWord)
 {
-	Lmengine::Export::Callback_SetInferenceNextToken(ASender, AHandler);
+	Lmengine::Export::LME_SubstituteSpeechWord(AWord, ASubstituteWord);
 }
 
-LMENGINE_API Lmengine::Core::TLMEngine::InferenceStartCallback __cdecl Callback_GetInferenceStart()
+//=== CORE ==================================================================
+LMENGINE_API System::WideChar * __cdecl LME_GetVersion(const System::Byte AType)
 {
-	return Lmengine::Export::Callback_GetInferenceStart();
+	return Lmengine::Export::LME_GetVersion(AType);
 }
+
 
-LMENGINE_API void __cdecl Callback_SetInferenceStart(const void * ASender, const Lmengine::Core::TLMEngine::InferenceStartCallback AHandler)
+LMENGINE_API void __cdecl LME_ClearError()
 {
-	Lmengine::Export::Callback_SetInferenceStart(ASender, AHandler);
+	Lmengine::Export::LME_ClearError();
 }
 
-LMENGINE_API Lmengine::Core::TLMEngine::InferenceEndCallback __cdecl Callback_GetInferenceEnd()
+LMENGINE_API void __cdecl LME_SetError(const System::WideChar * AText)
 {
-	return Lmengine::Export::Callback_GetInferenceEnd();
+	Lmengine::Export::LME_SetError(AText);
 }
 
-LMENGINE_API void __cdecl Callback_SetInferenceEnd(const void * ASender, const Lmengine::Core::TLMEngine::InferenceEndCallback AHandler)
+LMENGINE_API System::WideChar * __cdecl LME_GetError()
 {
-	Lmengine::Export::Callback_SetInferenceEnd(ASender, AHandler);
+   	return Lmengine::Export::LME_GetError();
 }
 
-LMENGINE_API Lmengine::Core::TLMEngine::InfoCallback __cdecl Callback_GetInfo()
+LMENGINE_API Lmengine::Core::TLMEngine::InferenceCancelCallback __cdecl LME_GetInferenceCancelCallback()
 {
-	return Lmengine::Export::Callback_GetInfo();
+   	return Lmengine::Export::LME_GetInferenceCancelCallback();
 }
 
-LMENGINE_API void __cdecl Callback_SetInfo(const void * ASender, const Lmengine::Core::TLMEngine::InfoCallback AHandler)
+LMENGINE_API void __cdecl LME_SetInferenceCancelCallback(const Lmengine::Core::TLMEngine::InferenceCancelCallback AHandler, const void * AUserData)
 {
-	Lmengine::Export::Callback_SetInfo(ASender, AHandler);
+   	Lmengine::Export::LME_SetInferenceCancelCallback(AHandler, AUserData);
 }
 
-LMENGINE_API void __cdecl Config_Init(const char * AModelPath, const System::Int32 ANumGPULayers)
+LMENGINE_API Lmengine::Core::TLMEngine::InferenceTokenCallback __cdecl LME_GetInferenceTokenCallback()
 {
-	Lmengine::Export::Config_Init(AModelPath, ANumGPULayers);
+    return Lmengine::Export::LME_GetInferenceTokenCallback();
 }
 
-LMENGINE_API bool __cdecl Config_Save(const char * AFilename)
+LMENGINE_API void __cdecl LME_SetInferenceTokenlCallback(const Lmengine::Core::TLMEngine::InferenceTokenCallback AHandler, const void * AUserData)
 {
-	return Lmengine::Export::Config_Save(AFilename);
+	Lmengine::Export::LME_SetInferenceTokenlCallback(AHandler, AUserData);
 }
 
-LMENGINE_API bool __cdecl Config_Load(const char * AFilename)
+LMENGINE_API Lmengine::Core::TLMEngine::InfoCallback __cdecl LME_GetInfoCallback()
 {
-	return Lmengine::Export::Config_Load(AFilename);
+   return Lmengine::Export::LME_GetInfoCallback();
 }
 
-LMENGINE_API void __cdecl Message_ClearAll()
+LMENGINE_API void __cdecl LME_SetInfoCallback(const Lmengine::Core::TLMEngine::InfoCallback AHandler, const void * AUserData)
 {
-	Lmengine::Export::Message_ClearAll();
+   Lmengine::Export::LME_SetInfoCallback(AHandler, AUserData);
 }
 
-LMENGINE_API System::Int32 __cdecl Message_Add(const char * ARole, const char * AContent)
+LMENGINE_API Lmengine::Core::TLMEngine::LoadModelProgressCallback __cdecl LME_GetLoadModelProgressCallback()
 {
-	return Lmengine::Export::Message_Add(ARole, AContent);
+   return Lmengine::Export::LME_GetLoadModelProgressCallback();
 }
 
-LMENGINE_API System::Int32 __cdecl Message_AddW(const char * ARole, System::WideChar * AContent)
+LMENGINE_API void __cdecl LME_SetLoadModelProgressCallback(const Lmengine::Core::TLMEngine::LoadModelProgressCallback AHandler, const void * AUserData)
 {
-	return Lmengine::Export::Message_AddW(ARole, AContent);
+   Lmengine::Export::LME_SetLoadModelProgressCallback(AHandler, AUserData);
 }
 
-LMENGINE_API const char * __cdecl Message_GetLastUser()
+LMENGINE_API Lmengine::Core::TLMEngine::LoadModelCallback __cdecl LME_GetLoadModelCallback()
 {
-	return Lmengine::Export::Message_GetLastUser();
+   return Lmengine::Export::LME_GetLoadModelCallback();
 }
 
-LMENGINE_API const char * __cdecl Message_BuildInferencePrompt(const char * AModelName)
+LMENGINE_API void __cdecl LME_SetLoadModelCallback(const Lmengine::Core::TLMEngine::LoadModelCallback AHandler, const void * AUserData)
 {
-	return Lmengine::Export::Message_BuildInferencePrompt(AModelName);
+   Lmengine::Export::LME_SetLoadModelCallback(AHandler, AUserData);
 }
 
-LMENGINE_API void __cdecl Model_ClearDefines()
+LMENGINE_API Lmengine::Core::TLMEngine::InferenceStartCallback __cdecl LME_GetInferenceStartCallback()
 {
-	Lmengine::Export::Model_ClearDefines();
+   return Lmengine::Export::LME_GetInferenceStartCallback();
 }
 
-LMENGINE_API System::Int32 __cdecl Model_Define(const char * AModelFilename, const char * AModelName, const System::UInt32 AMaxContext, const char * ATemplate, const char * ATemplateEnd/*, const bool AAddAssistant*/)
+LMENGINE_API void __cdecl LME_SetInferenceStartCallback(const Lmengine::Core::TLMEngine::InferenceStartCallback AHandler, const void * AUserData)
 {
-	return Lmengine::Export::Model_Define(AModelFilename, AModelName, AMaxContext, ATemplate, ATemplateEnd/*, AAddAssistant*/);
+   Lmengine::Export::LME_SetInferenceStartCallback(AHandler, AUserData);
 }
 
-LMENGINE_API bool __cdecl Model_SaveDefines(const char * AFilename)
+LMENGINE_API Lmengine::Core::TLMEngine::InferenceEndCallback __cdecl LME_GetInferenceEndCallback()
 {
-	return Lmengine::Export::Model_SaveDefines(AFilename);
+   return Lmengine::Export::LME_GetInferenceEndCallback();
 }
 
-LMENGINE_API bool __cdecl Model_LoadDefines(const char * AFilename)
+LMENGINE_API void __cdecl LME_SetInferenceEndCallback(const Lmengine::Core::TLMEngine::InferenceEndCallback AHandler, const void * AUserData)
 {
-	return Lmengine::Export::Model_LoadDefines(AFilename);
+   Lmengine::Export::LME_SetInferenceEndCallback(AHandler, AUserData);
 }
 
-LMENGINE_API void __cdecl Model_ClearStopSequences(const char * AModelName)
+LMENGINE_API void __cdecl LME_InitConfig(const System::WideChar * AModelPath, const System::Int32 ANumGPULayers)
 {
-	Lmengine::Export::Model_ClearStopSequences(AModelName);
+	Lmengine::Export::LME_InitConfig(AModelPath, ANumGPULayers);
 }
 
-LMENGINE_API System::Int32 __cdecl Model_AddStopSequence(const char * AModelName, const char * AToken)
+LMENGINE_API bool __cdecl LME_SaveConfig(const System::WideChar * AFilename)
 {
-	return Lmengine::Export::Model_AddStopSequence(AModelName, AToken);
+	return Lmengine::Export::LME_SaveConfig(AFilename);
 }
 
-LMENGINE_API System::Int32 __cdecl Model_GetStopSequenceCount(const char * AModelName)
+LMENGINE_API bool __cdecl LME_LoadConfig(const System::WideChar * AFilename)
 {
-	return Lmengine::Export::Model_GetStopSequenceCount(AModelName);
+	return Lmengine::Export::LME_LoadConfig(AFilename);
 }
 
-LMENGINE_API bool __cdecl Model_Load(const char * AModelName)
+LMENGINE_API void __cdecl LME_ClearAllMessages()
 {
-	return Lmengine::Export::Model_Load(AModelName);
+	Lmengine::Export::LME_ClearAllMessages();
 }
 
-LMENGINE_API bool __cdecl Model_IsLoaded()
+LMENGINE_API System::Int32 __cdecl LME_AddMessage(const System::WideChar * ARole, const System::WideChar * AContent)
 {
-	return Lmengine::Export::Model_IsLoaded();
+	return Lmengine::Export::LME_AddMessage(ARole, AContent);
 }
 
-LMENGINE_API void __cdecl Model_Unload()
+LMENGINE_API System::WideChar * __cdecl LME_GetLastUserMessage()
 {
-	Lmengine::Export::Model_Unload();
+	return Lmengine::Export::LME_GetLastUserMessage();
 }
 
-LMENGINE_API bool __cdecl Inference_Run(const char * AModelName, const System::UInt32 AMaxTokens)
+LMENGINE_API System::WideChar * __cdecl LME_BuildMessageInferencePrompt(const System::WideChar * AModelName)
 {
-	return Lmengine::Export::Inference_Run(AModelName, AMaxTokens);
+	return Lmengine::Export::LME_BuildMessageInferencePrompt(AModelName);
 }
 
-LMENGINE_API bool __cdecl Inference_Start(const char * AModelName, const System::UInt32 AMaxTokens)
+LMENGINE_API void __cdecl LME_ClearModelDefines()
 {
-	return Lmengine::Export::Inference_Start(AModelName, AMaxTokens);
+	Lmengine::Export::LME_ClearModelDefines();
 }
 
-LMENGINE_API bool __cdecl Inference_IsActive()
+LMENGINE_API System::Int32 __cdecl LME_DefineModel(const System::WideChar * AModelFilename, const System::WideChar * AModelName, const System::UInt32 AMaxContext, const System::WideChar * ATemplate, const System::WideChar * ATemplateEnd)
 {
-	return Lmengine::Export::Inference_IsActive();
+	return Lmengine::Export::LME_DefineModel(AModelFilename, AModelName, AMaxContext, ATemplate, ATemplateEnd);
 }
 
-LMENGINE_API const char * __cdecl Inference_GetNextToken()
+LMENGINE_API bool __cdecl LME_SaveModelDefines(const System::WideChar * AFilename)
 {
-	return Lmengine::Export::Inference_GetNextToken();
+	return Lmengine::Export::LME_SaveModelDefines(AFilename);
 }
 
-LMENGINE_API void __cdecl Inference_Stop()
+LMENGINE_API bool __cdecl LME_LoadModelDefines(const System::WideChar * AFilename)
 {
-	Lmengine::Export::Inference_Stop();
+	return Lmengine::Export::LME_LoadModelDefines(AFilename);
 }
 
-LMENGINE_API const char * __cdecl Inference_GetResponse()
+LMENGINE_API bool __cdecl LME_LoadModel(const System::WideChar * AModelName)
 {
-	return Lmengine::Export::Inference_GetResponse();
+   	return Lmengine::Export::LME_LoadModel(AModelName);
 }
 
-LMENGINE_API void __cdecl Inference_GetUsage(System::PSingle ATokenInputSpeed, System::PSingle ATokenOutputSpeed, System::PInteger AInputTokens, System::PInteger AOutputTokens, System::PInteger ATotalTokens)
+LMENGINE_API bool __cdecl LME_IsModelLoaded()
 {
-	Lmengine::Export::Inference_GetUsage(ATokenInputSpeed, ATokenOutputSpeed, AInputTokens, AOutputTokens, ATotalTokens);
+   	return Lmengine::Export::LME_IsModelLoaded();
 }
 
-
-// TokenResponse
-LMENGINE_API void __cdecl TokenResponse_SetRightMargin(const int AMargin)
+LMENGINE_API void __cdecl LME_UnloadModel()
 {
-	Lmengine::Export::TokenResponse_SetRightMargin(AMargin);
+   	Lmengine::Export::LME_UnloadModel();
 }
 
-LMENGINE_API int __cdecl TokenResponse_AddToken(const char * AToken)
+LMENGINE_API bool __cdecl LME_RunInference(const System::WideChar * AModelName, const System::UInt32 AMaxTokens)
 {
-	return Lmengine::Export::TokenResponse_AddToken(AToken);
+   	return Lmengine::Export::LME_RunInference(AModelName, AMaxTokens);
 }
 
-LMENGINE_API const char * __cdecl TokenResponse_LastWord(const bool ATrimLastWord)
+LMENGINE_API System::WideChar * __cdecl LME_GetInferenceResponse()
 {
-	return Lmengine::Export::TokenResponse_LastWord(ATrimLastWord);
+    return Lmengine::Export::LME_GetInferenceResponse();
 }
 
-LMENGINE_API bool __cdecl TokenResponse_Finalize()
+LMENGINE_API void __cdecl LME_GetInferenceStats(System::PSingle ATokenInputSpeed, System::PSingle ATokenOutputSpeed, Lmengine::Deps::PInt32 AInputTokens, Lmengine::Deps::PInt32 AOutputTokens, Lmengine::Deps::PInt32 ATotalTokens)
 {
-	return Lmengine::Export::TokenResponse_Finalize();
+   	Lmengine::Export::LME_GetInferenceStats(ATokenInputSpeed, ATokenOutputSpeed, AInputTokens, AOutputTokens, ATotalTokens);
 }
-
-
 

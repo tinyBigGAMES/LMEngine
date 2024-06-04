@@ -1,4 +1,4 @@
-{* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
         %%%%@%%%%%%%@%%%%%%%%%%%%%%%%*#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%=%%%%%%%%%#.-%%%%%%%%%%#%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%#:=:#%%%%+******#%%#******+%%%%#:=:*%%%%%%%%%%%%
@@ -37,24 +37,11 @@
                     Email  : support@tinybiggames.com
 
                  See LICENSE file for license information
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *}
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-program testbed_pas;
+#ifndef COMMON_H
+#define COMMON_H
 
-{$APPTYPE CONSOLE}
+#define LMENGINE_API extern "C" __declspec(dllexport)
 
-{$R *.res}
-
-uses
-  System.SysUtils,
-  LMEngine in '..\..\..\..\..\lib\LMEngine.pas',
-  utestbed in '..\..\src\utestbed.pas';
-
-begin
-  try
-    RunTests();
-  except
-    on E: Exception do
-      Writeln(E.ClassName, ': ', E.Message);
-  end;
-end.
+#endif
