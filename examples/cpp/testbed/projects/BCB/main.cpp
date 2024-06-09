@@ -37,7 +37,7 @@
                     Email  : support@tinybiggames.com
 
                  See LICENSE file for license information
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include <iostream>
 #include <tchar.h>

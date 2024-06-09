@@ -37,7 +37,7 @@
                     Email  : support@tinybiggames.com
 
                  See LICENSE file for license information
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *}
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * }
 
 program testbed_pas;
 
@@ -47,8 +47,8 @@ program testbed_pas;
 
 uses
   System.SysUtils,
-  LMEngine in '..\..\..\..\..\lib\LMEngine.pas',
-  utestbed in '..\..\src\utestbed.pas';
+  utestbed in '..\..\src\utestbed.pas',
+  lme in '..\..\..\..\..\lib\lme.pas';
 
 begin
   try

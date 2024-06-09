@@ -5,7 +5,7 @@
 ### <img src="media\Analyze.png" alt="Overview" width="20" height="20"/> Overview
 Welcome to LMEngine. We are pleased to introduce you to our versatile and user-friendly library, designed to facilitate local LLM inference across various programming languages. Whether you are a seasoned developer or just beginning your journey, LMEngine offers a straightforward solution to integrate advanced language model capabilities into your applications with ease. 
 
-The library maintains a minimal overhead of approximately 2.5MB. The API is highly flexible, enabling inference execution through the `LME_RunInference` function, which completes the process and returns the results. Users can define callbacks for customization.
+With an easy to use API, inference can be executed through the single `RunInference` function. Users can define callbacks for customization.
 
 LMEngine provides out-of-the-box bindings for Pascal and C/C++, featuring a straightforward procedural API that facilitates the creation of bindings for additional languages.
 
@@ -14,11 +14,11 @@ This library efficiently loads LLMs in [GGUF format](https://huggingface.co/docs
 ### <img src="media\Update.png" alt="drawing" width="20" height="20"/> Installation
 - [Download](https://github.com/tinyBigGAMES/LMEngine/archive/refs/heads/main.zip) the LMEngine repo, unzip to a desired location.
 - Acquire a GGUF model. All vetted models compatible with LMEngine can be downloaded from our <a href="https://huggingface.co/tinybiggames" target="_blank">Hugging Face</a> account.
-- The library utilizes Vulkan for enhanced performance on supported GPUs. You can perform inference solely on the GPU or distribute the workload between the CPU and GPU to accommodate scenarios with limited VRAM (this split functionality will be available in a future update). Ensure the model size does not exceed the available system resources, considering the requisite memory.
+- The library utilizes Vulkan for enhanced performance on supported GPUs. Ensure the model size does not exceed the available system resources, considering the requisite memory.
 - Consult the `installdir\examples` directory for demonstrations on integrating **LMEngine** with your programming language.
-- Include the following DLLs in your project distribution: `LMEngine.dll`. See [VirusTotal Report](bin/LMEngine.dll.VirusTotal.txt) report.
+- Include the following DLLs in your project distribution: `lme_deps.dll` ([VirusTotal Report](bin/lme_deps.dll.VirusTotal.txt)) and `lme.dll` ([VirusTotal Report](bin/lme.dll.VirusTotal.txt)).
 - LMEngine API supports integration across programming languages that accommodate Win64 and Unicode, with out-of-the-box support for Pascal and C/C++.
-- Ship-ready DLLs are included in the repository; however, if there is a need to rebuild the `LMEngine.dll`, [RAD Studio 12.1](https://www.embarcadero.com/products/rad-studio/) is required.
+- Ship-ready DLLs are included in the repository; however, if there is a need to rebuild `lme.dll`, [Delphi 12.1](https://www.embarcadero.com/products/Delphi) is required and for `lme_deps.dll`, [Visual Studio 2022](https://visualstudio.microsoft.com/vs/) is required.
 - This project is developed using RAD Studio 12.1, on Windows 11, powered by an Intel Core i5-12400F at 2500 MHz with 6 cores (12 logical), equipped with 36GB RAM and an NVIDIA RTX 3060 GPU with 12GB RAM.
 
 - We encourage testing and welcome pull requests.
@@ -33,25 +33,25 @@ uses
 
 begin
   // init
-  LME_InitConfigt('C:/LLM/gguf', -1);
+  InitConfigt('C:/LLM/gguf', -1);
   
   // define model
-  LME_DefineModel('phi-3-mini-4k-instruct.Q4_K_M.gguf',
+  DefineModel('phi-3-mini-4k-instruct.Q4_K_M.gguf',
     'phi-3-mini-4k-instruct.Q4_K_M', 4000, '<|{role}|>{content}<|end|>',
     '<|assistant|>');  
   
   // add message
-  LME_AddMessage(LME_ROLE_SYSTEM, 'You are a helpful AI assistant');
-  LME_AddMessage(LME_ROLE_USER, 'What is AI?');
+  AddMessage(LME_ROLE_SYSTEM, 'You are a helpful AI assistant');
+  AddMessage(LME_ROLE_USER, 'What is AI?');
     
-  if not LME_LoadModel('phi-3-mini-4k-instruct.Q4_K_M') then
+  if not LoadModel('phi-3-mini-4k-instruct.Q4_K_M') then
   begin
-    LME_PrintLn('Error: %s', LME_FG_RED, LME_GetError());
+    PrintLn('Error: %s', FG_RED, GetError());
     Exit;
   end;    
     
   // do inference
-  if LME_RunInference('phi-3-mini-4k-instruct.Q4_K_M', 1024) then
+  if RunInference('phi-3-mini-4k-instruct.Q4_K_M', 1024) then
     begin
       // success
     end
@@ -61,7 +61,7 @@ begin
     end;
 
   // unload model  
-  LME_UnloadModel();
+  UnloadModel();
 
 end.
 ```  
@@ -72,25 +72,25 @@ C/CPP Example
 int main()
 {
     // init
-    LME_InitConfig(L"C:/LLM/gguf", -1);
+    InitConfig(L"C:/LLM/gguf", -1);
     
     // define model
-    LME_DefineModel(L"phi-3-mini-4k-instruct.Q4_K_M.gguf",
+    DefineModel(L"phi-3-mini-4k-instruct.Q4_K_M.gguf",
       L"phi-3-mini-4k-instruct.Q4_K_M", 4000, L"<|{role}|>{content}<|end|>",
       L"<|assistant|>");  
     
     // add message
-    LME_AddMessage(LME_ROLE_SYSTEM, L"You are a helpful AI assistant");
-    LME_AddMessage(LME_ROLE_USER, L"What is AI?");
+    AddMessage(LME_ROLE_SYSTEM, L"You are a helpful AI assistant");
+    AddMessage(LME_ROLE_USER, L"What is AI?");
     
-    if (!LME_LoadModel(L"phi-3-mini-4k-instruct.Q4_K_M"))
+    if (!LoadModel(L"phi-3-mini-4k-instruct.Q4_K_M"))
     {
-        LME_PrintLn(L"Error: %s", LME_FG_RED, LME_GetError());
+        PrintLn(L"Error: %s", FG_RED, GetError());
         return 1;
     }
     
     // do inference
-    if (LME_RunInference(L'phi-3-mini-4k-instruct.Q4_K_M', 1024))
+    if (RunInference(L'phi-3-mini-4k-instruct.Q4_K_M', 1024))
     {
         // success
     }
@@ -100,7 +100,7 @@ int main()
     }
     
     // unload model  
-    LME_UnloadModel();
+    UnloadModel();
 
     return 0;
 }

@@ -98,9 +98,9 @@
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <FinalOutputDir>..\..\..\..\..\bin</FinalOutputDir>
-        <IncludePath>..\..\..\..\..\lib;$(IncludePath)</IncludePath>
-        <ILINK_LibraryPath>..\..\..\..\..\lib;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <IncludePath>..\..\..\..\..\lib;..\..\src</IncludePath>
         <Manifest_File>(None)</Manifest_File>
+        <ILINK_LibraryPath>..\..\..\..\..\lib</ILINK_LibraryPath>
         <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
@@ -131,8 +131,6 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64x)'!=''">
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <Manifest_File>(None)</Manifest_File>
-        <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
@@ -151,9 +149,9 @@
         </PCHCompile>
         <CppCompile Include="..\..\src\utestbed.cpp">
             <DependentOn>..\..\src\utestbed.h</DependentOn>
-            <BuildOrder>2</BuildOrder>
+            <BuildOrder>3</BuildOrder>
         </CppCompile>
-        <None Include="..\..\..\..\..\lib\LMEngine.h">
+        <None Include="..\..\..\..\..\lib\lme.h">
             <BuildOrder>3</BuildOrder>
         </None>
         <BuildConfiguration Include="Base">

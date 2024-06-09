@@ -4,7 +4,7 @@
             "filename": "dolphin-2.9.1-llama-3-8b.Q4_K_M.gguf",
             "name": "dolphin-2.9.1-llama-3-8b.Q4_K_M",
             "max_context": 8000,
-            "template": "<|im_start|>{role}\n{content}\n<|im_end|>",
+            "template": "<|im_start|>{role}\\n{content}\\n<|im_end|>",
             "template_end": "<|im_start|>assistant"
         },
         {
@@ -18,14 +18,14 @@
             "filename": "hermes-2-pro-llama-3-8b.Q4_K_M.gguf",
             "name": "hermes-2-pro-llama-3-8b.Q4_K_M",
             "max_context": 8000,
-            "template": "<|im_start|>{role}\n{content}\n<|im_end|>",
+            "template": "<|im_start|>{role}\\n{content}\\n<|im_end|>",
             "template_end": "<|im_start|>assistant"
         },
         {
             "filename": "meta-llama-3-8b-instruct.Q4_K_M.gguf",
             "name": "meta-llama-3-8b-instruct.Q4_K_M",
             "max_context": 8000,
-            "template": "<|start_header_id|>{role}\n<|end_header_id|><|eot_id|><|start_header_id|>{content}\n<|end_header_id|><|eot_id|>",
+            "template": "<|start_header_id|>{role}\\n<|end_header_id|><|eot_id|><|start_header_id|>{content}\\n<|end_header_id|><|eot_id|>",
             "template_end": "<|start_header_id|>assistant<|end_header_id|>"
         },
         {

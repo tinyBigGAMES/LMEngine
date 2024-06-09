@@ -1,15 +1,15 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{0B83521F-E416-4D48-A75C-E68424301E7E}</ProjectGuid>
+        <ProjectGuid>{BE4ACF6F-E2E1-4EA3-9E56-AC9298BA81A7}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="LMEngine\LMEngine.cbproj">
-            <Dependencies/>
-        </Projects>
-        <Projects Include="..\examples\pas\testbed\projects\Delphi\testbed_pas.dproj">
+        <Projects Include="lme\lme.dproj">
             <Dependencies/>
         </Projects>
         <Projects Include="..\examples\cpp\testbed\projects\BCB\testbed_cpp.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\examples\pas\testbed\projects\Delphi\testbed_pas.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -20,23 +20,14 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="LMEngine">
-        <MSBuild Projects="LMEngine\LMEngine.cbproj"/>
+    <Target Name="lme">
+        <MSBuild Projects="lme\lme.dproj"/>
     </Target>
-    <Target Name="LMEngine:Clean">
-        <MSBuild Projects="LMEngine\LMEngine.cbproj" Targets="Clean"/>
+    <Target Name="lme:Clean">
+        <MSBuild Projects="lme\lme.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="LMEngine:Make">
-        <MSBuild Projects="LMEngine\LMEngine.cbproj" Targets="Make"/>
-    </Target>
-    <Target Name="testbed_pas">
-        <MSBuild Projects="..\examples\pas\testbed\projects\Delphi\testbed_pas.dproj"/>
-    </Target>
-    <Target Name="testbed_pas:Clean">
-        <MSBuild Projects="..\examples\pas\testbed\projects\Delphi\testbed_pas.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="testbed_pas:Make">
-        <MSBuild Projects="..\examples\pas\testbed\projects\Delphi\testbed_pas.dproj" Targets="Make"/>
+    <Target Name="lme:Make">
+        <MSBuild Projects="lme\lme.dproj" Targets="Make"/>
     </Target>
     <Target Name="testbed_cpp">
         <MSBuild Projects="..\examples\cpp\testbed\projects\BCB\testbed_cpp.cbproj"/>
@@ -47,14 +38,23 @@
     <Target Name="testbed_cpp:Make">
         <MSBuild Projects="..\examples\cpp\testbed\projects\BCB\testbed_cpp.cbproj" Targets="Make"/>
     </Target>
+    <Target Name="testbed_pas">
+        <MSBuild Projects="..\examples\pas\testbed\projects\Delphi\testbed_pas.dproj"/>
+    </Target>
+    <Target Name="testbed_pas:Clean">
+        <MSBuild Projects="..\examples\pas\testbed\projects\Delphi\testbed_pas.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="testbed_pas:Make">
+        <MSBuild Projects="..\examples\pas\testbed\projects\Delphi\testbed_pas.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="LMEngine;testbed_pas;testbed_cpp"/>
+        <CallTarget Targets="lme;testbed_cpp;testbed_pas"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="LMEngine:Clean;testbed_pas:Clean;testbed_cpp:Clean"/>
+        <CallTarget Targets="lme:Clean;testbed_cpp:Clean;testbed_pas:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="LMEngine:Make;testbed_pas:Make;testbed_cpp:Make"/>
+        <CallTarget Targets="lme:Make;testbed_cpp:Make;testbed_pas:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
