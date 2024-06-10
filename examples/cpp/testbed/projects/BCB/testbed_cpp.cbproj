@@ -4,7 +4,7 @@
         <ProjectVersion>20.1</ProjectVersion>
         <FrameworkType>None</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win64x</Platform>
         <ProjectName Condition="'$(ProjectName)'==''">testbed_cpp</ProjectName>
         <TargetedPlatforms>1048576</TargetedPlatforms>
@@ -98,9 +98,9 @@
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <FinalOutputDir>..\..\..\..\..\bin</FinalOutputDir>
-        <IncludePath>..\..\..\..\..\lib;..\..\src</IncludePath>
+        <IncludePath>..\..\..\..\..\lib;$(IncludePath)</IncludePath>
+        <ILINK_LibraryPath>..\..\..\..\..\lib;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <Manifest_File>(None)</Manifest_File>
-        <ILINK_LibraryPath>..\..\..\..\..\lib</ILINK_LibraryPath>
         <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
@@ -131,6 +131,8 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64x)'!=''">
         <VerInfo_Locale>1033</VerInfo_Locale>
+        <Manifest_File>(None)</Manifest_File>
+        <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
@@ -149,9 +151,9 @@
         </PCHCompile>
         <CppCompile Include="..\..\src\utestbed.cpp">
             <DependentOn>..\..\src\utestbed.h</DependentOn>
-            <BuildOrder>3</BuildOrder>
+            <BuildOrder>2</BuildOrder>
         </CppCompile>
-        <None Include="..\..\..\..\..\lib\lme.h">
+        <None Include="..\..\..\..\..\lib\LMEngine.h">
             <BuildOrder>3</BuildOrder>
         </None>
         <BuildConfiguration Include="Base">

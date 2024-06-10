@@ -37,14 +37,14 @@
                     Email  : support@tinybiggames.com
 
                  See LICENSE file for license information
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 //---------------------------------------------------------------------------
 
 #pragma hdrstop
 
 #include <stdio.h>
-#include <lme.h>
+#include <LMEngine.h>
 #include "utestbed.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -53,48 +53,48 @@
 #include <stdbool.h>
 
 bool OnInferenceCancel(const void* AUserData) {
-    return WasKeyReleased(VKEY_ESCAPE);
+    return LME_WasKeyReleased(LME_VKEY_ESCAPE);
 }
 
 void OnInferenceToken(const wchar_t* AToken, const void* AUserData) {
     // Handle new tokens
-    switch (AddTokenResponseToken(AToken)) {
-        case TOKENRESPONSE_WAIT:
+    switch (LME_AddTokenResponseToken(AToken)) {
+        case LME_TOKENRESPONSE_WAIT:
             // Do nothing, need more tokens
             break;
 
-        case TOKENRESPONSE_APPEND:
-            Print(LastTokenResponseWord(false), FG_WHITE);
+        case LME_TOKENRESPONSE_APPEND:
+            LME_Print(LME_LastTokenResponseWord(false), LME_FG_WHITE);
             break;
 
-        case TOKENRESPONSE_NEWLINE:
-            PrintLn(L"", FG_WHITE);
-            Print(LastTokenResponseWord(true), FG_WHITE);
+        case LME_TOKENRESPONSE_NEWLINE:
+            LME_PrintLn(L"", LME_FG_WHITE);
+            LME_Print(LME_LastTokenResponseWord(true), LME_FG_WHITE);
             break;
     }
 }
 
 void OnInferenceStart(const void* AUserData) {
-    PrintLn(L"[InferenceStart]", FG_DARKGRAY);
+    LME_PrintLn(L"[InferenceStart]", LME_FG_DARKGRAY);
 }
 
 void OnInferenceEnd(const void* AUserData) {
     // Force potential leftovers into Word array.
-    if (FinalizeTokenResponse()) {
+    if (LME_FinalizeTokenResponse()) {
         // Handle last word
         OnInferenceToken(L"", NULL);
     }
 
-    PrintLn(L"", FG_WHITE);
-    PrintLn(L"[InferenceEnd]", FG_DARKGRAY);
+    LME_PrintLn(L"", LME_FG_WHITE);
+    LME_PrintLn(L"[InferenceEnd]", LME_FG_DARKGRAY);
 }
 
 bool OnLoadModelProgress(const wchar_t* AModelName, float AProgress, const void* AUserData) {
     bool Result = true;
 
-    Print(L"%lcLoading model '%ls' (%3.2f%ls)...", FG_CYAN, CR, AModelName, AProgress*100, L"%");
+    LME_Print(L"%lcLoading model '%ls' (%3.2f%ls)...", LME_FG_CYAN, LME_CR, AModelName, AProgress*100, L"%");
     if (AProgress >= 1) {
-        ClearConsoleLine(FG_WHITE);
+        LME_ClearConsoleLine(LME_FG_WHITE);
     }
 
     return Result;
@@ -102,14 +102,14 @@ bool OnLoadModelProgress(const wchar_t* AModelName, float AProgress, const void*
 
 void OnLoadModel(const wchar_t* AModelName, bool ASuccess, const void* AUserData) {
     if (ASuccess)
-        PrintLn(L"Successfully loaded model '%ls'", FG_CYAN, AModelName);
+        LME_PrintLn(L"Successfully loaded model '%ls'", LME_FG_CYAN, AModelName);
     else
-        PrintLn(L"Failed to load model '%ls'", FG_RED, AModelName);
+        LME_PrintLn(L"Failed to load model '%ls'", LME_FG_RED, AModelName);
 }
 
 void OnInfo(int ALevel, const wchar_t* AText, const void* AUserData) {
     // Uncomment to display system and model information
-    //Print(AText, FG_DARKGRAY);
+    //LME_Print(AText, LME_FG_DARKGRAY);
 }
 
 void Test01() {
@@ -138,48 +138,49 @@ void Test01() {
     int LOutputTokens;
     int LTotalTokens;
 
-    InitConfig(L"C:\\LLM\\gguf", -1);
-    SaveConfig(L"config.json");
+    LME_InitConfig(L"C:\\LLM\\gguf", -1);
+    LME_SaveConfig(L"config.json");
 
-    SetInferenceCancelCallback(OnInferenceCancel, NULL);
-    SetInferenceTokenlCallback(OnInferenceToken, NULL);
-    SetInferenceStartCallback(OnInferenceStart, NULL);
-    SetInferenceEndCallback(OnInferenceEnd, NULL);
-    SetLoadModelProgressCallback(OnLoadModelProgress, NULL);
-    SetLoadModelCallback(OnLoadModel, NULL);
-    SetInfoCallback(OnInfo, NULL);
+    LME_SetInferenceCancelCallback(OnInferenceCancel, NULL);
+    LME_SetInferenceTokenlCallback(OnInferenceToken, NULL);
+    LME_SetInferenceStartCallback(OnInferenceStart, NULL);
+    LME_SetInferenceEndCallback(OnInferenceEnd, NULL);
+    LME_SetLoadModelProgressCallback(OnLoadModelProgress, NULL);
+    LME_SetLoadModelCallback(OnLoadModel, NULL);
+    LME_SetInfoCallback(OnInfo, NULL);
 
-    DefineModel(L"phi-3-mini-4k-instruct.Q4_K_M.gguf", L"phi-3-mini-4k-instruct.Q4_K_M", 4000, L"<|{role}|>{content}<|end|>", L"<|assistant|>");
-	DefineModel(L"phi-3-mini-128k-instruct.Q4_K_M.gguf", L"phi-3-mini-128k-instruct.Q4_K_M", 8000, L"<|{role}|>{content}<|end|>", L"<|assistant|>");
-    DefineModel(L"meta-llama-3-8b-instruct.Q4_K_M.gguf", L"meta-llama-3-8b-instruct.Q4_K_M", 8000, L"<|start_header_id|>{role}\n<|end_header_id|><|eot_id|><|start_header_id|>{content}\n<|end_header_id|><|eot_id|>", L"<|start_header_id|>assistant<|end_header_id|>");
-    DefineModel(L"hermes-2-pro-llama-3-8b.Q4_K_M.gguf", L"hermes-2-pro-llama-3-8b.Q4_K_M", 8000, L"<|im_start|>{role}\n{content}\n<|im_end|>", L"<|im_start|>assistant");
-    DefineModel(L"dolphin-2.9.1-llama-3-8b.Q4_K_M.gguf", L"dolphin-2.9.1-llama-3-8b.Q4_K_M", 8000, L"<|im_start|>{role}\n{content}\n<|im_end|>", L"<|im_start|>assistant");
+    LME_DefineModel(L"phi-3-mini-4k-instruct.Q4_K_M.gguf", L"phi-3-mini-4k-instruct.Q4_K_M", 4000, L"<|{role}|>\n{content}\n<|end|>", L"<|assistant|>");
+	LME_DefineModel(L"phi-3-mini-128k-instruct.Q4_K_M.gguf", L"phi-3-mini-128k-instruct.Q4_K_M", 8000, L"<|{role}|>\n{content}\n<|end|>", L"<|assistant|>");
+    LME_DefineModel(L"meta-llama-3-8b-instruct.Q4_K_M.gguf", L"meta-llama-3-8b-instruct.Q4_K_M", 8000, L"<|start_header_id|>{role}\n<|end_header_id|><|eot_id|><|start_header_id|>{content}\n<|end_header_id|><|eot_id|>", L"<|start_header_id|>assistant<|end_header_id|>");
+    LME_DefineModel(L"hermes-2-pro-llama-3-8b.Q4_K_M.gguf", L"hermes-2-pro-llama-3-8b.Q4_K_M", 8000, L"<|im_start|>{role}\n{content}\n<|im_end|>", L"<|im_start|>assistant");
+    LME_DefineModel(L"dolphin-2.9.1-llama-3-8b.Q4_K_M.gguf", L"dolphin-2.9.1-llama-3-8b.Q4_K_M", 8000, L"<|im_start|>{role}\n{content}\n<|im_end|>", L"<|im_start|>assistant");
 
-    SaveModelDefines(L"models.json");
+    LME_SaveModelDefines(L"models.json");
 
-    AddMessage(ROLE_SYSTEM, L"You are a helpful AI assistant.");
-    AddMessage(ROLE_USER, CQuestion);
+    LME_AddMessage(LME_ROLE_SYSTEM, L"You are a helpful AI assistant.");
+    LME_AddMessage(LME_ROLE_USER, CQuestion);
 
-    if (!LoadModel(CModel)) return;
-    PrintLn(L"", FG_WHITE);
-    PrintLn(GetLastUserMessage(), FG_DARKGREEN);
-    if (RunInference(CModel, 1024)) {
-        GetInferenceStats(NULL, &LTokenOutputSpeed, &LInputTokens, &LOutputTokens, &LTotalTokens);
-        PrintLn(L"", FG_WHITE);
-        PrintLn(L"Token :: Input: %d, Output: %d, Total: %d, Speed: %3.2f tokens/sec", FG_BRIGHTYELLOW, LInputTokens, LOutputTokens, LTotalTokens, LTokenOutputSpeed);
-        //PrintLn(L"Response:", FG_WHITE);
-        //PrintLn(GetInferenceResponse(), FG_BLUE);
+    if (!LME_LoadModel(CModel)) return;
+    LME_PrintLn(L"", LME_FG_WHITE);
+    LME_PrintLn(LME_GetLastUserMessage(), LME_FG_DARKGREEN);
+    if (LME_RunInference(CModel, 1024)) {
+        LME_GetInferenceStats(NULL, &LTokenOutputSpeed, &LInputTokens, &LOutputTokens, &LTotalTokens);
+        LME_PrintLn(L"", LME_FG_WHITE);
+        LME_PrintLn(L"Token :: Input: %d, Output: %d, Total: %d, Speed: %3.2f tokens/sec", LME_FG_BRIGHTYELLOW, LInputTokens, LOutputTokens, LTotalTokens, LTokenOutputSpeed);
+        //LME_PrintLn(L"Response:", LME_FG_WHITE);
+        //LME_PrintLn(LME_GetInferenceResponse(), LME_FG_BLUE);
     } else {
-        PrintLn(L"Error: %ls", FG_RED, GetError());
+        LME_PrintLn(L"Error: %ls", LME_FG_RED, LME_GetError());
     }
-    UnloadModel();
+    LME_UnloadModel();
 }
 
 void RunTests()
 {
-	PrintLn(L">>> LMEngine v%ls <<<%ls", FG_MAGENTA, GetVersionInfo(VERSION_FULL), CRLF);
-   	PrintLn(L"Running in C/C++%ls", FG_WHITE, CRLF);
+	//LME_PrintLn(L">>> LMEngine v%ls <<<%ls", LME_FG_MAGENTA, LME_GetVersion(LME_VERSION_FULL), LME_CRLF);
+  	//LME_PrintLn(L"Running in C/C++%ls", LME_FG_WHITE, LME_CRLF);
 
     Test01();
-    Pause();
+    //LME_PrintLn(L"%3.2f", LME_FG_RED, 3.14);
+    LME_Pause();
 }
