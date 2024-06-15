@@ -376,9 +376,9 @@ LMENGINE_API void __cdecl LME_SetInferenceEndCallback(const Lmengine::Core::TLME
    Lmengine::Export::LME_SetInferenceEndCallback(AHandler, AUserData);
 }
 
-LMENGINE_API void __cdecl LME_InitConfig(const System::WideChar * AModelPath, const System::Int32 ANumGPULayers)
+LMENGINE_API void __cdecl LME_InitConfig(const System::WideChar * AModelPath, const System::Int32 ANumGPULayers, const System::Int32 ANumThreads)
 {
-	Lmengine::Export::LME_InitConfig(AModelPath, ANumGPULayers);
+	Lmengine::Export::LME_InitConfig(AModelPath, ANumGPULayers, ANumThreads);
 }
 
 LMENGINE_API bool __cdecl LME_SaveConfig(const System::WideChar * AFilename)
@@ -460,4 +460,116 @@ LMENGINE_API void __cdecl LME_GetInferenceStats(System::PSingle ATokenInputSpeed
 {
    	Lmengine::Export::LME_GetInferenceStats(ATokenInputSpeed, ATokenOutputSpeed, AInputTokens, AOutputTokens, ATotalTokens);
 }
+
+//=== RAG ===================================================================
+LMENGINE_API Lmengine::Rag::TLocalDb* __cdecl LME_LocalDb_New()
+{
+	return Lmengine::Export::LME_LocalDb_New();
+}
+
+LMENGINE_API void __cdecl LME_LocalDb_Free(Lmengine::Rag::TLocalDb* &ALocalDb)
+{
+	Lmengine::Export::LME_LocalDb_Free(ALocalDb);
+}
+
+LMENGINE_API bool __cdecl LME_LocalDb_IsOpen(Lmengine::Rag::TLocalDb* const ALocalDb)
+{
+	return Lmengine::Export::LME_LocalDb_IsOpen(ALocalDb);
+}
+
+LMENGINE_API bool __cdecl LME_LocalDb_Open(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * AFilename)
+{
+	return Lmengine::Export::LME_LocalDb_Open(ALocalDb, AFilename);
+}
+
+LMENGINE_API void __cdecl LME_LocalDb_Close(Lmengine::Rag::TLocalDb* const ALocalDb)
+{
+	Lmengine::Export::LME_LocalDb_Close(ALocalDb);
+}
+
+LMENGINE_API void __cdecl LME_LocalDb_ClearSQLText(Lmengine::Rag::TLocalDb* const ALocalDb)
+{
+	Lmengine::Export::LME_LocalDb_ClearSQLText(ALocalDb);
+}
+
+LMENGINE_API void __cdecl LME_LocalDb_AddSQLText(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * AText)
+{
+	Lmengine::Export::LME_LocalDb_AddSQLText(ALocalDb, AText);
+}
+
+LMENGINE_API System::WideChar * __cdecl LME_LocalDb_GetSQLText(Lmengine::Rag::TLocalDb* const ALocalDb)
+{
+	return Lmengine::Export::LME_LocalDb_GetSQLText(ALocalDb);
+}
+
+LMENGINE_API void __cdecl LME_LocalDb_SetSQLText(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * AText)
+{
+	Lmengine::Export::LME_LocalDb_SetSQLText(ALocalDb, AText);
+}
+
+LMENGINE_API System::WideChar * __cdecl LME_LocalDb_GetPrepairedSQL(Lmengine::Rag::TLocalDb* const ALocalDb)
+{
+	return Lmengine::Export::LME_LocalDb_GetPrepairedSQL(ALocalDb);
+}
+
+LMENGINE_API void __cdecl LME_LocalDb_ClearMacros(Lmengine::Rag::TLocalDb* const ALocalDb)
+{
+	Lmengine::Export::LME_LocalDb_ClearMacros(ALocalDb);
+}
+
+LMENGINE_API System::WideChar * __cdecl LME_LocalDb_GetMacro(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * AName)
+{
+	return Lmengine::Export::LME_LocalDb_GetMacro(ALocalDb, AName);
+}
+
+LMENGINE_API void __cdecl LME_LocalDb_SetMacro(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * AName, const System::WideChar * AValue)
+{
+	Lmengine::Export::LME_LocalDb_SetMacro(ALocalDb, AName, AValue);
+}
+
+LMENGINE_API void __cdecl LME_LocalDb_ClearParams(Lmengine::Rag::TLocalDb* const ALocalDb)
+{
+	Lmengine::Export::LME_LocalDb_ClearParams(ALocalDb);
+}
+
+LMENGINE_API System::WideChar * __cdecl LME_LocalDb_GetParam(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * AName)
+{
+	return Lmengine::Export::LME_LocalDb_GetParam(ALocalDb, AName);
+}
+
+LMENGINE_API void __cdecl LME_LocalDb_SetParam(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * AName, const System::WideChar * AValue)
+{
+	Lmengine::Export::LME_LocalDb_SetParam(ALocalDb, AName, AValue);
+}
+
+LMENGINE_API int __cdecl LME_LocalDb_GetRecordCount(Lmengine::Rag::TLocalDb* const ALocalDb)
+{
+	return Lmengine::Export::LME_LocalDb_GetRecordCount(ALocalDb);
+}
+
+LMENGINE_API System::WideChar * __cdecl LME_LocalDb_GetField(Lmengine::Rag::TLocalDb* const ALocalDb, const unsigned AIndex, const System::WideChar * AName)
+{
+	return Lmengine::Export::LME_LocalDb_GetField(ALocalDb, AIndex, AName);
+}
+
+LMENGINE_API bool __cdecl LME_LocalDb_Execute(Lmengine::Rag::TLocalDb* const ALocalDb)
+{
+	return Lmengine::Export::LME_LocalDb_Execute(ALocalDb);
+}
+
+LMENGINE_API bool __cdecl LME_LocalDb_ExecuteSQL(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * ASQL)
+{
+	return Lmengine::Export::LME_LocalDb_ExecuteSQL(ALocalDb, ASQL);
+}
+
+LMENGINE_API System::WideChar * __cdecl LME_LocalDb_GetLastError(Lmengine::Rag::TLocalDb* const ALocalDb)
+{
+	return Lmengine::Export::LME_LocalDb_GetLastError(ALocalDb);
+}
+
+LMENGINE_API System::WideChar * __cdecl LME_LocalDb_GetResponseText(Lmengine::Rag::TLocalDb* const ALocalDb)
+{
+	return Lmengine::Export::LME_LocalDb_GetResponseText(ALocalDb);
+}
+
 

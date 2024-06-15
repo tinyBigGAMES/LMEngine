@@ -83,6 +83,484 @@ const
   LLAMA_SESSION_VERSION = 6;
   LLAMA_STATE_SEQ_MAGIC = LLAMA_FILE_MAGIC_GGSQ;
   LLAMA_STATE_SEQ_VERSION = 1;
+  SQLITE_VERSION = '3.46.0';
+  SQLITE_VERSION_NUMBER = 3046000;
+  SQLITE_SOURCE_ID = '2024-05-23 13:25:27 96c92aba00c8375bc32fafcdf12429c58bd8aabfcadab6683e35bbb9cdebf19e';
+  SQLITE_OK = 0;
+  SQLITE_ERROR = 1;
+  SQLITE_INTERNAL = 2;
+  SQLITE_PERM = 3;
+  SQLITE_ABORT = 4;
+  SQLITE_BUSY = 5;
+  SQLITE_LOCKED = 6;
+  SQLITE_NOMEM = 7;
+  SQLITE_READONLY = 8;
+  SQLITE_INTERRUPT = 9;
+  SQLITE_IOERR = 10;
+  SQLITE_CORRUPT = 11;
+  SQLITE_NOTFOUND = 12;
+  SQLITE_FULL = 13;
+  SQLITE_CANTOPEN = 14;
+  SQLITE_PROTOCOL = 15;
+  SQLITE_EMPTY = 16;
+  SQLITE_SCHEMA = 17;
+  SQLITE_TOOBIG = 18;
+  SQLITE_CONSTRAINT = 19;
+  SQLITE_MISMATCH = 20;
+  SQLITE_MISUSE = 21;
+  SQLITE_NOLFS = 22;
+  SQLITE_AUTH = 23;
+  SQLITE_FORMAT = 24;
+  SQLITE_RANGE = 25;
+  SQLITE_NOTADB = 26;
+  SQLITE_NOTICE = 27;
+  SQLITE_WARNING = 28;
+  SQLITE_ROW = 100;
+  SQLITE_DONE = 101;
+  SQLITE_ERROR_MISSING_COLLSEQ = (SQLITE_ERROR or (1 shl 8));
+  SQLITE_ERROR_RETRY = (SQLITE_ERROR or (2 shl 8));
+  SQLITE_ERROR_SNAPSHOT = (SQLITE_ERROR or (3 shl 8));
+  SQLITE_IOERR_READ = (SQLITE_IOERR or (1 shl 8));
+  SQLITE_IOERR_SHORT_READ = (SQLITE_IOERR or (2 shl 8));
+  SQLITE_IOERR_WRITE = (SQLITE_IOERR or (3 shl 8));
+  SQLITE_IOERR_FSYNC = (SQLITE_IOERR or (4 shl 8));
+  SQLITE_IOERR_DIR_FSYNC = (SQLITE_IOERR or (5 shl 8));
+  SQLITE_IOERR_TRUNCATE = (SQLITE_IOERR or (6 shl 8));
+  SQLITE_IOERR_FSTAT = (SQLITE_IOERR or (7 shl 8));
+  SQLITE_IOERR_UNLOCK = (SQLITE_IOERR or (8 shl 8));
+  SQLITE_IOERR_RDLOCK = (SQLITE_IOERR or (9 shl 8));
+  SQLITE_IOERR_DELETE = (SQLITE_IOERR or (10 shl 8));
+  SQLITE_IOERR_BLOCKED = (SQLITE_IOERR or (11 shl 8));
+  SQLITE_IOERR_NOMEM = (SQLITE_IOERR or (12 shl 8));
+  SQLITE_IOERR_ACCESS = (SQLITE_IOERR or (13 shl 8));
+  SQLITE_IOERR_CHECKRESERVEDLOCK = (SQLITE_IOERR or (14 shl 8));
+  SQLITE_IOERR_LOCK = (SQLITE_IOERR or (15 shl 8));
+  SQLITE_IOERR_CLOSE = (SQLITE_IOERR or (16 shl 8));
+  SQLITE_IOERR_DIR_CLOSE = (SQLITE_IOERR or (17 shl 8));
+  SQLITE_IOERR_SHMOPEN = (SQLITE_IOERR or (18 shl 8));
+  SQLITE_IOERR_SHMSIZE = (SQLITE_IOERR or (19 shl 8));
+  SQLITE_IOERR_SHMLOCK = (SQLITE_IOERR or (20 shl 8));
+  SQLITE_IOERR_SHMMAP = (SQLITE_IOERR or (21 shl 8));
+  SQLITE_IOERR_SEEK = (SQLITE_IOERR or (22 shl 8));
+  SQLITE_IOERR_DELETE_NOENT = (SQLITE_IOERR or (23 shl 8));
+  SQLITE_IOERR_MMAP = (SQLITE_IOERR or (24 shl 8));
+  SQLITE_IOERR_GETTEMPPATH = (SQLITE_IOERR or (25 shl 8));
+  SQLITE_IOERR_CONVPATH = (SQLITE_IOERR or (26 shl 8));
+  SQLITE_IOERR_VNODE = (SQLITE_IOERR or (27 shl 8));
+  SQLITE_IOERR_AUTH = (SQLITE_IOERR or (28 shl 8));
+  SQLITE_IOERR_BEGIN_ATOMIC = (SQLITE_IOERR or (29 shl 8));
+  SQLITE_IOERR_COMMIT_ATOMIC = (SQLITE_IOERR or (30 shl 8));
+  SQLITE_IOERR_ROLLBACK_ATOMIC = (SQLITE_IOERR or (31 shl 8));
+  SQLITE_IOERR_DATA = (SQLITE_IOERR or (32 shl 8));
+  SQLITE_IOERR_CORRUPTFS = (SQLITE_IOERR or (33 shl 8));
+  SQLITE_IOERR_IN_PAGE = (SQLITE_IOERR or (34 shl 8));
+  SQLITE_LOCKED_SHAREDCACHE = (SQLITE_LOCKED or (1 shl 8));
+  SQLITE_LOCKED_VTAB = (SQLITE_LOCKED or (2 shl 8));
+  SQLITE_BUSY_RECOVERY = (SQLITE_BUSY or (1 shl 8));
+  SQLITE_BUSY_SNAPSHOT = (SQLITE_BUSY or (2 shl 8));
+  SQLITE_BUSY_TIMEOUT = (SQLITE_BUSY or (3 shl 8));
+  SQLITE_CANTOPEN_NOTEMPDIR = (SQLITE_CANTOPEN or (1 shl 8));
+  SQLITE_CANTOPEN_ISDIR = (SQLITE_CANTOPEN or (2 shl 8));
+  SQLITE_CANTOPEN_FULLPATH = (SQLITE_CANTOPEN or (3 shl 8));
+  SQLITE_CANTOPEN_CONVPATH = (SQLITE_CANTOPEN or (4 shl 8));
+  SQLITE_CANTOPEN_DIRTYWAL = (SQLITE_CANTOPEN or (5 shl 8));
+  SQLITE_CANTOPEN_SYMLINK = (SQLITE_CANTOPEN or (6 shl 8));
+  SQLITE_CORRUPT_VTAB = (SQLITE_CORRUPT or (1 shl 8));
+  SQLITE_CORRUPT_SEQUENCE = (SQLITE_CORRUPT or (2 shl 8));
+  SQLITE_CORRUPT_INDEX = (SQLITE_CORRUPT or (3 shl 8));
+  SQLITE_READONLY_RECOVERY = (SQLITE_READONLY or (1 shl 8));
+  SQLITE_READONLY_CANTLOCK = (SQLITE_READONLY or (2 shl 8));
+  SQLITE_READONLY_ROLLBACK = (SQLITE_READONLY or (3 shl 8));
+  SQLITE_READONLY_DBMOVED = (SQLITE_READONLY or (4 shl 8));
+  SQLITE_READONLY_CANTINIT = (SQLITE_READONLY or (5 shl 8));
+  SQLITE_READONLY_DIRECTORY = (SQLITE_READONLY or (6 shl 8));
+  SQLITE_ABORT_ROLLBACK = (SQLITE_ABORT or (2 shl 8));
+  SQLITE_CONSTRAINT_CHECK = (SQLITE_CONSTRAINT or (1 shl 8));
+  SQLITE_CONSTRAINT_COMMITHOOK = (SQLITE_CONSTRAINT or (2 shl 8));
+  SQLITE_CONSTRAINT_FOREIGNKEY = (SQLITE_CONSTRAINT or (3 shl 8));
+  SQLITE_CONSTRAINT_FUNCTION = (SQLITE_CONSTRAINT or (4 shl 8));
+  SQLITE_CONSTRAINT_NOTNULL = (SQLITE_CONSTRAINT or (5 shl 8));
+  SQLITE_CONSTRAINT_PRIMARYKEY = (SQLITE_CONSTRAINT or (6 shl 8));
+  SQLITE_CONSTRAINT_TRIGGER = (SQLITE_CONSTRAINT or (7 shl 8));
+  SQLITE_CONSTRAINT_UNIQUE = (SQLITE_CONSTRAINT or (8 shl 8));
+  SQLITE_CONSTRAINT_VTAB = (SQLITE_CONSTRAINT or (9 shl 8));
+  SQLITE_CONSTRAINT_ROWID = (SQLITE_CONSTRAINT or (10 shl 8));
+  SQLITE_CONSTRAINT_PINNED = (SQLITE_CONSTRAINT or (11 shl 8));
+  SQLITE_CONSTRAINT_DATATYPE = (SQLITE_CONSTRAINT or (12 shl 8));
+  SQLITE_NOTICE_RECOVER_WAL = (SQLITE_NOTICE or (1 shl 8));
+  SQLITE_NOTICE_RECOVER_ROLLBACK = (SQLITE_NOTICE or (2 shl 8));
+  SQLITE_NOTICE_RBU = (SQLITE_NOTICE or (3 shl 8));
+  SQLITE_WARNING_AUTOINDEX = (SQLITE_WARNING or (1 shl 8));
+  SQLITE_AUTH_USER = (SQLITE_AUTH or (1 shl 8));
+  SQLITE_OK_LOAD_PERMANENTLY = (SQLITE_OK or (1 shl 8));
+  SQLITE_OK_SYMLINK = (SQLITE_OK or (2 shl 8));
+  SQLITE_OPEN_READONLY = $00000001;
+  SQLITE_OPEN_READWRITE = $00000002;
+  SQLITE_OPEN_CREATE = $00000004;
+  SQLITE_OPEN_DELETEONCLOSE = $00000008;
+  SQLITE_OPEN_EXCLUSIVE = $00000010;
+  SQLITE_OPEN_AUTOPROXY = $00000020;
+  SQLITE_OPEN_URI = $00000040;
+  SQLITE_OPEN_MEMORY = $00000080;
+  SQLITE_OPEN_MAIN_DB = $00000100;
+  SQLITE_OPEN_TEMP_DB = $00000200;
+  SQLITE_OPEN_TRANSIENT_DB = $00000400;
+  SQLITE_OPEN_MAIN_JOURNAL = $00000800;
+  SQLITE_OPEN_TEMP_JOURNAL = $00001000;
+  SQLITE_OPEN_SUBJOURNAL = $00002000;
+  SQLITE_OPEN_SUPER_JOURNAL = $00004000;
+  SQLITE_OPEN_NOMUTEX = $00008000;
+  SQLITE_OPEN_FULLMUTEX = $00010000;
+  SQLITE_OPEN_SHAREDCACHE = $00020000;
+  SQLITE_OPEN_PRIVATECACHE = $00040000;
+  SQLITE_OPEN_WAL = $00080000;
+  SQLITE_OPEN_NOFOLLOW = $01000000;
+  SQLITE_OPEN_EXRESCODE = $02000000;
+  SQLITE_OPEN_MASTER_JOURNAL = $00004000;
+  SQLITE_IOCAP_ATOMIC = $00000001;
+  SQLITE_IOCAP_ATOMIC512 = $00000002;
+  SQLITE_IOCAP_ATOMIC1K = $00000004;
+  SQLITE_IOCAP_ATOMIC2K = $00000008;
+  SQLITE_IOCAP_ATOMIC4K = $00000010;
+  SQLITE_IOCAP_ATOMIC8K = $00000020;
+  SQLITE_IOCAP_ATOMIC16K = $00000040;
+  SQLITE_IOCAP_ATOMIC32K = $00000080;
+  SQLITE_IOCAP_ATOMIC64K = $00000100;
+  SQLITE_IOCAP_SAFE_APPEND = $00000200;
+  SQLITE_IOCAP_SEQUENTIAL = $00000400;
+  SQLITE_IOCAP_UNDELETABLE_WHEN_OPEN = $00000800;
+  SQLITE_IOCAP_POWERSAFE_OVERWRITE = $00001000;
+  SQLITE_IOCAP_IMMUTABLE = $00002000;
+  SQLITE_IOCAP_BATCH_ATOMIC = $00004000;
+  SQLITE_LOCK_NONE = 0;
+  SQLITE_LOCK_SHARED = 1;
+  SQLITE_LOCK_RESERVED = 2;
+  SQLITE_LOCK_PENDING = 3;
+  SQLITE_LOCK_EXCLUSIVE = 4;
+  SQLITE_SYNC_NORMAL = $00002;
+  SQLITE_SYNC_FULL = $00003;
+  SQLITE_SYNC_DATAONLY = $00010;
+  SQLITE_FCNTL_LOCKSTATE = 1;
+  SQLITE_FCNTL_GET_LOCKPROXYFILE = 2;
+  SQLITE_FCNTL_SET_LOCKPROXYFILE = 3;
+  SQLITE_FCNTL_LAST_ERRNO = 4;
+  SQLITE_FCNTL_SIZE_HINT = 5;
+  SQLITE_FCNTL_CHUNK_SIZE = 6;
+  SQLITE_FCNTL_FILE_POINTER = 7;
+  SQLITE_FCNTL_SYNC_OMITTED = 8;
+  SQLITE_FCNTL_WIN32_AV_RETRY = 9;
+  SQLITE_FCNTL_PERSIST_WAL = 10;
+  SQLITE_FCNTL_OVERWRITE = 11;
+  SQLITE_FCNTL_VFSNAME = 12;
+  SQLITE_FCNTL_POWERSAFE_OVERWRITE = 13;
+  SQLITE_FCNTL_PRAGMA = 14;
+  SQLITE_FCNTL_BUSYHANDLER = 15;
+  SQLITE_FCNTL_TEMPFILENAME = 16;
+  SQLITE_FCNTL_MMAP_SIZE = 18;
+  SQLITE_FCNTL_TRACE = 19;
+  SQLITE_FCNTL_HAS_MOVED = 20;
+  SQLITE_FCNTL_SYNC = 21;
+  SQLITE_FCNTL_COMMIT_PHASETWO = 22;
+  SQLITE_FCNTL_WIN32_SET_HANDLE = 23;
+  SQLITE_FCNTL_WAL_BLOCK = 24;
+  SQLITE_FCNTL_ZIPVFS = 25;
+  SQLITE_FCNTL_RBU = 26;
+  SQLITE_FCNTL_VFS_POINTER = 27;
+  SQLITE_FCNTL_JOURNAL_POINTER = 28;
+  SQLITE_FCNTL_WIN32_GET_HANDLE = 29;
+  SQLITE_FCNTL_PDB = 30;
+  SQLITE_FCNTL_BEGIN_ATOMIC_WRITE = 31;
+  SQLITE_FCNTL_COMMIT_ATOMIC_WRITE = 32;
+  SQLITE_FCNTL_ROLLBACK_ATOMIC_WRITE = 33;
+  SQLITE_FCNTL_LOCK_TIMEOUT = 34;
+  SQLITE_FCNTL_DATA_VERSION = 35;
+  SQLITE_FCNTL_SIZE_LIMIT = 36;
+  SQLITE_FCNTL_CKPT_DONE = 37;
+  SQLITE_FCNTL_RESERVE_BYTES = 38;
+  SQLITE_FCNTL_CKPT_START = 39;
+  SQLITE_FCNTL_EXTERNAL_READER = 40;
+  SQLITE_FCNTL_CKSM_FILE = 41;
+  SQLITE_FCNTL_RESET_CACHE = 42;
+  SQLITE_GET_LOCKPROXYFILE = SQLITE_FCNTL_GET_LOCKPROXYFILE;
+  SQLITE_SET_LOCKPROXYFILE = SQLITE_FCNTL_SET_LOCKPROXYFILE;
+  SQLITE_LAST_ERRNO = SQLITE_FCNTL_LAST_ERRNO;
+  SQLITE_ACCESS_EXISTS = 0;
+  SQLITE_ACCESS_READWRITE = 1;
+  SQLITE_ACCESS_READ = 2;
+  SQLITE_SHM_UNLOCK = 1;
+  SQLITE_SHM_LOCK = 2;
+  SQLITE_SHM_SHARED = 4;
+  SQLITE_SHM_EXCLUSIVE = 8;
+  SQLITE_SHM_NLOCK = 8;
+  SQLITE_CONFIG_SINGLETHREAD = 1;
+  SQLITE_CONFIG_MULTITHREAD = 2;
+  SQLITE_CONFIG_SERIALIZED = 3;
+  SQLITE_CONFIG_MALLOC = 4;
+  SQLITE_CONFIG_GETMALLOC = 5;
+  SQLITE_CONFIG_SCRATCH = 6;
+  SQLITE_CONFIG_PAGECACHE = 7;
+  SQLITE_CONFIG_HEAP = 8;
+  SQLITE_CONFIG_MEMSTATUS = 9;
+  SQLITE_CONFIG_MUTEX = 10;
+  SQLITE_CONFIG_GETMUTEX = 11;
+  SQLITE_CONFIG_LOOKASIDE = 13;
+  SQLITE_CONFIG_PCACHE = 14;
+  SQLITE_CONFIG_GETPCACHE = 15;
+  SQLITE_CONFIG_LOG = 16;
+  SQLITE_CONFIG_URI = 17;
+  SQLITE_CONFIG_PCACHE2 = 18;
+  SQLITE_CONFIG_GETPCACHE2 = 19;
+  SQLITE_CONFIG_COVERING_INDEX_SCAN = 20;
+  SQLITE_CONFIG_SQLLOG = 21;
+  SQLITE_CONFIG_MMAP_SIZE = 22;
+  SQLITE_CONFIG_WIN32_HEAPSIZE = 23;
+  SQLITE_CONFIG_PCACHE_HDRSZ = 24;
+  SQLITE_CONFIG_PMASZ = 25;
+  SQLITE_CONFIG_STMTJRNL_SPILL = 26;
+  SQLITE_CONFIG_SMALL_MALLOC = 27;
+  SQLITE_CONFIG_SORTERREF_SIZE = 28;
+  SQLITE_CONFIG_MEMDB_MAXSIZE = 29;
+  SQLITE_CONFIG_ROWID_IN_VIEW = 30;
+  SQLITE_DBCONFIG_MAINDBNAME = 1000;
+  SQLITE_DBCONFIG_LOOKASIDE = 1001;
+  SQLITE_DBCONFIG_ENABLE_FKEY = 1002;
+  SQLITE_DBCONFIG_ENABLE_TRIGGER = 1003;
+  SQLITE_DBCONFIG_ENABLE_FTS3_TOKENIZER = 1004;
+  SQLITE_DBCONFIG_ENABLE_LOAD_EXTENSION = 1005;
+  SQLITE_DBCONFIG_NO_CKPT_ON_CLOSE = 1006;
+  SQLITE_DBCONFIG_ENABLE_QPSG = 1007;
+  SQLITE_DBCONFIG_TRIGGER_EQP = 1008;
+  SQLITE_DBCONFIG_RESET_DATABASE = 1009;
+  SQLITE_DBCONFIG_DEFENSIVE = 1010;
+  SQLITE_DBCONFIG_WRITABLE_SCHEMA = 1011;
+  SQLITE_DBCONFIG_LEGACY_ALTER_TABLE = 1012;
+  SQLITE_DBCONFIG_DQS_DML = 1013;
+  SQLITE_DBCONFIG_DQS_DDL = 1014;
+  SQLITE_DBCONFIG_ENABLE_VIEW = 1015;
+  SQLITE_DBCONFIG_LEGACY_FILE_FORMAT = 1016;
+  SQLITE_DBCONFIG_TRUSTED_SCHEMA = 1017;
+  SQLITE_DBCONFIG_STMT_SCANSTATUS = 1018;
+  SQLITE_DBCONFIG_REVERSE_SCANORDER = 1019;
+  SQLITE_DBCONFIG_MAX = 1019;
+  SQLITE_DENY = 1;
+  SQLITE_IGNORE = 2;
+  SQLITE_CREATE_INDEX = 1;
+  SQLITE_CREATE_TABLE = 2;
+  SQLITE_CREATE_TEMP_INDEX = 3;
+  SQLITE_CREATE_TEMP_TABLE = 4;
+  SQLITE_CREATE_TEMP_TRIGGER = 5;
+  SQLITE_CREATE_TEMP_VIEW = 6;
+  SQLITE_CREATE_TRIGGER = 7;
+  SQLITE_CREATE_VIEW = 8;
+  SQLITE_DELETE = 9;
+  SQLITE_DROP_INDEX = 10;
+  SQLITE_DROP_TABLE = 11;
+  SQLITE_DROP_TEMP_INDEX = 12;
+  SQLITE_DROP_TEMP_TABLE = 13;
+  SQLITE_DROP_TEMP_TRIGGER = 14;
+  SQLITE_DROP_TEMP_VIEW = 15;
+  SQLITE_DROP_TRIGGER = 16;
+  SQLITE_DROP_VIEW = 17;
+  SQLITE_INSERT = 18;
+  SQLITE_PRAGMA = 19;
+  SQLITE_READ = 20;
+  SQLITE_SELECT = 21;
+  SQLITE_TRANSACTION = 22;
+  SQLITE_UPDATE = 23;
+  SQLITE_ATTACH = 24;
+  SQLITE_DETACH = 25;
+  SQLITE_ALTER_TABLE = 26;
+  SQLITE_REINDEX = 27;
+  SQLITE_ANALYZE = 28;
+  SQLITE_CREATE_VTABLE = 29;
+  SQLITE_DROP_VTABLE = 30;
+  SQLITE_FUNCTION = 31;
+  SQLITE_SAVEPOINT = 32;
+  SQLITE_COPY = 0;
+  SQLITE_RECURSIVE = 33;
+  SQLITE_TRACE_STMT = $01;
+  SQLITE_TRACE_PROFILE = $02;
+  SQLITE_TRACE_ROW = $04;
+  SQLITE_TRACE_CLOSE = $08;
+  SQLITE_LIMIT_LENGTH = 0;
+  SQLITE_LIMIT_SQL_LENGTH = 1;
+  SQLITE_LIMIT_COLUMN = 2;
+  SQLITE_LIMIT_EXPR_DEPTH = 3;
+  SQLITE_LIMIT_COMPOUND_SELECT = 4;
+  SQLITE_LIMIT_VDBE_OP = 5;
+  SQLITE_LIMIT_FUNCTION_ARG = 6;
+  SQLITE_LIMIT_ATTACHED = 7;
+  SQLITE_LIMIT_LIKE_PATTERN_LENGTH = 8;
+  SQLITE_LIMIT_VARIABLE_NUMBER = 9;
+  SQLITE_LIMIT_TRIGGER_DEPTH = 10;
+  SQLITE_LIMIT_WORKER_THREADS = 11;
+  SQLITE_PREPARE_PERSISTENT = $01;
+  SQLITE_PREPARE_NORMALIZE = $02;
+  SQLITE_PREPARE_NO_VTAB = $04;
+  SQLITE_INTEGER = 1;
+  SQLITE_FLOAT = 2;
+  SQLITE_BLOB = 4;
+  SQLITE_NULL = 5;
+  SQLITE_TEXT = 3;
+  SQLITE3_TEXT = 3;
+  SQLITE_UTF8 = 1;
+  SQLITE_UTF16LE = 2;
+  SQLITE_UTF16BE = 3;
+  SQLITE_UTF16 = 4;
+  SQLITE_ANY = 5;
+  SQLITE_UTF16_ALIGNED = 8;
+  SQLITE_DETERMINISTIC = $000000800;
+  SQLITE_DIRECTONLY = $000080000;
+  SQLITE_SUBTYPE = $000100000;
+  SQLITE_INNOCUOUS = $000200000;
+  SQLITE_RESULT_SUBTYPE = $001000000;
+  SQLITE_WIN32_DATA_DIRECTORY_TYPE = 1;
+  SQLITE_WIN32_TEMP_DIRECTORY_TYPE = 2;
+  SQLITE_TXN_NONE = 0;
+  SQLITE_TXN_READ = 1;
+  SQLITE_TXN_WRITE = 2;
+  SQLITE_INDEX_SCAN_UNIQUE = 1;
+  SQLITE_INDEX_CONSTRAINT_EQ = 2;
+  SQLITE_INDEX_CONSTRAINT_GT = 4;
+  SQLITE_INDEX_CONSTRAINT_LE = 8;
+  SQLITE_INDEX_CONSTRAINT_LT = 16;
+  SQLITE_INDEX_CONSTRAINT_GE = 32;
+  SQLITE_INDEX_CONSTRAINT_MATCH = 64;
+  SQLITE_INDEX_CONSTRAINT_LIKE = 65;
+  SQLITE_INDEX_CONSTRAINT_GLOB = 66;
+  SQLITE_INDEX_CONSTRAINT_REGEXP = 67;
+  SQLITE_INDEX_CONSTRAINT_NE = 68;
+  SQLITE_INDEX_CONSTRAINT_ISNOT = 69;
+  SQLITE_INDEX_CONSTRAINT_ISNOTNULL = 70;
+  SQLITE_INDEX_CONSTRAINT_ISNULL = 71;
+  SQLITE_INDEX_CONSTRAINT_IS = 72;
+  SQLITE_INDEX_CONSTRAINT_LIMIT = 73;
+  SQLITE_INDEX_CONSTRAINT_OFFSET = 74;
+  SQLITE_INDEX_CONSTRAINT_FUNCTION = 150;
+  SQLITE_MUTEX_FAST = 0;
+  SQLITE_MUTEX_RECURSIVE = 1;
+  SQLITE_MUTEX_STATIC_MAIN = 2;
+  SQLITE_MUTEX_STATIC_MEM = 3;
+  SQLITE_MUTEX_STATIC_MEM2 = 4;
+  SQLITE_MUTEX_STATIC_OPEN = 4;
+  SQLITE_MUTEX_STATIC_PRNG = 5;
+  SQLITE_MUTEX_STATIC_LRU = 6;
+  SQLITE_MUTEX_STATIC_LRU2 = 7;
+  SQLITE_MUTEX_STATIC_PMEM = 7;
+  SQLITE_MUTEX_STATIC_APP1 = 8;
+  SQLITE_MUTEX_STATIC_APP2 = 9;
+  SQLITE_MUTEX_STATIC_APP3 = 10;
+  SQLITE_MUTEX_STATIC_VFS1 = 11;
+  SQLITE_MUTEX_STATIC_VFS2 = 12;
+  SQLITE_MUTEX_STATIC_VFS3 = 13;
+  SQLITE_MUTEX_STATIC_MASTER = 2;
+  SQLITE_TESTCTRL_FIRST = 5;
+  SQLITE_TESTCTRL_PRNG_SAVE = 5;
+  SQLITE_TESTCTRL_PRNG_RESTORE = 6;
+  SQLITE_TESTCTRL_PRNG_RESET = 7;
+  SQLITE_TESTCTRL_FK_NO_ACTION = 7;
+  SQLITE_TESTCTRL_BITVEC_TEST = 8;
+  SQLITE_TESTCTRL_FAULT_INSTALL = 9;
+  SQLITE_TESTCTRL_BENIGN_MALLOC_HOOKS = 10;
+  SQLITE_TESTCTRL_PENDING_BYTE = 11;
+  SQLITE_TESTCTRL_ASSERT = 12;
+  SQLITE_TESTCTRL_ALWAYS = 13;
+  SQLITE_TESTCTRL_RESERVE = 14;
+  SQLITE_TESTCTRL_JSON_SELFCHECK = 14;
+  SQLITE_TESTCTRL_OPTIMIZATIONS = 15;
+  SQLITE_TESTCTRL_ISKEYWORD = 16;
+  SQLITE_TESTCTRL_SCRATCHMALLOC = 17;
+  SQLITE_TESTCTRL_INTERNAL_FUNCTIONS = 17;
+  SQLITE_TESTCTRL_LOCALTIME_FAULT = 18;
+  SQLITE_TESTCTRL_EXPLAIN_STMT = 19;
+  SQLITE_TESTCTRL_ONCE_RESET_THRESHOLD = 19;
+  SQLITE_TESTCTRL_NEVER_CORRUPT = 20;
+  SQLITE_TESTCTRL_VDBE_COVERAGE = 21;
+  SQLITE_TESTCTRL_BYTEORDER = 22;
+  SQLITE_TESTCTRL_ISINIT = 23;
+  SQLITE_TESTCTRL_SORTER_MMAP = 24;
+  SQLITE_TESTCTRL_IMPOSTER = 25;
+  SQLITE_TESTCTRL_PARSER_COVERAGE = 26;
+  SQLITE_TESTCTRL_RESULT_INTREAL = 27;
+  SQLITE_TESTCTRL_PRNG_SEED = 28;
+  SQLITE_TESTCTRL_EXTRA_SCHEMA_CHECKS = 29;
+  SQLITE_TESTCTRL_SEEK_COUNT = 30;
+  SQLITE_TESTCTRL_TRACEFLAGS = 31;
+  SQLITE_TESTCTRL_TUNE = 32;
+  SQLITE_TESTCTRL_LOGEST = 33;
+  SQLITE_TESTCTRL_USELONGDOUBLE = 34;
+  SQLITE_TESTCTRL_LAST = 34;
+  SQLITE_STATUS_MEMORY_USED = 0;
+  SQLITE_STATUS_PAGECACHE_USED = 1;
+  SQLITE_STATUS_PAGECACHE_OVERFLOW = 2;
+  SQLITE_STATUS_SCRATCH_USED = 3;
+  SQLITE_STATUS_SCRATCH_OVERFLOW = 4;
+  SQLITE_STATUS_MALLOC_SIZE = 5;
+  SQLITE_STATUS_PARSER_STACK = 6;
+  SQLITE_STATUS_PAGECACHE_SIZE = 7;
+  SQLITE_STATUS_SCRATCH_SIZE = 8;
+  SQLITE_STATUS_MALLOC_COUNT = 9;
+  SQLITE_DBSTATUS_LOOKASIDE_USED = 0;
+  SQLITE_DBSTATUS_CACHE_USED = 1;
+  SQLITE_DBSTATUS_SCHEMA_USED = 2;
+  SQLITE_DBSTATUS_STMT_USED = 3;
+  SQLITE_DBSTATUS_LOOKASIDE_HIT = 4;
+  SQLITE_DBSTATUS_LOOKASIDE_MISS_SIZE = 5;
+  SQLITE_DBSTATUS_LOOKASIDE_MISS_FULL = 6;
+  SQLITE_DBSTATUS_CACHE_HIT = 7;
+  SQLITE_DBSTATUS_CACHE_MISS = 8;
+  SQLITE_DBSTATUS_CACHE_WRITE = 9;
+  SQLITE_DBSTATUS_DEFERRED_FKS = 10;
+  SQLITE_DBSTATUS_CACHE_USED_SHARED = 11;
+  SQLITE_DBSTATUS_CACHE_SPILL = 12;
+  SQLITE_DBSTATUS_MAX = 12;
+  SQLITE_STMTSTATUS_FULLSCAN_STEP = 1;
+  SQLITE_STMTSTATUS_SORT = 2;
+  SQLITE_STMTSTATUS_AUTOINDEX = 3;
+  SQLITE_STMTSTATUS_VM_STEP = 4;
+  SQLITE_STMTSTATUS_REPREPARE = 5;
+  SQLITE_STMTSTATUS_RUN = 6;
+  SQLITE_STMTSTATUS_FILTER_MISS = 7;
+  SQLITE_STMTSTATUS_FILTER_HIT = 8;
+  SQLITE_STMTSTATUS_MEMUSED = 99;
+  SQLITE_CHECKPOINT_PASSIVE = 0;
+  SQLITE_CHECKPOINT_FULL = 1;
+  SQLITE_CHECKPOINT_RESTART = 2;
+  SQLITE_CHECKPOINT_TRUNCATE = 3;
+  SQLITE_VTAB_CONSTRAINT_SUPPORT = 1;
+  SQLITE_VTAB_INNOCUOUS = 2;
+  SQLITE_VTAB_DIRECTONLY = 3;
+  SQLITE_VTAB_USES_ALL_SCHEMAS = 4;
+  SQLITE_ROLLBACK = 1;
+  SQLITE_FAIL = 3;
+  SQLITE_REPLACE = 5;
+  SQLITE_SCANSTAT_NLOOP = 0;
+  SQLITE_SCANSTAT_NVISIT = 1;
+  SQLITE_SCANSTAT_EST = 2;
+  SQLITE_SCANSTAT_NAME = 3;
+  SQLITE_SCANSTAT_EXPLAIN = 4;
+  SQLITE_SCANSTAT_SELECTID = 5;
+  SQLITE_SCANSTAT_PARENTID = 6;
+  SQLITE_SCANSTAT_NCYCLE = 7;
+  SQLITE_SCANSTAT_COMPLEX = $0001;
+  SQLITE_SERIALIZE_NOCOPY = $001;
+  SQLITE_DESERIALIZE_FREEONCLOSE = 1;
+  SQLITE_DESERIALIZE_RESIZEABLE = 2;
+  SQLITE_DESERIALIZE_READONLY = 4;
+  NOT_WITHIN = 0;
+  PARTLY_WITHIN = 1;
+  FULLY_WITHIN = 2;
+  FTS5_TOKENIZE_QUERY = $0001;
+  FTS5_TOKENIZE_PREFIX = $0002;
+  FTS5_TOKENIZE_DOCUMENT = $0004;
+  FTS5_TOKENIZE_AUX = $0008;
+  FTS5_TOKEN_COLOCATED = $0001;
+  SQLITE_VEC_VERSION = 'v${VERSION}';
+  SQLITE_VEC_DATE = '${DATE}';
+  SQLITE_VEC_SOURCE = '${SOURCE}';
+  SQLITE_LEMBED_VERSION = 'v${VERSION}';
+  SQLITE_LEMBED_DATE = '${DATE}';
+  SQLITE_LEMBED_SOURCE = '${SOURCE}';
 
 type
   ggml_status = Integer;
@@ -446,6 +924,7 @@ const
   LLAMA_VOCAB_PRE_TYPE_OLMO = 12;
   LLAMA_VOCAB_PRE_TYPE_DBRX = 13;
   LLAMA_VOCAB_PRE_TYPE_SMAUG = 14;
+  LLAMA_VOCAB_PRE_TYPE_PORO = 15;
 
 type
   llama_rope_type = Integer;
@@ -582,6 +1061,7 @@ const
 type
   // Forward declarations
   PPUTF8Char = ^PUTF8Char;
+  PPPUTF8Char = ^PPUTF8Char;
   PUInt8 = ^UInt8;
   PInt8 = ^Int8;
   PInt64 = ^Int64;
@@ -639,6 +1119,32 @@ type
   Pllama_chat_message = ^llama_chat_message;
   Pllama_kv_cache_view_cell = ^llama_kv_cache_view_cell;
   Pllama_kv_cache_view = ^llama_kv_cache_view;
+  Psqlite3_file = ^sqlite3_file;
+  Psqlite3_io_methods = ^sqlite3_io_methods;
+  Psqlite3_vfs = ^sqlite3_vfs;
+  Psqlite3_mem_methods = ^sqlite3_mem_methods;
+  Psqlite3_module = ^sqlite3_module;
+  Psqlite3_index_constraint = ^sqlite3_index_constraint;
+  Psqlite3_index_orderby = ^sqlite3_index_orderby;
+  Psqlite3_index_constraint_usage = ^sqlite3_index_constraint_usage;
+  Psqlite3_index_info = ^sqlite3_index_info;
+  Psqlite3_vtab = ^sqlite3_vtab;
+  PPsqlite3_vtab = ^Psqlite3_vtab;
+  Psqlite3_vtab_cursor = ^sqlite3_vtab_cursor;
+  PPsqlite3_vtab_cursor = ^Psqlite3_vtab_cursor;
+  Psqlite3_mutex_methods = ^sqlite3_mutex_methods;
+  Psqlite3_pcache_page = ^sqlite3_pcache_page;
+  Psqlite3_pcache_methods2 = ^sqlite3_pcache_methods2;
+  Psqlite3_pcache_methods = ^sqlite3_pcache_methods;
+  Psqlite3_snapshot = ^sqlite3_snapshot;
+  PPsqlite3_snapshot = ^Psqlite3_snapshot;
+  Psqlite3_rtree_geometry = ^sqlite3_rtree_geometry;
+  Psqlite3_rtree_query_info = ^sqlite3_rtree_query_info;
+  PFts5PhraseIter = ^Fts5PhraseIter;
+  PFts5ExtensionApi = ^Fts5ExtensionApi;
+  Pfts5_tokenizer = ^fts5_tokenizer;
+  Pfts5_api = ^fts5_api;
+  Psqlite3_api_routines = ^sqlite3_api_routines;
 
   ggml_fp16_t = UInt16;
   Pggml_fp16_t = ^ggml_fp16_t;
@@ -1037,6 +1543,584 @@ type
   end;
 
   cerr_callback = procedure(const text: PUTF8Char; user_data: Pointer); cdecl;
+  Psqlite3 = Pointer;
+  PPsqlite3 = ^Psqlite3;
+  sqlite_int64 = Int64;
+  sqlite_uint64 = UInt64;
+  sqlite3_int64 = sqlite_int64;
+  Psqlite3_int64 = ^sqlite3_int64;
+  sqlite3_uint64 = sqlite_uint64;
+
+  sqlite3_callback = function(p1: Pointer; p2: Integer; p3: PPUTF8Char; p4: PPUTF8Char): Integer; cdecl;
+
+  sqlite3_file = record
+    pMethods: Psqlite3_io_methods;
+  end;
+
+  sqlite3_io_methods = record
+    iVersion: Integer;
+    xClose: function(p1: Psqlite3_file): Integer; cdecl;
+    xRead: function(p1: Psqlite3_file; p2: Pointer; iAmt: Integer; iOfst: sqlite3_int64): Integer; cdecl;
+    xWrite: function(p1: Psqlite3_file; const p2: Pointer; iAmt: Integer; iOfst: sqlite3_int64): Integer; cdecl;
+    xTruncate: function(p1: Psqlite3_file; size: sqlite3_int64): Integer; cdecl;
+    xSync: function(p1: Psqlite3_file; flags: Integer): Integer; cdecl;
+    xFileSize: function(p1: Psqlite3_file; pSize: Psqlite3_int64): Integer; cdecl;
+    xLock: function(p1: Psqlite3_file; p2: Integer): Integer; cdecl;
+    xUnlock: function(p1: Psqlite3_file; p2: Integer): Integer; cdecl;
+    xCheckReservedLock: function(p1: Psqlite3_file; pResOut: PInteger): Integer; cdecl;
+    xFileControl: function(p1: Psqlite3_file; op: Integer; pArg: Pointer): Integer; cdecl;
+    xSectorSize: function(p1: Psqlite3_file): Integer; cdecl;
+    xDeviceCharacteristics: function(p1: Psqlite3_file): Integer; cdecl;
+    xShmMap: function(p1: Psqlite3_file; iPg: Integer; pgsz: Integer; p4: Integer; p5: PPointer): Integer; cdecl;
+    xShmLock: function(p1: Psqlite3_file; offset: Integer; n: Integer; flags: Integer): Integer; cdecl;
+    xShmBarrier: procedure(p1: Psqlite3_file); cdecl;
+    xShmUnmap: function(p1: Psqlite3_file; deleteFlag: Integer): Integer; cdecl;
+    xFetch: function(p1: Psqlite3_file; iOfst: sqlite3_int64; iAmt: Integer; pp: PPointer): Integer; cdecl;
+    xUnfetch: function(p1: Psqlite3_file; iOfst: sqlite3_int64; p: Pointer): Integer; cdecl;
+  end;
+
+  Psqlite3_mutex = Pointer;
+  PPsqlite3_mutex = ^Psqlite3_mutex;
+  sqlite3_filename = PUTF8Char;
+
+  sqlite3_syscall_ptr = procedure(); cdecl;
+
+  Pvoid = Pointer;
+  sqlite3_vfs = record
+    iVersion: Integer;
+    szOsFile: Integer;
+    mxPathname: Integer;
+    pNext: Psqlite3_vfs;
+    zName: PUTF8Char;
+    pAppData: Pointer;
+    xOpen: function(p1: Psqlite3_vfs; zName: sqlite3_filename; p3: Psqlite3_file; flags: Integer; pOutFlags: PInteger): Integer; cdecl;
+    xDelete: function(p1: Psqlite3_vfs; const zName: PUTF8Char; syncDir: Integer): Integer; cdecl;
+    xAccess: function(p1: Psqlite3_vfs; const zName: PUTF8Char; flags: Integer; pResOut: PInteger): Integer; cdecl;
+    xFullPathname: function(p1: Psqlite3_vfs; const zName: PUTF8Char; nOut: Integer; zOut: PUTF8Char): Integer; cdecl;
+    xDlOpen: function(p1: Psqlite3_vfs; const zFilename: PUTF8Char): Pointer; cdecl;
+    xDlError: procedure(p1: Psqlite3_vfs; nByte: Integer; zErrMsg: PUTF8Char); cdecl;
+    xDlSym: function(p1: Psqlite3_vfs; p2: Pointer; const zSymbol: PUTF8Char): Pvoid; cdecl;
+    xDlClose: procedure(p1: Psqlite3_vfs; p2: Pointer); cdecl;
+    xRandomness: function(p1: Psqlite3_vfs; nByte: Integer; zOut: PUTF8Char): Integer; cdecl;
+    xSleep: function(p1: Psqlite3_vfs; microseconds: Integer): Integer; cdecl;
+    xCurrentTime: function(p1: Psqlite3_vfs; p2: PDouble): Integer; cdecl;
+    xGetLastError: function(p1: Psqlite3_vfs; p2: Integer; p3: PUTF8Char): Integer; cdecl;
+    xCurrentTimeInt64: function(p1: Psqlite3_vfs; p2: Psqlite3_int64): Integer; cdecl;
+    xSetSystemCall: function(p1: Psqlite3_vfs; const zName: PUTF8Char; p3: sqlite3_syscall_ptr): Integer; cdecl;
+    xGetSystemCall: function(p1: Psqlite3_vfs; const zName: PUTF8Char): sqlite3_syscall_ptr; cdecl;
+    xNextSystemCall: function(p1: Psqlite3_vfs; const zName: PUTF8Char): PUTF8Char; cdecl;
+  end;
+
+  sqlite3_mem_methods = record
+    xMalloc: function(p1: Integer): Pointer; cdecl;
+    xFree: procedure(p1: Pointer); cdecl;
+    xRealloc: function(p1: Pointer; p2: Integer): Pointer; cdecl;
+    xSize: function(p1: Pointer): Integer; cdecl;
+    xRoundup: function(p1: Integer): Integer; cdecl;
+    xInit: function(p1: Pointer): Integer; cdecl;
+    xShutdown: procedure(p1: Pointer); cdecl;
+    pAppData: Pointer;
+  end;
+
+  Psqlite3_stmt = Pointer;
+  PPsqlite3_stmt = ^Psqlite3_stmt;
+  Psqlite3_value = Pointer;
+  PPsqlite3_value = ^Psqlite3_value;
+  Psqlite3_context = Pointer;
+  PPsqlite3_context = ^Psqlite3_context;
+
+  sqlite3_destructor_type = procedure(p1: Pointer); cdecl;
+
+  PPvoid = ^Pvoid;
+  TpxFunc = procedure(pCtx: Psqlite3_context; n: Integer; apVal: PPsqlite3_value);
+  sqlite3_module = record
+    iVersion: Integer;
+    xCreate: function(p1: Psqlite3; pAux: Pointer; argc: Integer; const argv: PPUTF8Char; ppVTab: PPsqlite3_vtab; p6: PPUTF8Char): Integer; cdecl;
+    xConnect: function(p1: Psqlite3; pAux: Pointer; argc: Integer; const argv: PPUTF8Char; ppVTab: PPsqlite3_vtab; p6: PPUTF8Char): Integer; cdecl;
+    xBestIndex: function(pVTab: Psqlite3_vtab; p2: Psqlite3_index_info): Integer; cdecl;
+    xDisconnect: function(pVTab: Psqlite3_vtab): Integer; cdecl;
+    xDestroy: function(pVTab: Psqlite3_vtab): Integer; cdecl;
+    xOpen: function(pVTab: Psqlite3_vtab; ppCursor: PPsqlite3_vtab_cursor): Integer; cdecl;
+    xClose: function(p1: Psqlite3_vtab_cursor): Integer; cdecl;
+    xFilter: function(p1: Psqlite3_vtab_cursor; idxNum: Integer; const idxStr: PUTF8Char; argc: Integer; argv: PPsqlite3_value): Integer; cdecl;
+    xNext: function(p1: Psqlite3_vtab_cursor): Integer; cdecl;
+    xEof: function(p1: Psqlite3_vtab_cursor): Integer; cdecl;
+    xColumn: function(p1: Psqlite3_vtab_cursor; p2: Psqlite3_context; p3: Integer): Integer; cdecl;
+    xRowid: function(p1: Psqlite3_vtab_cursor; pRowid: Psqlite3_int64): Integer; cdecl;
+    xUpdate: function(p1: Psqlite3_vtab; p2: Integer; p3: PPsqlite3_value; p4: Psqlite3_int64): Integer; cdecl;
+    xBegin: function(pVTab: Psqlite3_vtab): Integer; cdecl;
+    xSync: function(pVTab: Psqlite3_vtab): Integer; cdecl;
+    xCommit: function(pVTab: Psqlite3_vtab): Integer; cdecl;
+    xRollback: function(pVTab: Psqlite3_vtab): Integer; cdecl;
+    xFindFunction: function(pVtab: Psqlite3_vtab; nArg: Integer; zName: PAnsiChar; var pxFunc: TpxFunc; var ppArg: Pointer): Integer; cdecl;
+    xRename: function(pVtab: Psqlite3_vtab; const zNew: PUTF8Char): Integer; cdecl;
+    xSavepoint: function(pVTab: Psqlite3_vtab; p2: Integer): Integer; cdecl;
+    xRelease: function(pVTab: Psqlite3_vtab; p2: Integer): Integer; cdecl;
+    xRollbackTo: function(pVTab: Psqlite3_vtab; p2: Integer): Integer; cdecl;
+    xShadowName: function(const p1: PUTF8Char): Integer; cdecl;
+    xIntegrity: function(pVTab: Psqlite3_vtab; const zSchema: PUTF8Char; const zTabName: PUTF8Char; mFlags: Integer; pzErr: PPUTF8Char): Integer; cdecl;
+  end;
+
+  sqlite3_index_constraint = record
+    iColumn: Integer;
+    op: Byte;
+    usable: Byte;
+    iTermOffset: Integer;
+  end;
+
+  sqlite3_index_orderby = record
+    iColumn: Integer;
+    desc: Byte;
+  end;
+
+  sqlite3_index_constraint_usage = record
+    argvIndex: Integer;
+    omit: Byte;
+  end;
+
+  sqlite3_index_info = record
+    nConstraint: Integer;
+    aConstraint: Psqlite3_index_constraint;
+    nOrderBy: Integer;
+    aOrderBy: Psqlite3_index_orderby;
+    aConstraintUsage: Psqlite3_index_constraint_usage;
+    idxNum: Integer;
+    idxStr: PUTF8Char;
+    needToFreeIdxStr: Integer;
+    orderByConsumed: Integer;
+    estimatedCost: Double;
+    estimatedRows: sqlite3_int64;
+    idxFlags: Integer;
+    colUsed: sqlite3_uint64;
+  end;
+
+  sqlite3_vtab = record
+    pModule: Psqlite3_module;
+    nRef: Integer;
+    zErrMsg: PUTF8Char;
+  end;
+
+  sqlite3_vtab_cursor = record
+    pVtab: Psqlite3_vtab;
+  end;
+
+  Psqlite3_blob = Pointer;
+  PPsqlite3_blob = ^Psqlite3_blob;
+
+  sqlite3_mutex_methods = record
+    xMutexInit: function(): Integer; cdecl;
+    xMutexEnd: function(): Integer; cdecl;
+    xMutexAlloc: function(p1: Integer): Psqlite3_mutex; cdecl;
+    xMutexFree: procedure(p1: Psqlite3_mutex); cdecl;
+    xMutexEnter: procedure(p1: Psqlite3_mutex); cdecl;
+    xMutexTry: function(p1: Psqlite3_mutex): Integer; cdecl;
+    xMutexLeave: procedure(p1: Psqlite3_mutex); cdecl;
+    xMutexHeld: function(p1: Psqlite3_mutex): Integer; cdecl;
+    xMutexNotheld: function(p1: Psqlite3_mutex): Integer; cdecl;
+  end;
+
+  Psqlite3_str = Pointer;
+  PPsqlite3_str = ^Psqlite3_str;
+  Psqlite3_pcache = Pointer;
+  PPsqlite3_pcache = ^Psqlite3_pcache;
+
+  sqlite3_pcache_page = record
+    pBuf: Pointer;
+    pExtra: Pointer;
+  end;
+
+  sqlite3_pcache_methods2 = record
+    iVersion: Integer;
+    pArg: Pointer;
+    xInit: function(p1: Pointer): Integer; cdecl;
+    xShutdown: procedure(p1: Pointer); cdecl;
+    xCreate: function(szPage: Integer; szExtra: Integer; bPurgeable: Integer): Psqlite3_pcache; cdecl;
+    xCachesize: procedure(p1: Psqlite3_pcache; nCachesize: Integer); cdecl;
+    xPagecount: function(p1: Psqlite3_pcache): Integer; cdecl;
+    xFetch: function(p1: Psqlite3_pcache; key: Cardinal; createFlag: Integer): Psqlite3_pcache_page; cdecl;
+    xUnpin: procedure(p1: Psqlite3_pcache; p2: Psqlite3_pcache_page; discard: Integer); cdecl;
+    xRekey: procedure(p1: Psqlite3_pcache; p2: Psqlite3_pcache_page; oldKey: Cardinal; newKey: Cardinal); cdecl;
+    xTruncate: procedure(p1: Psqlite3_pcache; iLimit: Cardinal); cdecl;
+    xDestroy: procedure(p1: Psqlite3_pcache); cdecl;
+    xShrink: procedure(p1: Psqlite3_pcache); cdecl;
+  end;
+
+  sqlite3_pcache_methods = record
+    pArg: Pointer;
+    xInit: function(p1: Pointer): Integer; cdecl;
+    xShutdown: procedure(p1: Pointer); cdecl;
+    xCreate: function(szPage: Integer; bPurgeable: Integer): Psqlite3_pcache; cdecl;
+    xCachesize: procedure(p1: Psqlite3_pcache; nCachesize: Integer); cdecl;
+    xPagecount: function(p1: Psqlite3_pcache): Integer; cdecl;
+    xFetch: function(p1: Psqlite3_pcache; key: Cardinal; createFlag: Integer): Pointer; cdecl;
+    xUnpin: procedure(p1: Psqlite3_pcache; p2: Pointer; discard: Integer); cdecl;
+    xRekey: procedure(p1: Psqlite3_pcache; p2: Pointer; oldKey: Cardinal; newKey: Cardinal); cdecl;
+    xTruncate: procedure(p1: Psqlite3_pcache; iLimit: Cardinal); cdecl;
+    xDestroy: procedure(p1: Psqlite3_pcache); cdecl;
+  end;
+
+  Psqlite3_backup = Pointer;
+  PPsqlite3_backup = ^Psqlite3_backup;
+
+  sqlite3_snapshot = record
+    hidden: array [0..47] of Byte;
+  end;
+
+  sqlite3_rtree_dbl = Double;
+  Psqlite3_rtree_dbl = ^sqlite3_rtree_dbl;
+
+  sqlite3_rtree_geometry = record
+    pContext: Pointer;
+    nParam: Integer;
+    aParam: Psqlite3_rtree_dbl;
+    pUser: Pointer;
+    xDelUser: procedure(p1: Pointer); cdecl;
+  end;
+
+  sqlite3_rtree_query_info = record
+    pContext: Pointer;
+    nParam: Integer;
+    aParam: Psqlite3_rtree_dbl;
+    pUser: Pointer;
+    xDelUser: procedure(p1: Pointer); cdecl;
+    aCoord: Psqlite3_rtree_dbl;
+    anQueue: PCardinal;
+    nCoord: Integer;
+    iLevel: Integer;
+    mxLevel: Integer;
+    iRowid: sqlite3_int64;
+    rParentScore: sqlite3_rtree_dbl;
+    eParentWithin: Integer;
+    eWithin: Integer;
+    rScore: sqlite3_rtree_dbl;
+    apSqlParam: PPsqlite3_value;
+  end;
+
+  PFts5Context = Pointer;
+  PPFts5Context = ^PFts5Context;
+
+  fts5_extension_function = procedure(const pApi: PFts5ExtensionApi; pFts: PFts5Context; pCtx: Psqlite3_context; nVal: Integer; apVal: PPsqlite3_value); cdecl;
+
+  Fts5PhraseIter = record
+    a: PByte;
+    b: PByte;
+  end;
+
+  Fts5ExtensionApi = record
+    iVersion: Integer;
+    xUserData: function(p1: PFts5Context): Pointer; cdecl;
+    xColumnCount: function(p1: PFts5Context): Integer; cdecl;
+    xRowCount: function(p1: PFts5Context; pnRow: Psqlite3_int64): Integer; cdecl;
+    xColumnTotalSize: function(p1: PFts5Context; iCol: Integer; pnToken: Psqlite3_int64): Integer; cdecl;
+    xTokenize: function(p1: PFts5Context; const pText: PUTF8Char; nText: Integer; pCtx: Pointer; xToken: Pointer): Integer; cdecl;
+    xPhraseCount: function(p1: PFts5Context): Integer; cdecl;
+    xPhraseSize: function(p1: PFts5Context; iPhrase: Integer): Integer; cdecl;
+    xInstCount: function(p1: PFts5Context; pnInst: PInteger): Integer; cdecl;
+    xInst: function(p1: PFts5Context; iIdx: Integer; piPhrase: PInteger; piCol: PInteger; piOff: PInteger): Integer; cdecl;
+    xRowid: function(p1: PFts5Context): sqlite3_int64; cdecl;
+    xColumnText: function(p1: PFts5Context; iCol: Integer; pz: PPUTF8Char; pn: PInteger): Integer; cdecl;
+    xColumnSize: function(p1: PFts5Context; iCol: Integer; pnToken: PInteger): Integer; cdecl;
+    xQueryPhrase: function(p1: PFts5Context; iPhrase: Integer; pUserData: Pointer; p4: Pointer): Integer; cdecl;
+    xSetAuxdata: function(p1: PFts5Context; pAux: Pointer; xDelete: Pointer): Integer; cdecl;
+    xGetAuxdata: function(p1: PFts5Context; bClear: Integer): Pointer; cdecl;
+    xPhraseFirst: function(p1: PFts5Context; iPhrase: Integer; p3: PFts5PhraseIter; p4: PInteger; p5: PInteger): Integer; cdecl;
+    xPhraseNext: procedure(p1: PFts5Context; p2: PFts5PhraseIter; piCol: PInteger; piOff: PInteger); cdecl;
+    xPhraseFirstColumn: function(p1: PFts5Context; iPhrase: Integer; p3: PFts5PhraseIter; p4: PInteger): Integer; cdecl;
+    xPhraseNextColumn: procedure(p1: PFts5Context; p2: PFts5PhraseIter; piCol: PInteger); cdecl;
+    xQueryToken: function(p1: PFts5Context; iPhrase: Integer; iToken: Integer; ppToken: PPUTF8Char; pnToken: PInteger): Integer; cdecl;
+    xInstToken: function(p1: PFts5Context; iIdx: Integer; iToken: Integer; p4: PPUTF8Char; p5: PInteger): Integer; cdecl;
+  end;
+
+  PFts5Tokenizer = Pointer;
+  PPFts5Tokenizer = ^PFts5Tokenizer;
+
+  fts5_tokenizer = record
+    xCreate: function(p1: Pointer; azArg: PPUTF8Char; nArg: Integer; ppOut: PPFts5Tokenizer): Integer; cdecl;
+    xDelete: procedure(p1: PFts5Tokenizer); cdecl;
+    xTokenize: function(p1: PFts5Tokenizer; pCtx: Pointer; flags: Integer; const pText: PUTF8Char; nText: Integer; xToken: Pointer): Integer; cdecl;
+  end;
+
+  fts5_api = record
+    iVersion: Integer;
+    xCreateTokenizer: function(pApi: Pfts5_api; const zName: PUTF8Char; pUserData: Pointer; pTokenizer: Pfts5_tokenizer; xDestroy: Pointer): Integer; cdecl;
+    xFindTokenizer: function(pApi: Pfts5_api; const zName: PUTF8Char; ppUserData: PPointer; pTokenizer: Pfts5_tokenizer): Integer; cdecl;
+    xCreateFunction: function(pApi: Pfts5_api; const zName: PUTF8Char; pUserData: Pointer; xFunction: fts5_extension_function; xDestroy: Pointer): Integer; cdecl;
+  end;
+
+  sqlite3_api_routines = record
+    aggregate_context: function(p1: Psqlite3_context; nBytes: Integer): Pointer; cdecl;
+    aggregate_count: function(p1: Psqlite3_context): Integer; cdecl;
+    bind_blob: function(p1: Psqlite3_stmt; p2: Integer; const p3: Pointer; n: Integer; p5: Pointer): Integer; cdecl;
+    bind_double: function(p1: Psqlite3_stmt; p2: Integer; p3: Double): Integer; cdecl;
+    bind_int: function(p1: Psqlite3_stmt; p2: Integer; p3: Integer): Integer; cdecl;
+    bind_int64: function(p1: Psqlite3_stmt; p2: Integer; p3: sqlite_int64): Integer; cdecl;
+    bind_null: function(p1: Psqlite3_stmt; p2: Integer): Integer; cdecl;
+    bind_parameter_count: function(p1: Psqlite3_stmt): Integer; cdecl;
+    bind_parameter_index: function(p1: Psqlite3_stmt; const zName: PUTF8Char): Integer; cdecl;
+    bind_parameter_name: function(p1: Psqlite3_stmt; p2: Integer): PUTF8Char; cdecl;
+    bind_text: function(p1: Psqlite3_stmt; p2: Integer; const p3: PUTF8Char; n: Integer; p5: Pointer): Integer; cdecl;
+    bind_text16: function(p1: Psqlite3_stmt; p2: Integer; const p3: Pointer; p4: Integer; p5: Pointer): Integer; cdecl;
+    bind_value: function(p1: Psqlite3_stmt; p2: Integer; const p3: Psqlite3_value): Integer; cdecl;
+    busy_handler: function(p1: Psqlite3; p2: Pointer; p3: Pointer): Integer; cdecl;
+    busy_timeout: function(p1: Psqlite3; ms: Integer): Integer; cdecl;
+    changes: function(p1: Psqlite3): Integer; cdecl;
+    close: function(p1: Psqlite3): Integer; cdecl;
+    collation_needed: function(p1: Psqlite3; p2: Pointer; p3: Pointer): Integer; cdecl;
+    collation_needed16: function(p1: Psqlite3; p2: Pointer; p3: Pointer): Integer; cdecl;
+    column_blob: function(p1: Psqlite3_stmt; iCol: Integer): Pointer; cdecl;
+    column_bytes: function(p1: Psqlite3_stmt; iCol: Integer): Integer; cdecl;
+    column_bytes16: function(p1: Psqlite3_stmt; iCol: Integer): Integer; cdecl;
+    column_count: function(pStmt: Psqlite3_stmt): Integer; cdecl;
+    column_database_name: function(p1: Psqlite3_stmt; p2: Integer): PUTF8Char; cdecl;
+    column_database_name16: function(p1: Psqlite3_stmt; p2: Integer): Pointer; cdecl;
+    column_decltype: function(p1: Psqlite3_stmt; i: Integer): PUTF8Char; cdecl;
+    column_decltype16: function(p1: Psqlite3_stmt; p2: Integer): Pointer; cdecl;
+    column_double: function(p1: Psqlite3_stmt; iCol: Integer): Double; cdecl;
+    column_int: function(p1: Psqlite3_stmt; iCol: Integer): Integer; cdecl;
+    column_int64: function(p1: Psqlite3_stmt; iCol: Integer): sqlite_int64; cdecl;
+    column_name: function(p1: Psqlite3_stmt; p2: Integer): PUTF8Char; cdecl;
+    column_name16: function(p1: Psqlite3_stmt; p2: Integer): Pointer; cdecl;
+    column_origin_name: function(p1: Psqlite3_stmt; p2: Integer): PUTF8Char; cdecl;
+    column_origin_name16: function(p1: Psqlite3_stmt; p2: Integer): Pointer; cdecl;
+    column_table_name: function(p1: Psqlite3_stmt; p2: Integer): PUTF8Char; cdecl;
+    column_table_name16: function(p1: Psqlite3_stmt; p2: Integer): Pointer; cdecl;
+    column_text: function(p1: Psqlite3_stmt; iCol: Integer): PByte; cdecl;
+    column_text16: function(p1: Psqlite3_stmt; iCol: Integer): Pointer; cdecl;
+    column_type: function(p1: Psqlite3_stmt; iCol: Integer): Integer; cdecl;
+    column_value: function(p1: Psqlite3_stmt; iCol: Integer): Psqlite3_value; cdecl;
+    commit_hook: function(p1: Psqlite3; p2: Pointer; p3: Pointer): Pointer; cdecl;
+    complete: function(const sql: PUTF8Char): Integer; cdecl;
+    complete16: function(const sql: Pointer): Integer; cdecl;
+    create_collation: function(p1: Psqlite3; const p2: PUTF8Char; p3: Integer; p4: Pointer; p5: Pointer): Integer; cdecl;
+    create_collation16: function(p1: Psqlite3; const p2: Pointer; p3: Integer; p4: Pointer; p5: Pointer): Integer; cdecl;
+    create_function: function(p1: Psqlite3; const p2: PUTF8Char; p3: Integer; p4: Integer; p5: Pointer; xFunc: Pointer; xStep: Pointer; xFinal: Pointer): Integer; cdecl;
+    create_function16: function(p1: Psqlite3; const p2: Pointer; p3: Integer; p4: Integer; p5: Pointer; xFunc: Pointer; xStep: Pointer; xFinal: Pointer): Integer; cdecl;
+    create_module: function(p1: Psqlite3; const p2: PUTF8Char; const p3: Psqlite3_module; p4: Pointer): Integer; cdecl;
+    data_count: function(pStmt: Psqlite3_stmt): Integer; cdecl;
+    db_handle: function(p1: Psqlite3_stmt): Psqlite3; cdecl;
+    declare_vtab: function(p1: Psqlite3; const p2: PUTF8Char): Integer; cdecl;
+    enable_shared_cache: function(p1: Integer): Integer; cdecl;
+    errcode: function(db: Psqlite3): Integer; cdecl;
+    errmsg: function(p1: Psqlite3): PUTF8Char; cdecl;
+    errmsg16: function(p1: Psqlite3): Pointer; cdecl;
+    exec: function(p1: Psqlite3; const p2: PUTF8Char; p3: sqlite3_callback; p4: Pointer; p5: PPUTF8Char): Integer; cdecl;
+    expired: function(p1: Psqlite3_stmt): Integer; cdecl;
+    finalize: function(pStmt: Psqlite3_stmt): Integer; cdecl;
+    free: procedure(p1: Pointer); cdecl;
+    free_table: procedure(result: PPUTF8Char); cdecl;
+    get_autocommit: function(p1: Psqlite3): Integer; cdecl;
+    get_auxdata: function(p1: Psqlite3_context; p2: Integer): Pointer; cdecl;
+    get_table: function(p1: Psqlite3; const p2: PUTF8Char; p3: PPPUTF8Char; p4: PInteger; p5: PInteger; p6: PPUTF8Char): Integer; cdecl;
+    global_recover: function(): Integer; cdecl;
+    interruptx: procedure(p1: Psqlite3); cdecl;
+    last_insert_rowid: function(p1: Psqlite3): sqlite_int64; cdecl;
+    libversion: function(): PUTF8Char; cdecl;
+    libversion_number: function(): Integer; cdecl;
+    malloc: function(p1: Integer): Pointer; cdecl;
+    mprintf: function(const p1: PUTF8Char): PUTF8Char varargs; cdecl;
+    open: function(const p1: PUTF8Char; p2: PPsqlite3): Integer; cdecl;
+    open16: function(const p1: Pointer; p2: PPsqlite3): Integer; cdecl;
+    prepare: function(p1: Psqlite3; const p2: PUTF8Char; p3: Integer; p4: PPsqlite3_stmt; p5: PPUTF8Char): Integer; cdecl;
+    prepare16: function(p1: Psqlite3; const p2: Pointer; p3: Integer; p4: PPsqlite3_stmt; p5: PPointer): Integer; cdecl;
+    profile: function(p1: Psqlite3; p2: Pointer; p3: Pointer): Pointer; cdecl;
+    progress_handler: procedure(p1: Psqlite3; p2: Integer; p3: Pointer; p4: Pointer); cdecl;
+    realloc: function(p1: Pointer; p2: Integer): Pointer; cdecl;
+    reset: function(pStmt: Psqlite3_stmt): Integer; cdecl;
+    result_blob: procedure(p1: Psqlite3_context; const p2: Pointer; p3: Integer; p4: Pointer); cdecl;
+    result_double: procedure(p1: Psqlite3_context; p2: Double); cdecl;
+    result_error: procedure(p1: Psqlite3_context; const p2: PUTF8Char; p3: Integer); cdecl;
+    result_error16: procedure(p1: Psqlite3_context; const p2: Pointer; p3: Integer); cdecl;
+    result_int: procedure(p1: Psqlite3_context; p2: Integer); cdecl;
+    result_int64: procedure(p1: Psqlite3_context; p2: sqlite_int64); cdecl;
+    result_null: procedure(p1: Psqlite3_context); cdecl;
+    result_text: procedure(p1: Psqlite3_context; const p2: PUTF8Char; p3: Integer; p4: Pointer); cdecl;
+    result_text16: procedure(p1: Psqlite3_context; const p2: Pointer; p3: Integer; p4: Pointer); cdecl;
+    result_text16be: procedure(p1: Psqlite3_context; const p2: Pointer; p3: Integer; p4: Pointer); cdecl;
+    result_text16le: procedure(p1: Psqlite3_context; const p2: Pointer; p3: Integer; p4: Pointer); cdecl;
+    result_value: procedure(p1: Psqlite3_context; p2: Psqlite3_value); cdecl;
+    rollback_hook: function(p1: Psqlite3; p2: Pointer; p3: Pointer): Pointer; cdecl;
+    set_authorizer: function(p1: Psqlite3; p2: Pointer; p3: Pointer): Integer; cdecl;
+    set_auxdata: procedure(p1: Psqlite3_context; p2: Integer; p3: Pointer; p4: Pointer); cdecl;
+    xsnprintf: function(p1: Integer; p2: PUTF8Char; const p3: PUTF8Char): PUTF8Char varargs; cdecl;
+    step: function(p1: Psqlite3_stmt): Integer; cdecl;
+    table_column_metadata: function(p1: Psqlite3; const p2: PUTF8Char; const p3: PUTF8Char; const p4: PUTF8Char; p5: PPUTF8Char; p6: PPUTF8Char; p7: PInteger; p8: PInteger; p9: PInteger): Integer; cdecl;
+    thread_cleanup: procedure(); cdecl;
+    total_changes: function(p1: Psqlite3): Integer; cdecl;
+    trace: function(p1: Psqlite3; xTrace: Pointer; p3: Pointer): Pointer; cdecl;
+    transfer_bindings: function(p1: Psqlite3_stmt; p2: Psqlite3_stmt): Integer; cdecl;
+    update_hook: function(p1: Psqlite3; p2: Pointer; p3: Pointer): Pointer; cdecl;
+    user_data: function(p1: Psqlite3_context): Pointer; cdecl;
+    value_blob: function(p1: Psqlite3_value): Pointer; cdecl;
+    value_bytes: function(p1: Psqlite3_value): Integer; cdecl;
+    value_bytes16: function(p1: Psqlite3_value): Integer; cdecl;
+    value_double: function(p1: Psqlite3_value): Double; cdecl;
+    value_int: function(p1: Psqlite3_value): Integer; cdecl;
+    value_int64: function(p1: Psqlite3_value): sqlite_int64; cdecl;
+    value_numeric_type: function(p1: Psqlite3_value): Integer; cdecl;
+    value_text: function(p1: Psqlite3_value): PByte; cdecl;
+    value_text16: function(p1: Psqlite3_value): Pointer; cdecl;
+    value_text16be: function(p1: Psqlite3_value): Pointer; cdecl;
+    value_text16le: function(p1: Psqlite3_value): Pointer; cdecl;
+    value_type: function(p1: Psqlite3_value): Integer; cdecl;
+    vmprintf: function(const p1: PUTF8Char; p2: Pointer): PUTF8Char; cdecl;
+    overload_function: function(p1: Psqlite3; const zFuncName: PUTF8Char; nArg: Integer): Integer; cdecl;
+    prepare_v2: function(p1: Psqlite3; const p2: PUTF8Char; p3: Integer; p4: PPsqlite3_stmt; p5: PPUTF8Char): Integer; cdecl;
+    prepare16_v2: function(p1: Psqlite3; const p2: Pointer; p3: Integer; p4: PPsqlite3_stmt; p5: PPointer): Integer; cdecl;
+    clear_bindings: function(p1: Psqlite3_stmt): Integer; cdecl;
+    create_module_v2: function(p1: Psqlite3; const p2: PUTF8Char; const p3: Psqlite3_module; p4: Pointer; xDestroy: Pointer): Integer; cdecl;
+    bind_zeroblob: function(p1: Psqlite3_stmt; p2: Integer; p3: Integer): Integer; cdecl;
+    blob_bytes: function(p1: Psqlite3_blob): Integer; cdecl;
+    blob_close: function(p1: Psqlite3_blob): Integer; cdecl;
+    blob_open: function(p1: Psqlite3; const p2: PUTF8Char; const p3: PUTF8Char; const p4: PUTF8Char; p5: sqlite3_int64; p6: Integer; p7: PPsqlite3_blob): Integer; cdecl;
+    blob_read: function(p1: Psqlite3_blob; p2: Pointer; p3: Integer; p4: Integer): Integer; cdecl;
+    blob_write: function(p1: Psqlite3_blob; const p2: Pointer; p3: Integer; p4: Integer): Integer; cdecl;
+    create_collation_v2: function(p1: Psqlite3; const p2: PUTF8Char; p3: Integer; p4: Pointer; p5: Pointer; p6: Pointer): Integer; cdecl;
+    file_control: function(p1: Psqlite3; const p2: PUTF8Char; p3: Integer; p4: Pointer): Integer; cdecl;
+    memory_highwater: function(p1: Integer): sqlite3_int64; cdecl;
+    memory_used: function(): sqlite3_int64; cdecl;
+    mutex_alloc: function(p1: Integer): Psqlite3_mutex; cdecl;
+    mutex_enter: procedure(p1: Psqlite3_mutex); cdecl;
+    mutex_free: procedure(p1: Psqlite3_mutex); cdecl;
+    mutex_leave: procedure(p1: Psqlite3_mutex); cdecl;
+    mutex_try: function(p1: Psqlite3_mutex): Integer; cdecl;
+    open_v2: function(const p1: PUTF8Char; p2: PPsqlite3; p3: Integer; const p4: PUTF8Char): Integer; cdecl;
+    release_memory: function(p1: Integer): Integer; cdecl;
+    result_error_nomem: procedure(p1: Psqlite3_context); cdecl;
+    result_error_toobig: procedure(p1: Psqlite3_context); cdecl;
+    sleep: function(p1: Integer): Integer; cdecl;
+    soft_heap_limit: procedure(p1: Integer); cdecl;
+    vfs_find: function(const p1: PUTF8Char): Psqlite3_vfs; cdecl;
+    vfs_register: function(p1: Psqlite3_vfs; p2: Integer): Integer; cdecl;
+    vfs_unregister: function(p1: Psqlite3_vfs): Integer; cdecl;
+    xthreadsafe: function(): Integer; cdecl;
+    result_zeroblob: procedure(p1: Psqlite3_context; p2: Integer); cdecl;
+    result_error_code: procedure(p1: Psqlite3_context; p2: Integer); cdecl;
+    test_control: function(p1: Integer): Integer varargs; cdecl;
+    randomness: procedure(p1: Integer; p2: Pointer); cdecl;
+    context_db_handle: function(p1: Psqlite3_context): Psqlite3; cdecl;
+    extended_result_codes: function(p1: Psqlite3; p2: Integer): Integer; cdecl;
+    limit: function(p1: Psqlite3; p2: Integer; p3: Integer): Integer; cdecl;
+    next_stmt: function(p1: Psqlite3; p2: Psqlite3_stmt): Psqlite3_stmt; cdecl;
+    sql: function(p1: Psqlite3_stmt): PUTF8Char; cdecl;
+    status: function(p1: Integer; p2: PInteger; p3: PInteger; p4: Integer): Integer; cdecl;
+    backup_finish: function(p1: Psqlite3_backup): Integer; cdecl;
+    backup_init: function(p1: Psqlite3; const p2: PUTF8Char; p3: Psqlite3; const p4: PUTF8Char): Psqlite3_backup; cdecl;
+    backup_pagecount: function(p1: Psqlite3_backup): Integer; cdecl;
+    backup_remaining: function(p1: Psqlite3_backup): Integer; cdecl;
+    backup_step: function(p1: Psqlite3_backup; p2: Integer): Integer; cdecl;
+    compileoption_get: function(p1: Integer): PUTF8Char; cdecl;
+    compileoption_used: function(const p1: PUTF8Char): Integer; cdecl;
+    create_function_v2: function(p1: Psqlite3; const p2: PUTF8Char; p3: Integer; p4: Integer; p5: Pointer; xFunc: Pointer; xStep: Pointer; xFinal: Pointer; xDestroy: Pointer): Integer; cdecl;
+    db_config: function(p1: Psqlite3; p2: Integer): Integer varargs; cdecl;
+    db_mutex: function(p1: Psqlite3): Psqlite3_mutex; cdecl;
+    db_status: function(p1: Psqlite3; p2: Integer; p3: PInteger; p4: PInteger; p5: Integer): Integer; cdecl;
+    extended_errcode: function(p1: Psqlite3): Integer; cdecl;
+    log: procedure(p1: Integer; const p2: PUTF8Char) varargs; cdecl;
+    soft_heap_limit64: function(p1: sqlite3_int64): sqlite3_int64; cdecl;
+    sourceid: function(): PUTF8Char; cdecl;
+    stmt_status: function(p1: Psqlite3_stmt; p2: Integer; p3: Integer): Integer; cdecl;
+    strnicmp: function(const p1: PUTF8Char; const p2: PUTF8Char; p3: Integer): Integer; cdecl;
+    unlock_notify: function(p1: Psqlite3; p2: Pointer; p3: Pointer): Integer; cdecl;
+    wal_autocheckpoint: function(p1: Psqlite3; p2: Integer): Integer; cdecl;
+    wal_checkpoint: function(p1: Psqlite3; const p2: PUTF8Char): Integer; cdecl;
+    wal_hook: function(p1: Psqlite3; p2: Pointer; p3: Pointer): Pointer; cdecl;
+    blob_reopen: function(p1: Psqlite3_blob; p2: sqlite3_int64): Integer; cdecl;
+    vtab_config: function(p1: Psqlite3; op: Integer): Integer varargs; cdecl;
+    vtab_on_conflict: function(p1: Psqlite3): Integer; cdecl;
+    close_v2: function(p1: Psqlite3): Integer; cdecl;
+    db_filename: function(p1: Psqlite3; const p2: PUTF8Char): PUTF8Char; cdecl;
+    db_readonly: function(p1: Psqlite3; const p2: PUTF8Char): Integer; cdecl;
+    db_release_memory: function(p1: Psqlite3): Integer; cdecl;
+    errstr: function(p1: Integer): PUTF8Char; cdecl;
+    stmt_busy: function(p1: Psqlite3_stmt): Integer; cdecl;
+    stmt_readonly: function(p1: Psqlite3_stmt): Integer; cdecl;
+    stricmp: function(const p1: PUTF8Char; const p2: PUTF8Char): Integer; cdecl;
+    uri_boolean: function(const p1: PUTF8Char; const p2: PUTF8Char; p3: Integer): Integer; cdecl;
+    uri_int64: function(const p1: PUTF8Char; const p2: PUTF8Char; p3: sqlite3_int64): sqlite3_int64; cdecl;
+    uri_parameter: function(const p1: PUTF8Char; const p2: PUTF8Char): PUTF8Char; cdecl;
+    xvsnprintf: function(p1: Integer; p2: PUTF8Char; const p3: PUTF8Char; p4: Pointer): PUTF8Char; cdecl;
+    wal_checkpoint_v2: function(p1: Psqlite3; const p2: PUTF8Char; p3: Integer; p4: PInteger; p5: PInteger): Integer; cdecl;
+    auto_extension: function(p1: Pointer): Integer; cdecl;
+    bind_blob64: function(p1: Psqlite3_stmt; p2: Integer; const p3: Pointer; p4: sqlite3_uint64; p5: Pointer): Integer; cdecl;
+    bind_text64: function(p1: Psqlite3_stmt; p2: Integer; const p3: PUTF8Char; p4: sqlite3_uint64; p5: Pointer; p6: Byte): Integer; cdecl;
+    cancel_auto_extension: function(p1: Pointer): Integer; cdecl;
+    load_extension: function(p1: Psqlite3; const p2: PUTF8Char; const p3: PUTF8Char; p4: PPUTF8Char): Integer; cdecl;
+    malloc64: function(p1: sqlite3_uint64): Pointer; cdecl;
+    msize: function(p1: Pointer): sqlite3_uint64; cdecl;
+    realloc64: function(p1: Pointer; p2: sqlite3_uint64): Pointer; cdecl;
+    reset_auto_extension: procedure(); cdecl;
+    result_blob64: procedure(p1: Psqlite3_context; const p2: Pointer; p3: sqlite3_uint64; p4: Pointer); cdecl;
+    result_text64: procedure(p1: Psqlite3_context; const p2: PUTF8Char; p3: sqlite3_uint64; p4: Pointer; p5: Byte); cdecl;
+    strglob: function(const p1: PUTF8Char; const p2: PUTF8Char): Integer; cdecl;
+    value_dup: function(const p1: Psqlite3_value): Psqlite3_value; cdecl;
+    value_free: procedure(p1: Psqlite3_value); cdecl;
+    result_zeroblob64: function(p1: Psqlite3_context; p2: sqlite3_uint64): Integer; cdecl;
+    bind_zeroblob64: function(p1: Psqlite3_stmt; p2: Integer; p3: sqlite3_uint64): Integer; cdecl;
+    value_subtype: function(p1: Psqlite3_value): Cardinal; cdecl;
+    result_subtype: procedure(p1: Psqlite3_context; p2: Cardinal); cdecl;
+    status64: function(p1: Integer; p2: Psqlite3_int64; p3: Psqlite3_int64; p4: Integer): Integer; cdecl;
+    strlike: function(const p1: PUTF8Char; const p2: PUTF8Char; p3: Cardinal): Integer; cdecl;
+    db_cacheflush: function(p1: Psqlite3): Integer; cdecl;
+    system_errno: function(p1: Psqlite3): Integer; cdecl;
+    trace_v2: function(p1: Psqlite3; p2: Cardinal; p3: Pointer; p4: Pointer): Integer; cdecl;
+    expanded_sql: function(p1: Psqlite3_stmt): PUTF8Char; cdecl;
+    set_last_insert_rowid: procedure(p1: Psqlite3; p2: sqlite3_int64); cdecl;
+    prepare_v3: function(p1: Psqlite3; const p2: PUTF8Char; p3: Integer; p4: Cardinal; p5: PPsqlite3_stmt; p6: PPUTF8Char): Integer; cdecl;
+    prepare16_v3: function(p1: Psqlite3; const p2: Pointer; p3: Integer; p4: Cardinal; p5: PPsqlite3_stmt; p6: PPointer): Integer; cdecl;
+    bind_pointer: function(p1: Psqlite3_stmt; p2: Integer; p3: Pointer; const p4: PUTF8Char; p5: Pointer): Integer; cdecl;
+    result_pointer: procedure(p1: Psqlite3_context; p2: Pointer; const p3: PUTF8Char; p4: Pointer); cdecl;
+    value_pointer: function(p1: Psqlite3_value; const p2: PUTF8Char): Pointer; cdecl;
+    vtab_nochange: function(p1: Psqlite3_context): Integer; cdecl;
+    value_nochange: function(p1: Psqlite3_value): Integer; cdecl;
+    vtab_collation: function(p1: Psqlite3_index_info; p2: Integer): PUTF8Char; cdecl;
+    keyword_count: function(): Integer; cdecl;
+    keyword_name: function(p1: Integer; p2: PPUTF8Char; p3: PInteger): Integer; cdecl;
+    keyword_check: function(const p1: PUTF8Char; p2: Integer): Integer; cdecl;
+    str_new: function(p1: Psqlite3): Psqlite3_str; cdecl;
+    str_finish: function(p1: Psqlite3_str): PUTF8Char; cdecl;
+    str_appendf: procedure(p1: Psqlite3_str; const zFormat: PUTF8Char) varargs; cdecl;
+    str_vappendf: procedure(p1: Psqlite3_str; const zFormat: PUTF8Char; p3: Pointer); cdecl;
+    str_append: procedure(p1: Psqlite3_str; const zIn: PUTF8Char; N: Integer); cdecl;
+    str_appendall: procedure(p1: Psqlite3_str; const zIn: PUTF8Char); cdecl;
+    str_appendchar: procedure(p1: Psqlite3_str; N: Integer; C: UTF8Char); cdecl;
+    str_reset: procedure(p1: Psqlite3_str); cdecl;
+    str_errcode: function(p1: Psqlite3_str): Integer; cdecl;
+    str_length: function(p1: Psqlite3_str): Integer; cdecl;
+    str_value: function(p1: Psqlite3_str): PUTF8Char; cdecl;
+    create_window_function: function(p1: Psqlite3; const p2: PUTF8Char; p3: Integer; p4: Integer; p5: Pointer; xStep: Pointer; xFinal: Pointer; xValue: Pointer; xInv: Pointer; xDestroy: Pointer): Integer; cdecl;
+    normalized_sql: function(p1: Psqlite3_stmt): PUTF8Char; cdecl;
+    stmt_isexplain: function(p1: Psqlite3_stmt): Integer; cdecl;
+    value_frombind: function(p1: Psqlite3_value): Integer; cdecl;
+    drop_modules: function(p1: Psqlite3; p2: PPUTF8Char): Integer; cdecl;
+    hard_heap_limit64: function(p1: sqlite3_int64): sqlite3_int64; cdecl;
+    uri_key: function(const p1: PUTF8Char; p2: Integer): PUTF8Char; cdecl;
+    filename_database: function(const p1: PUTF8Char): PUTF8Char; cdecl;
+    filename_journal: function(const p1: PUTF8Char): PUTF8Char; cdecl;
+    filename_wal: function(const p1: PUTF8Char): PUTF8Char; cdecl;
+    create_filename: function(const p1: PUTF8Char; const p2: PUTF8Char; const p3: PUTF8Char; p4: Integer; p5: PPUTF8Char): PUTF8Char; cdecl;
+    free_filename: procedure(const p1: PUTF8Char); cdecl;
+    database_file_object: function(const p1: PUTF8Char): Psqlite3_file; cdecl;
+    txn_state: function(p1: Psqlite3; const p2: PUTF8Char): Integer; cdecl;
+    changes64: function(p1: Psqlite3): sqlite3_int64; cdecl;
+    total_changes64: function(p1: Psqlite3): sqlite3_int64; cdecl;
+    autovacuum_pages: function(p1: Psqlite3; p2: Pointer; p3: Pointer; p4: Pointer): Integer; cdecl;
+    error_offset: function(p1: Psqlite3): Integer; cdecl;
+    vtab_rhs_value: function(p1: Psqlite3_index_info; p2: Integer; p3: PPsqlite3_value): Integer; cdecl;
+    vtab_distinct: function(p1: Psqlite3_index_info): Integer; cdecl;
+    vtab_in: function(p1: Psqlite3_index_info; p2: Integer; p3: Integer): Integer; cdecl;
+    vtab_in_first: function(p1: Psqlite3_value; p2: PPsqlite3_value): Integer; cdecl;
+    vtab_in_next: function(p1: Psqlite3_value; p2: PPsqlite3_value): Integer; cdecl;
+    deserialize: function(p1: Psqlite3; const p2: PUTF8Char; p3: PByte; p4: sqlite3_int64; p5: sqlite3_int64; p6: Cardinal): Integer; cdecl;
+    serialize: function(p1: Psqlite3; const p2: PUTF8Char; p3: Psqlite3_int64; p4: Cardinal): PByte; cdecl;
+    db_name: function(p1: Psqlite3; p2: Integer): PUTF8Char; cdecl;
+    value_encoding: function(p1: Psqlite3_value): Integer; cdecl;
+    is_interrupted: function(p1: Psqlite3): Integer; cdecl;
+    stmt_explain: function(p1: Psqlite3_stmt; p2: Integer): Integer; cdecl;
+    get_clientdata: function(p1: Psqlite3; const p2: PUTF8Char): Pointer; cdecl;
+    set_clientdata: function(p1: Psqlite3; const p2: PUTF8Char; p3: Pointer; p4: Pointer): Integer; cdecl;
+  end;
+
+  sqlite3_loadext_entry = function(db: Psqlite3; pzErrMsg: PPUTF8Char; const pThunk: Psqlite3_api_routines): Integer; cdecl;
 
 function ggml_status_to_string(status: ggml_status): PUTF8Char; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_status_to_string';
@@ -2187,9 +3271,6 @@ function ggml_backend_buft_get_max_size(buft: ggml_backend_buffer_type_t): Nativ
 function ggml_backend_buft_get_alloc_size(buft: ggml_backend_buffer_type_t; tensor: Pggml_tensor): NativeUInt; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_backend_buft_get_alloc_size';
 
-function ggml_backend_buft_supports_backend(buft: ggml_backend_buffer_type_t; backend: ggml_backend_t): Boolean; cdecl;
-  external LMENGINE_DLL name _PU + 'ggml_backend_buft_supports_backend';
-
 function ggml_backend_buft_is_host(buft: ggml_backend_buffer_type_t): Boolean; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_backend_buft_is_host';
 
@@ -2285,6 +3366,9 @@ function ggml_backend_graph_compute_async(backend: ggml_backend_t; cgraph: Pggml
 
 function ggml_backend_supports_op(backend: ggml_backend_t; const op: Pggml_tensor): Boolean; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_backend_supports_op';
+
+function ggml_backend_supports_buft(backend: ggml_backend_t; buft: ggml_backend_buffer_type_t): Boolean; cdecl;
+  external LMENGINE_DLL name _PU + 'ggml_backend_supports_buft';
 
 function ggml_backend_offload_op(backend: ggml_backend_t; const op: Pggml_tensor): Boolean; cdecl;
   external LMENGINE_DLL name _PU + 'ggml_backend_offload_op';
@@ -2801,6 +3885,1005 @@ procedure redirect_cerr_to_callback(callback: cerr_callback; user_data: Pointer)
 
 procedure restore_cerr(); cdecl;
   external LMENGINE_DLL name _PU + 'restore_cerr';
+
+function sqlite3_libversion(): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_libversion';
+
+function sqlite3_sourceid(): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_sourceid';
+
+function sqlite3_libversion_number(): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_libversion_number';
+
+function sqlite3_compileoption_used(const zOptName: PUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_compileoption_used';
+
+function sqlite3_compileoption_get(N: Integer): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_compileoption_get';
+
+function sqlite3_threadsafe(): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_threadsafe';
+
+function sqlite3_close(p1: Psqlite3): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_close';
+
+function sqlite3_close_v2(p1: Psqlite3): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_close_v2';
+
+type
+  sqlite3_exec_callback = function(p1: Pointer; p2: Integer; p3: PPUTF8Char; p4: PPUTF8Char): Integer; cdecl;
+
+function sqlite3_exec(p1: Psqlite3; const sql: PUTF8Char; callback: sqlite3_exec_callback; p4: Pointer; errmsg: PPUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_exec';
+
+function sqlite3_initialize(): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_initialize';
+
+function sqlite3_shutdown(): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_shutdown';
+
+function sqlite3_os_init(): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_os_init';
+
+function sqlite3_os_end(): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_os_end';
+
+function sqlite3_config(p1: Integer): Integer varargs; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_config';
+
+function sqlite3_db_config(p1: Psqlite3; op: Integer): Integer varargs; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_db_config';
+
+function sqlite3_extended_result_codes(p1: Psqlite3; onoff: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_extended_result_codes';
+
+function sqlite3_last_insert_rowid(p1: Psqlite3): sqlite3_int64; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_last_insert_rowid';
+
+procedure sqlite3_set_last_insert_rowid(p1: Psqlite3; p2: sqlite3_int64); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_set_last_insert_rowid';
+
+function sqlite3_changes(p1: Psqlite3): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_changes';
+
+function sqlite3_changes64(p1: Psqlite3): sqlite3_int64; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_changes64';
+
+function sqlite3_total_changes(p1: Psqlite3): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_total_changes';
+
+function sqlite3_total_changes64(p1: Psqlite3): sqlite3_int64; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_total_changes64';
+
+procedure sqlite3_interrupt(p1: Psqlite3); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_interrupt';
+
+function sqlite3_is_interrupted(p1: Psqlite3): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_is_interrupted';
+
+function sqlite3_complete(const sql: PUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_complete';
+
+function sqlite3_complete16(const sql: Pointer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_complete16';
+
+type
+  sqlite3_busy_handler_ = function(p1: Pointer; p2: Integer): Integer; cdecl;
+
+function sqlite3_busy_handler(p1: Psqlite3; p2: sqlite3_busy_handler_; p3: Pointer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_busy_handler';
+
+function sqlite3_busy_timeout(p1: Psqlite3; ms: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_busy_timeout';
+
+function sqlite3_get_table(db: Psqlite3; const zSql: PUTF8Char; pazResult: PPPUTF8Char; pnRow: PInteger; pnColumn: PInteger; pzErrmsg: PPUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_get_table';
+
+procedure sqlite3_free_table(result: PPUTF8Char); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_free_table';
+
+function sqlite3_mprintf(const p1: PUTF8Char): PUTF8Char varargs; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_mprintf';
+
+function sqlite3_vmprintf(const p1: PUTF8Char; p2: Pointer): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vmprintf';
+
+function sqlite3_snprintf(p1: Integer; p2: PUTF8Char; const p3: PUTF8Char): PUTF8Char varargs; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_snprintf';
+
+function sqlite3_vsnprintf(p1: Integer; p2: PUTF8Char; const p3: PUTF8Char; p4: Pointer): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vsnprintf';
+
+function sqlite3_malloc(p1: Integer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_malloc';
+
+function sqlite3_malloc64(p1: sqlite3_uint64): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_malloc64';
+
+function sqlite3_realloc(p1: Pointer; p2: Integer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_realloc';
+
+function sqlite3_realloc64(p1: Pointer; p2: sqlite3_uint64): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_realloc64';
+
+procedure sqlite3_free(p1: Pointer); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_free';
+
+function sqlite3_msize(p1: Pointer): sqlite3_uint64; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_msize';
+
+function sqlite3_memory_used(): sqlite3_int64; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_memory_used';
+
+function sqlite3_memory_highwater(resetFlag: Integer): sqlite3_int64; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_memory_highwater';
+
+procedure sqlite3_randomness(N: Integer; P: Pointer); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_randomness';
+
+type
+  sqlite3_set_authorizer_xAuth = function(p1: Pointer; p2: Integer; const p3: PUTF8Char; const p4: PUTF8Char; const p5: PUTF8Char; const p6: PUTF8Char): Integer; cdecl;
+
+function sqlite3_set_authorizer(p1: Psqlite3; xAuth: sqlite3_set_authorizer_xAuth; pUserData: Pointer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_set_authorizer';
+
+type
+  sqlite3_trace_xTrace = procedure(p1: Pointer; const p2: PUTF8Char); cdecl;
+
+function sqlite3_trace(p1: Psqlite3; xTrace: sqlite3_trace_xTrace; p3: Pointer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_trace';
+
+type
+  sqlite3_profile_xProfile = procedure(p1: Pointer; const p2: PUTF8Char; p3: sqlite3_uint64); cdecl;
+
+function sqlite3_profile(p1: Psqlite3; xProfile: sqlite3_profile_xProfile; p3: Pointer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_profile';
+
+type
+  sqlite3_trace_v2_xCallback = function(p1: Cardinal; p2: Pointer; p3: Pointer; p4: Pointer): Integer; cdecl;
+
+function sqlite3_trace_v2(p1: Psqlite3; uMask: Cardinal; xCallback: sqlite3_trace_v2_xCallback; pCtx: Pointer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_trace_v2';
+
+type
+  sqlite3_progress_handler_ = function(p1: Pointer): Integer; cdecl;
+
+procedure sqlite3_progress_handler(p1: Psqlite3; p2: Integer; p3: sqlite3_progress_handler_; p4: Pointer); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_progress_handler';
+
+function sqlite3_open(const filename: PUTF8Char; ppDb: PPsqlite3): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_open';
+
+function sqlite3_open16(const filename: Pointer; ppDb: PPsqlite3): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_open16';
+
+function sqlite3_open_v2(const filename: PUTF8Char; ppDb: PPsqlite3; flags: Integer; const zVfs: PUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_open_v2';
+
+function sqlite3_uri_parameter(z: sqlite3_filename; const zParam: PUTF8Char): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_uri_parameter';
+
+function sqlite3_uri_boolean(z: sqlite3_filename; const zParam: PUTF8Char; bDefault: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_uri_boolean';
+
+function sqlite3_uri_int64(p1: sqlite3_filename; const p2: PUTF8Char; p3: sqlite3_int64): sqlite3_int64; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_uri_int64';
+
+function sqlite3_uri_key(z: sqlite3_filename; N: Integer): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_uri_key';
+
+function sqlite3_filename_database(p1: sqlite3_filename): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_filename_database';
+
+function sqlite3_filename_journal(p1: sqlite3_filename): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_filename_journal';
+
+function sqlite3_filename_wal(p1: sqlite3_filename): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_filename_wal';
+
+function sqlite3_database_file_object(const p1: PUTF8Char): Psqlite3_file; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_database_file_object';
+
+function sqlite3_create_filename(const zDatabase: PUTF8Char; const zJournal: PUTF8Char; const zWal: PUTF8Char; nParam: Integer; azParam: PPUTF8Char): sqlite3_filename; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_create_filename';
+
+procedure sqlite3_free_filename(p1: sqlite3_filename); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_free_filename';
+
+function sqlite3_errcode(db: Psqlite3): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_errcode';
+
+function sqlite3_extended_errcode(db: Psqlite3): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_extended_errcode';
+
+function sqlite3_errmsg(p1: Psqlite3): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_errmsg';
+
+function sqlite3_errmsg16(p1: Psqlite3): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_errmsg16';
+
+function sqlite3_errstr(p1: Integer): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_errstr';
+
+function sqlite3_error_offset(db: Psqlite3): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_error_offset';
+
+function sqlite3_limit(p1: Psqlite3; id: Integer; newVal: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_limit';
+
+function sqlite3_prepare(db: Psqlite3; const zSql: PUTF8Char; nByte: Integer; ppStmt: PPsqlite3_stmt; pzTail: PPUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_prepare';
+
+function sqlite3_prepare_v2(db: Psqlite3; const zSql: PUTF8Char; nByte: Integer; ppStmt: PPsqlite3_stmt; pzTail: PPUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_prepare_v2';
+
+function sqlite3_prepare_v3(db: Psqlite3; const zSql: PUTF8Char; nByte: Integer; prepFlags: Cardinal; ppStmt: PPsqlite3_stmt; pzTail: PPUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_prepare_v3';
+
+function sqlite3_prepare16(db: Psqlite3; const zSql: Pointer; nByte: Integer; ppStmt: PPsqlite3_stmt; pzTail: PPointer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_prepare16';
+
+function sqlite3_prepare16_v2(db: Psqlite3; const zSql: Pointer; nByte: Integer; ppStmt: PPsqlite3_stmt; pzTail: PPointer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_prepare16_v2';
+
+function sqlite3_prepare16_v3(db: Psqlite3; const zSql: Pointer; nByte: Integer; prepFlags: Cardinal; ppStmt: PPsqlite3_stmt; pzTail: PPointer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_prepare16_v3';
+
+function sqlite3_sql(pStmt: Psqlite3_stmt): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_sql';
+
+function sqlite3_expanded_sql(pStmt: Psqlite3_stmt): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_expanded_sql';
+
+function sqlite3_stmt_readonly(pStmt: Psqlite3_stmt): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_stmt_readonly';
+
+function sqlite3_stmt_isexplain(pStmt: Psqlite3_stmt): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_stmt_isexplain';
+
+function sqlite3_stmt_explain(pStmt: Psqlite3_stmt; eMode: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_stmt_explain';
+
+function sqlite3_stmt_busy(p1: Psqlite3_stmt): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_stmt_busy';
+
+type
+  sqlite3_bind_blob_ = procedure(p1: Pointer); cdecl;
+
+function sqlite3_bind_blob(p1: Psqlite3_stmt; p2: Integer; const p3: Pointer; n: Integer; p5: sqlite3_bind_blob_): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_blob';
+
+type
+  sqlite3_bind_blob64_ = procedure(p1: Pointer); cdecl;
+
+function sqlite3_bind_blob64(p1: Psqlite3_stmt; p2: Integer; const p3: Pointer; p4: sqlite3_uint64; p5: sqlite3_bind_blob64_): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_blob64';
+
+function sqlite3_bind_double(p1: Psqlite3_stmt; p2: Integer; p3: Double): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_double';
+
+function sqlite3_bind_int(p1: Psqlite3_stmt; p2: Integer; p3: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_int';
+
+function sqlite3_bind_int64(p1: Psqlite3_stmt; p2: Integer; p3: sqlite3_int64): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_int64';
+
+function sqlite3_bind_null(p1: Psqlite3_stmt; p2: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_null';
+
+type
+  sqlite3_bind_text_ = procedure(p1: Pointer); cdecl;
+
+function sqlite3_bind_text(p1: Psqlite3_stmt; p2: Integer; const p3: PUTF8Char; p4: Integer; p5: sqlite3_bind_text_): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_text';
+
+type
+  sqlite3_bind_text16_ = procedure(p1: Pointer); cdecl;
+
+function sqlite3_bind_text16(p1: Psqlite3_stmt; p2: Integer; const p3: Pointer; p4: Integer; p5: sqlite3_bind_text16_): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_text16';
+
+type
+  sqlite3_bind_text64_ = procedure(p1: Pointer); cdecl;
+
+function sqlite3_bind_text64(p1: Psqlite3_stmt; p2: Integer; const p3: PUTF8Char; p4: sqlite3_uint64; p5: sqlite3_bind_text64_; encoding: Byte): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_text64';
+
+function sqlite3_bind_value(p1: Psqlite3_stmt; p2: Integer; const p3: Psqlite3_value): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_value';
+
+type
+  sqlite3_bind_pointer_ = procedure(p1: Pointer); cdecl;
+
+function sqlite3_bind_pointer(p1: Psqlite3_stmt; p2: Integer; p3: Pointer; const p4: PUTF8Char; p5: sqlite3_bind_pointer_): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_pointer';
+
+function sqlite3_bind_zeroblob(p1: Psqlite3_stmt; p2: Integer; n: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_zeroblob';
+
+function sqlite3_bind_zeroblob64(p1: Psqlite3_stmt; p2: Integer; p3: sqlite3_uint64): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_zeroblob64';
+
+function sqlite3_bind_parameter_count(p1: Psqlite3_stmt): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_parameter_count';
+
+function sqlite3_bind_parameter_name(p1: Psqlite3_stmt; p2: Integer): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_parameter_name';
+
+function sqlite3_bind_parameter_index(p1: Psqlite3_stmt; const zName: PUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_bind_parameter_index';
+
+function sqlite3_clear_bindings(p1: Psqlite3_stmt): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_clear_bindings';
+
+function sqlite3_column_count(pStmt: Psqlite3_stmt): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_count';
+
+function sqlite3_column_name(p1: Psqlite3_stmt; N: Integer): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_name';
+
+function sqlite3_column_name16(p1: Psqlite3_stmt; N: Integer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_name16';
+
+function sqlite3_column_database_name(p1: Psqlite3_stmt; p2: Integer): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_database_name';
+
+function sqlite3_column_database_name16(p1: Psqlite3_stmt; p2: Integer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_database_name16';
+
+function sqlite3_column_table_name(p1: Psqlite3_stmt; p2: Integer): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_table_name';
+
+function sqlite3_column_table_name16(p1: Psqlite3_stmt; p2: Integer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_table_name16';
+
+function sqlite3_column_origin_name(p1: Psqlite3_stmt; p2: Integer): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_origin_name';
+
+function sqlite3_column_origin_name16(p1: Psqlite3_stmt; p2: Integer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_origin_name16';
+
+function sqlite3_column_decltype(p1: Psqlite3_stmt; p2: Integer): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_decltype';
+
+function sqlite3_column_decltype16(p1: Psqlite3_stmt; p2: Integer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_decltype16';
+
+function sqlite3_step(p1: Psqlite3_stmt): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_step';
+
+function sqlite3_data_count(pStmt: Psqlite3_stmt): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_data_count';
+
+function sqlite3_column_blob(p1: Psqlite3_stmt; iCol: Integer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_blob';
+
+function sqlite3_column_double(p1: Psqlite3_stmt; iCol: Integer): Double; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_double';
+
+function sqlite3_column_int(p1: Psqlite3_stmt; iCol: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_int';
+
+function sqlite3_column_int64(p1: Psqlite3_stmt; iCol: Integer): sqlite3_int64; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_int64';
+
+function sqlite3_column_text(p1: Psqlite3_stmt; iCol: Integer): PByte; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_text';
+
+function sqlite3_column_text16(p1: Psqlite3_stmt; iCol: Integer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_text16';
+
+function sqlite3_column_value(p1: Psqlite3_stmt; iCol: Integer): Psqlite3_value; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_value';
+
+function sqlite3_column_bytes(p1: Psqlite3_stmt; iCol: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_bytes';
+
+function sqlite3_column_bytes16(p1: Psqlite3_stmt; iCol: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_bytes16';
+
+function sqlite3_column_type(p1: Psqlite3_stmt; iCol: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_column_type';
+
+function sqlite3_finalize(pStmt: Psqlite3_stmt): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_finalize';
+
+function sqlite3_reset(pStmt: Psqlite3_stmt): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_reset';
+
+type
+  sqlite3_create_function_xFunc = procedure(p1: Psqlite3_context; p2: Integer; p3: PPsqlite3_value); cdecl;
+
+type
+  sqlite3_create_function_xStep = procedure(p1: Psqlite3_context; p2: Integer; p3: PPsqlite3_value); cdecl;
+
+type
+  sqlite3_create_function_xFinal = procedure(p1: Psqlite3_context); cdecl;
+
+function sqlite3_create_function(db: Psqlite3; const zFunctionName: PUTF8Char; nArg: Integer; eTextRep: Integer; pApp: Pointer; xFunc: sqlite3_create_function_xFunc; xStep: sqlite3_create_function_xStep; xFinal: sqlite3_create_function_xFinal): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_create_function';
+
+type
+  sqlite3_create_function16_xFunc = procedure(p1: Psqlite3_context; p2: Integer; p3: PPsqlite3_value); cdecl;
+
+type
+  sqlite3_create_function16_xStep = procedure(p1: Psqlite3_context; p2: Integer; p3: PPsqlite3_value); cdecl;
+
+type
+  sqlite3_create_function16_xFinal = procedure(p1: Psqlite3_context); cdecl;
+
+function sqlite3_create_function16(db: Psqlite3; const zFunctionName: Pointer; nArg: Integer; eTextRep: Integer; pApp: Pointer; xFunc: sqlite3_create_function16_xFunc; xStep: sqlite3_create_function16_xStep; xFinal: sqlite3_create_function16_xFinal): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_create_function16';
+
+type
+  sqlite3_create_function_v2_xFunc = procedure(p1: Psqlite3_context; p2: Integer; p3: PPsqlite3_value); cdecl;
+
+type
+  sqlite3_create_function_v2_xStep = procedure(p1: Psqlite3_context; p2: Integer; p3: PPsqlite3_value); cdecl;
+
+type
+  sqlite3_create_function_v2_xFinal = procedure(p1: Psqlite3_context); cdecl;
+
+type
+  sqlite3_create_function_v2_xDestroy = procedure(p1: Pointer); cdecl;
+
+function sqlite3_create_function_v2(db: Psqlite3; const zFunctionName: PUTF8Char; nArg: Integer; eTextRep: Integer; pApp: Pointer; xFunc: sqlite3_create_function_v2_xFunc; xStep: sqlite3_create_function_v2_xStep; xFinal: sqlite3_create_function_v2_xFinal; xDestroy: sqlite3_create_function_v2_xDestroy): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_create_function_v2';
+
+type
+  sqlite3_create_window_function_xStep = procedure(p1: Psqlite3_context; p2: Integer; p3: PPsqlite3_value); cdecl;
+
+type
+  sqlite3_create_window_function_xFinal = procedure(p1: Psqlite3_context); cdecl;
+
+type
+  sqlite3_create_window_function_xValue = procedure(p1: Psqlite3_context); cdecl;
+
+type
+  sqlite3_create_window_function_xInverse = procedure(p1: Psqlite3_context; p2: Integer; p3: PPsqlite3_value); cdecl;
+
+type
+  sqlite3_create_window_function_xDestroy = procedure(p1: Pointer); cdecl;
+
+function sqlite3_create_window_function(db: Psqlite3; const zFunctionName: PUTF8Char; nArg: Integer; eTextRep: Integer; pApp: Pointer; xStep: sqlite3_create_window_function_xStep; xFinal: sqlite3_create_window_function_xFinal; xValue: sqlite3_create_window_function_xValue; xInverse: sqlite3_create_window_function_xInverse; xDestroy: sqlite3_create_window_function_xDestroy): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_create_window_function';
+
+function sqlite3_aggregate_count(p1: Psqlite3_context): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_aggregate_count';
+
+function sqlite3_expired(p1: Psqlite3_stmt): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_expired';
+
+function sqlite3_transfer_bindings(p1: Psqlite3_stmt; p2: Psqlite3_stmt): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_transfer_bindings';
+
+function sqlite3_global_recover(): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_global_recover';
+
+procedure sqlite3_thread_cleanup(); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_thread_cleanup';
+
+type
+  sqlite3_memory_alarm_ = procedure(p1: Pointer; p2: sqlite3_int64; p3: Integer); cdecl;
+
+function sqlite3_memory_alarm(p1: sqlite3_memory_alarm_; p2: Pointer; p3: sqlite3_int64): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_memory_alarm';
+
+function sqlite3_value_blob(p1: Psqlite3_value): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_blob';
+
+function sqlite3_value_double(p1: Psqlite3_value): Double; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_double';
+
+function sqlite3_value_int(p1: Psqlite3_value): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_int';
+
+function sqlite3_value_int64(p1: Psqlite3_value): sqlite3_int64; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_int64';
+
+function sqlite3_value_pointer(p1: Psqlite3_value; const p2: PUTF8Char): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_pointer';
+
+function sqlite3_value_text(p1: Psqlite3_value): PByte; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_text';
+
+function sqlite3_value_text16(p1: Psqlite3_value): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_text16';
+
+function sqlite3_value_text16le(p1: Psqlite3_value): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_text16le';
+
+function sqlite3_value_text16be(p1: Psqlite3_value): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_text16be';
+
+function sqlite3_value_bytes(p1: Psqlite3_value): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_bytes';
+
+function sqlite3_value_bytes16(p1: Psqlite3_value): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_bytes16';
+
+function sqlite3_value_type(p1: Psqlite3_value): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_type';
+
+function sqlite3_value_numeric_type(p1: Psqlite3_value): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_numeric_type';
+
+function sqlite3_value_nochange(p1: Psqlite3_value): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_nochange';
+
+function sqlite3_value_frombind(p1: Psqlite3_value): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_frombind';
+
+function sqlite3_value_encoding(p1: Psqlite3_value): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_encoding';
+
+function sqlite3_value_subtype(p1: Psqlite3_value): Cardinal; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_subtype';
+
+function sqlite3_value_dup(const p1: Psqlite3_value): Psqlite3_value; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_dup';
+
+procedure sqlite3_value_free(p1: Psqlite3_value); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_value_free';
+
+function sqlite3_aggregate_context(p1: Psqlite3_context; nBytes: Integer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_aggregate_context';
+
+function sqlite3_user_data(p1: Psqlite3_context): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_user_data';
+
+function sqlite3_context_db_handle(p1: Psqlite3_context): Psqlite3; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_context_db_handle';
+
+function sqlite3_get_auxdata(p1: Psqlite3_context; N: Integer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_get_auxdata';
+
+type
+  sqlite3_set_auxdata_ = procedure(p1: Pointer); cdecl;
+
+procedure sqlite3_set_auxdata(p1: Psqlite3_context; N: Integer; p3: Pointer; p4: sqlite3_set_auxdata_); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_set_auxdata';
+
+function sqlite3_get_clientdata(p1: Psqlite3; const p2: PUTF8Char): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_get_clientdata';
+
+type
+  sqlite3_set_clientdata_ = procedure(p1: Pointer); cdecl;
+
+function sqlite3_set_clientdata(p1: Psqlite3; const p2: PUTF8Char; p3: Pointer; p4: sqlite3_set_clientdata_): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_set_clientdata';
+
+type
+  sqlite3_result_blob_ = procedure(p1: Pointer); cdecl;
+
+procedure sqlite3_result_blob(p1: Psqlite3_context; const p2: Pointer; p3: Integer; p4: sqlite3_result_blob_); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_blob';
+
+type
+  sqlite3_result_blob64_ = procedure(p1: Pointer); cdecl;
+
+procedure sqlite3_result_blob64(p1: Psqlite3_context; const p2: Pointer; p3: sqlite3_uint64; p4: sqlite3_result_blob64_); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_blob64';
+
+procedure sqlite3_result_double(p1: Psqlite3_context; p2: Double); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_double';
+
+procedure sqlite3_result_error(p1: Psqlite3_context; const p2: PUTF8Char; p3: Integer); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_error';
+
+procedure sqlite3_result_error16(p1: Psqlite3_context; const p2: Pointer; p3: Integer); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_error16';
+
+procedure sqlite3_result_error_toobig(p1: Psqlite3_context); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_error_toobig';
+
+procedure sqlite3_result_error_nomem(p1: Psqlite3_context); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_error_nomem';
+
+procedure sqlite3_result_error_code(p1: Psqlite3_context; p2: Integer); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_error_code';
+
+procedure sqlite3_result_int(p1: Psqlite3_context; p2: Integer); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_int';
+
+procedure sqlite3_result_int64(p1: Psqlite3_context; p2: sqlite3_int64); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_int64';
+
+procedure sqlite3_result_null(p1: Psqlite3_context); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_null';
+
+type
+  sqlite3_result_text_ = procedure(p1: Pointer); cdecl;
+
+procedure sqlite3_result_text(p1: Psqlite3_context; const p2: PUTF8Char; p3: Integer; p4: sqlite3_result_text_); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_text';
+
+type
+  sqlite3_result_text64_ = procedure(p1: Pointer); cdecl;
+
+procedure sqlite3_result_text64(p1: Psqlite3_context; const p2: PUTF8Char; p3: sqlite3_uint64; p4: sqlite3_result_text64_; encoding: Byte); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_text64';
+
+type
+  sqlite3_result_text16_ = procedure(p1: Pointer); cdecl;
+
+procedure sqlite3_result_text16(p1: Psqlite3_context; const p2: Pointer; p3: Integer; p4: sqlite3_result_text16_); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_text16';
+
+type
+  sqlite3_result_text16le_ = procedure(p1: Pointer); cdecl;
+
+procedure sqlite3_result_text16le(p1: Psqlite3_context; const p2: Pointer; p3: Integer; p4: sqlite3_result_text16le_); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_text16le';
+
+type
+  sqlite3_result_text16be_ = procedure(p1: Pointer); cdecl;
+
+procedure sqlite3_result_text16be(p1: Psqlite3_context; const p2: Pointer; p3: Integer; p4: sqlite3_result_text16be_); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_text16be';
+
+procedure sqlite3_result_value(p1: Psqlite3_context; p2: Psqlite3_value); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_value';
+
+type
+  sqlite3_result_pointer_ = procedure(p1: Pointer); cdecl;
+
+procedure sqlite3_result_pointer(p1: Psqlite3_context; p2: Pointer; const p3: PUTF8Char; p4: sqlite3_result_pointer_); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_pointer';
+
+procedure sqlite3_result_zeroblob(p1: Psqlite3_context; n: Integer); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_zeroblob';
+
+function sqlite3_result_zeroblob64(p1: Psqlite3_context; n: sqlite3_uint64): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_zeroblob64';
+
+procedure sqlite3_result_subtype(p1: Psqlite3_context; p2: Cardinal); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_result_subtype';
+
+type
+  sqlite3_create_collation_xCompare = function(p1: Pointer; p2: Integer; const p3: Pointer; p4: Integer; const p5: Pointer): Integer; cdecl;
+
+function sqlite3_create_collation(p1: Psqlite3; const zName: PUTF8Char; eTextRep: Integer; pArg: Pointer; xCompare: sqlite3_create_collation_xCompare): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_create_collation';
+
+type
+  sqlite3_create_collation_v2_xCompare = function(p1: Pointer; p2: Integer; const p3: Pointer; p4: Integer; const p5: Pointer): Integer; cdecl;
+
+type
+  sqlite3_create_collation_v2_xDestroy = procedure(p1: Pointer); cdecl;
+
+function sqlite3_create_collation_v2(p1: Psqlite3; const zName: PUTF8Char; eTextRep: Integer; pArg: Pointer; xCompare: sqlite3_create_collation_v2_xCompare; xDestroy: sqlite3_create_collation_v2_xDestroy): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_create_collation_v2';
+
+type
+  sqlite3_create_collation16_xCompare = function(p1: Pointer; p2: Integer; const p3: Pointer; p4: Integer; const p5: Pointer): Integer; cdecl;
+
+function sqlite3_create_collation16(p1: Psqlite3; const zName: Pointer; eTextRep: Integer; pArg: Pointer; xCompare: sqlite3_create_collation16_xCompare): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_create_collation16';
+
+type
+  sqlite3_collation_needed_ = procedure(p1: Pointer; p2: Psqlite3; eTextRep: Integer; const p4: PUTF8Char); cdecl;
+
+function sqlite3_collation_needed(p1: Psqlite3; p2: Pointer; p3: sqlite3_collation_needed_): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_collation_needed';
+
+type
+  sqlite3_collation_needed16_ = procedure(p1: Pointer; p2: Psqlite3; eTextRep: Integer; const p4: Pointer); cdecl;
+
+function sqlite3_collation_needed16(p1: Psqlite3; p2: Pointer; p3: sqlite3_collation_needed16_): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_collation_needed16';
+
+function sqlite3_sleep(p1: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_sleep';
+
+function sqlite3_win32_set_directory(&type: Cardinal; zValue: Pointer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_win32_set_directory';
+
+function sqlite3_win32_set_directory8(&type: Cardinal; const zValue: PUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_win32_set_directory8';
+
+function sqlite3_win32_set_directory16(&type: Cardinal; const zValue: Pointer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_win32_set_directory16';
+
+function sqlite3_get_autocommit(p1: Psqlite3): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_get_autocommit';
+
+function sqlite3_db_handle(p1: Psqlite3_stmt): Psqlite3; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_db_handle';
+
+function sqlite3_db_name(db: Psqlite3; N: Integer): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_db_name';
+
+function sqlite3_db_filename(db: Psqlite3; const zDbName: PUTF8Char): sqlite3_filename; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_db_filename';
+
+function sqlite3_db_readonly(db: Psqlite3; const zDbName: PUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_db_readonly';
+
+function sqlite3_txn_state(p1: Psqlite3; const zSchema: PUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_txn_state';
+
+function sqlite3_next_stmt(pDb: Psqlite3; pStmt: Psqlite3_stmt): Psqlite3_stmt; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_next_stmt';
+
+type
+  sqlite3_commit_hook_ = function(p1: Pointer): Integer; cdecl;
+
+function sqlite3_commit_hook(p1: Psqlite3; p2: sqlite3_commit_hook_; p3: Pointer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_commit_hook';
+
+type
+  sqlite3_rollback_hook_ = procedure(p1: Pointer); cdecl;
+
+function sqlite3_rollback_hook(p1: Psqlite3; p2: sqlite3_rollback_hook_; p3: Pointer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_rollback_hook';
+
+type
+  sqlite3_autovacuum_pages_1 = function(p1: Pointer; const p2: PUTF8Char; p3: Cardinal; p4: Cardinal; p5: Cardinal): Cardinal; cdecl;
+
+type
+  sqlite3_autovacuum_pages_2 = procedure(p1: Pointer); cdecl;
+
+function sqlite3_autovacuum_pages(db: Psqlite3; p2: sqlite3_autovacuum_pages_1; p3: Pointer; p4: sqlite3_autovacuum_pages_2): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_autovacuum_pages';
+
+type
+  sqlite3_update_hook_ = procedure(p1: Pointer; p2: Integer; const p3: PUTF8Char; const p4: PUTF8Char; p5: sqlite3_int64); cdecl;
+
+function sqlite3_update_hook(p1: Psqlite3; p2: sqlite3_update_hook_; p3: Pointer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_update_hook';
+
+function sqlite3_enable_shared_cache(p1: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_enable_shared_cache';
+
+function sqlite3_release_memory(p1: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_release_memory';
+
+function sqlite3_db_release_memory(p1: Psqlite3): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_db_release_memory';
+
+function sqlite3_soft_heap_limit64(N: sqlite3_int64): sqlite3_int64; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_soft_heap_limit64';
+
+function sqlite3_hard_heap_limit64(N: sqlite3_int64): sqlite3_int64; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_hard_heap_limit64';
+
+procedure sqlite3_soft_heap_limit(N: Integer); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_soft_heap_limit';
+
+function sqlite3_table_column_metadata(db: Psqlite3; const zDbName: PUTF8Char; const zTableName: PUTF8Char; const zColumnName: PUTF8Char; pzDataType: PPUTF8Char; pzCollSeq: PPUTF8Char; pNotNull: PInteger; pPrimaryKey: PInteger; pAutoinc: PInteger): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_table_column_metadata';
+
+type
+  sqlite3_auto_extension_xEntryPoint = procedure(); cdecl;
+
+function sqlite3_auto_extension(xEntryPoint: sqlite3_auto_extension_xEntryPoint): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_auto_extension';
+
+type
+  sqlite3_cancel_auto_extension_xEntryPoint = procedure(); cdecl;
+
+function sqlite3_cancel_auto_extension(xEntryPoint: sqlite3_cancel_auto_extension_xEntryPoint): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_cancel_auto_extension';
+
+procedure sqlite3_reset_auto_extension(); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_reset_auto_extension';
+
+function sqlite3_create_module(db: Psqlite3; const zName: PUTF8Char; const p: Psqlite3_module; pClientData: Pointer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_create_module';
+
+type
+  sqlite3_create_module_v2_xDestroy = procedure(p1: Pointer); cdecl;
+
+function sqlite3_create_module_v2(db: Psqlite3; const zName: PUTF8Char; const p: Psqlite3_module; pClientData: Pointer; xDestroy: sqlite3_create_module_v2_xDestroy): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_create_module_v2';
+
+function sqlite3_drop_modules(db: Psqlite3; azKeep: PPUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_drop_modules';
+
+function sqlite3_declare_vtab(p1: Psqlite3; const zSQL: PUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_declare_vtab';
+
+function sqlite3_overload_function(p1: Psqlite3; const zFuncName: PUTF8Char; nArg: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_overload_function';
+
+function sqlite3_blob_open(p1: Psqlite3; const zDb: PUTF8Char; const zTable: PUTF8Char; const zColumn: PUTF8Char; iRow: sqlite3_int64; flags: Integer; ppBlob: PPsqlite3_blob): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_blob_open';
+
+function sqlite3_blob_reopen(p1: Psqlite3_blob; p2: sqlite3_int64): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_blob_reopen';
+
+function sqlite3_blob_close(p1: Psqlite3_blob): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_blob_close';
+
+function sqlite3_blob_bytes(p1: Psqlite3_blob): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_blob_bytes';
+
+function sqlite3_blob_read(p1: Psqlite3_blob; Z: Pointer; N: Integer; iOffset: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_blob_read';
+
+function sqlite3_blob_write(p1: Psqlite3_blob; const z: Pointer; n: Integer; iOffset: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_blob_write';
+
+function sqlite3_vfs_find(const zVfsName: PUTF8Char): Psqlite3_vfs; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vfs_find';
+
+function sqlite3_vfs_register(p1: Psqlite3_vfs; makeDflt: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vfs_register';
+
+function sqlite3_vfs_unregister(p1: Psqlite3_vfs): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vfs_unregister';
+
+function sqlite3_mutex_alloc(p1: Integer): Psqlite3_mutex; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_mutex_alloc';
+
+procedure sqlite3_mutex_free(p1: Psqlite3_mutex); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_mutex_free';
+
+procedure sqlite3_mutex_enter(p1: Psqlite3_mutex); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_mutex_enter';
+
+function sqlite3_mutex_try(p1: Psqlite3_mutex): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_mutex_try';
+
+procedure sqlite3_mutex_leave(p1: Psqlite3_mutex); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_mutex_leave';
+
+function sqlite3_db_mutex(p1: Psqlite3): Psqlite3_mutex; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_db_mutex';
+
+function sqlite3_file_control(p1: Psqlite3; const zDbName: PUTF8Char; op: Integer; p4: Pointer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_file_control';
+
+function sqlite3_test_control(op: Integer): Integer varargs; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_test_control';
+
+function sqlite3_keyword_count(): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_keyword_count';
+
+function sqlite3_keyword_name(p1: Integer; p2: PPUTF8Char; p3: PInteger): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_keyword_name';
+
+function sqlite3_keyword_check(const p1: PUTF8Char; p2: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_keyword_check';
+
+function sqlite3_str_new(p1: Psqlite3): Psqlite3_str; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_str_new';
+
+function sqlite3_str_finish(p1: Psqlite3_str): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_str_finish';
+
+procedure sqlite3_str_appendf(p1: Psqlite3_str; const zFormat: PUTF8Char) varargs; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_str_appendf';
+
+procedure sqlite3_str_vappendf(p1: Psqlite3_str; const zFormat: PUTF8Char; p3: Pointer); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_str_vappendf';
+
+procedure sqlite3_str_append(p1: Psqlite3_str; const zIn: PUTF8Char; N: Integer); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_str_append';
+
+procedure sqlite3_str_appendall(p1: Psqlite3_str; const zIn: PUTF8Char); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_str_appendall';
+
+procedure sqlite3_str_appendchar(p1: Psqlite3_str; N: Integer; C: UTF8Char); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_str_appendchar';
+
+procedure sqlite3_str_reset(p1: Psqlite3_str); cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_str_reset';
+
+function sqlite3_str_errcode(p1: Psqlite3_str): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_str_errcode';
+
+function sqlite3_str_length(p1: Psqlite3_str): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_str_length';
+
+function sqlite3_str_value(p1: Psqlite3_str): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_str_value';
+
+function sqlite3_status(op: Integer; pCurrent: PInteger; pHighwater: PInteger; resetFlag: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_status';
+
+function sqlite3_status64(op: Integer; pCurrent: Psqlite3_int64; pHighwater: Psqlite3_int64; resetFlag: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_status64';
+
+function sqlite3_db_status(p1: Psqlite3; op: Integer; pCur: PInteger; pHiwtr: PInteger; resetFlg: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_db_status';
+
+function sqlite3_stmt_status(p1: Psqlite3_stmt; op: Integer; resetFlg: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_stmt_status';
+
+function sqlite3_backup_init(pDest: Psqlite3; const zDestName: PUTF8Char; pSource: Psqlite3; const zSourceName: PUTF8Char): Psqlite3_backup; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_backup_init';
+
+function sqlite3_backup_step(p: Psqlite3_backup; nPage: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_backup_step';
+
+function sqlite3_backup_finish(p: Psqlite3_backup): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_backup_finish';
+
+function sqlite3_backup_remaining(p: Psqlite3_backup): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_backup_remaining';
+
+function sqlite3_backup_pagecount(p: Psqlite3_backup): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_backup_pagecount';
+
+function sqlite3_stricmp(const p1: PUTF8Char; const p2: PUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_stricmp';
+
+function sqlite3_strnicmp(const p1: PUTF8Char; const p2: PUTF8Char; p3: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_strnicmp';
+
+function sqlite3_strglob(const zGlob: PUTF8Char; const zStr: PUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_strglob';
+
+function sqlite3_strlike(const zGlob: PUTF8Char; const zStr: PUTF8Char; cEsc: Cardinal): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_strlike';
+
+procedure sqlite3_log(iErrCode: Integer; const zFormat: PUTF8Char) varargs; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_log';
+
+type
+  sqlite3_wal_hook_ = function(p1: Pointer; p2: Psqlite3; const p3: PUTF8Char; p4: Integer): Integer; cdecl;
+
+function sqlite3_wal_hook(p1: Psqlite3; p2: sqlite3_wal_hook_; p3: Pointer): Pointer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_wal_hook';
+
+function sqlite3_wal_autocheckpoint(db: Psqlite3; N: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_wal_autocheckpoint';
+
+function sqlite3_wal_checkpoint(db: Psqlite3; const zDb: PUTF8Char): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_wal_checkpoint';
+
+function sqlite3_wal_checkpoint_v2(db: Psqlite3; const zDb: PUTF8Char; eMode: Integer; pnLog: PInteger; pnCkpt: PInteger): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_wal_checkpoint_v2';
+
+function sqlite3_vtab_config(p1: Psqlite3; op: Integer): Integer varargs; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vtab_config';
+
+function sqlite3_vtab_on_conflict(p1: Psqlite3): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vtab_on_conflict';
+
+function sqlite3_vtab_nochange(p1: Psqlite3_context): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vtab_nochange';
+
+function sqlite3_vtab_collation(p1: Psqlite3_index_info; p2: Integer): PUTF8Char; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vtab_collation';
+
+function sqlite3_vtab_distinct(p1: Psqlite3_index_info): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vtab_distinct';
+
+function sqlite3_vtab_in(p1: Psqlite3_index_info; iCons: Integer; bHandle: Integer): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vtab_in';
+
+function sqlite3_vtab_in_first(pVal: Psqlite3_value; ppOut: PPsqlite3_value): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vtab_in_first';
+
+function sqlite3_vtab_in_next(pVal: Psqlite3_value; ppOut: PPsqlite3_value): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vtab_in_next';
+
+function sqlite3_vtab_rhs_value(p1: Psqlite3_index_info; p2: Integer; ppVal: PPsqlite3_value): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vtab_rhs_value';
+
+function sqlite3_db_cacheflush(p1: Psqlite3): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_db_cacheflush';
+
+function sqlite3_system_errno(p1: Psqlite3): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_system_errno';
+
+function sqlite3_serialize(db: Psqlite3; const zSchema: PUTF8Char; piSize: Psqlite3_int64; mFlags: Cardinal): PByte; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_serialize';
+
+function sqlite3_deserialize(db: Psqlite3; const zSchema: PUTF8Char; pData: PByte; szDb: sqlite3_int64; szBuf: sqlite3_int64; mFlags: Cardinal): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_deserialize';
+
+function sqlite3_vec_init(db: Psqlite3; pzErrMsg: PPUTF8Char; const pApi: Psqlite3_api_routines): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vec_init';
+
+function sqlite3_vec_fs_read_init(db: Psqlite3; pzErrMsg: PPUTF8Char; const pApi: Psqlite3_api_routines): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_vec_fs_read_init';
+
+function sqlite3_lembed_init(db: Psqlite3; pzErrMsg: PPUTF8Char; const pApi: Psqlite3_api_routines): Integer; cdecl;
+  external LMENGINE_DLL name _PU + 'sqlite3_lembed_init';
 
 implementation
 

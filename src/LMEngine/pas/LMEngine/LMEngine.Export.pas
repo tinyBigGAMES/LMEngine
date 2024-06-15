@@ -49,7 +49,8 @@ uses
   System.Generics.Collections,
   LMEngine.Deps,
   LMEngine.Utils,
-  LMEngine.Core;
+  LMEngine.Core,
+  LMEngine.RAG;
 
 //=== UTILS =================================================================
 procedure LME_Print(const AText: PWideChar; const AColor: Integer);
@@ -123,7 +124,7 @@ procedure LME_SetInferenceStartCallback(const AHandler: TLMEngine.InferenceStart
 function  LME_GetInferenceEndCallback(): TLMEngine.InferenceEndCallback;
 procedure LME_SetInferenceEndCallback(const AHandler: TLMEngine.InferenceEndCallback; const AUserData: Pointer);
 
-procedure LME_InitConfig(const AModelPath: PWideChar; const ANumGPULayers: Int32);
+procedure LME_InitConfig(const AModelPath: PWideChar; const ANumGPULayers, ANumThreads: Int32);
 function  LME_SaveConfig(const AFilename: PWideChar): Boolean;
 function  LME_LoadConfig(const AFilename: PWideChar): Boolean;
 
@@ -145,6 +146,29 @@ function  LME_RunInference(const AModelName: PWideChar; const AMaxTokens: UInt32
 function  LME_GetInferenceResponse(): PWideChar;
 procedure LME_GetInferenceStats(ATokenInputSpeed: PSingle; ATokenOutputSpeed: PSingle; AInputTokens: PInt32; AOutputTokens: PInt32; ATotalTokens: PInt32);
 
+//=== RAG ===================================================================
+function  LME_LocalDb_New(): TLocalDb;
+procedure LME_LocalDb_Free(var ALocalDb: TLocalDb);
+function  LME_LocalDb_IsOpen(const ALocalDb: TLocalDb): Boolean;
+function  LME_LocalDb_Open(const ALocalDb: TLocalDb; const AFilename: PWideChar): Boolean;
+procedure LME_LocalDb_Close(const ALocalDb: TLocalDb);
+procedure LME_LocalDb_ClearSQLText(const ALocalDb: TLocalDb);
+procedure LME_LocalDb_AddSQLText(const ALocalDb: TLocalDb; const AText: PWideChar);
+function  LME_LocalDb_GetSQLText(const ALocalDb: TLocalDb): PWideChar;
+procedure LME_LocalDb_SetSQLText(const ALocalDb: TLocalDb; const AText: PWideChar);
+function  LME_LocalDb_GetPrepairedSQL(const ALocalDb: TLocalDb): PWideChar;
+procedure LME_LocalDb_ClearMacros(const ALocalDb: TLocalDb);
+function  LME_LocalDb_GetMacro(const ALocalDb: TLocalDb; const AName: PWideChar): PWideChar;
+procedure LME_LocalDb_SetMacro(const ALocalDb: TLocalDb; const AName, AValue: PWideChar);
+procedure LME_LocalDb_ClearParams(const ALocalDb: TLocalDb);
+function  LME_LocalDb_GetParam(const ALocalDb: TLocalDb; const AName: PWideChar): PWideChar;
+procedure LME_LocalDb_SetParam(const ALocalDb: TLocalDb; const AName, AValue: PWideChar);
+function  LME_LocalDb_GetRecordCount(const ALocalDb: TLocalDb): Integer;
+function  LME_LocalDb_GetField(const ALocalDb: TLocalDb; const AIndex: Cardinal; const AName: PWideChar): PWideChar;
+function  LME_LocalDb_Execute(const ALocalDb: TLocalDb): Boolean;
+function  LME_LocalDb_ExecuteSQL(const ALocalDb: TLocalDb; const ASQL: PWideChar): Boolean;
+function  LME_LocalDb_GetLastError(const ALocalDb: TLocalDb): PWideChar;
+function  LME_LocalDb_GetResponseText(const ALocalDb: TLocalDb): PWideChar;
 
 implementation
 
@@ -417,9 +441,9 @@ begin
   LLMEngine.SetInferenceEndCallback(AHandler, AUserData);
 end;
 
-procedure LME_InitConfig(const AModelPath: PWideChar; const ANumGPULayers: Int32);
+procedure LME_InitConfig(const AModelPath: PWideChar; const ANumGPULayers, ANumThreads: Int32);
 begin
-  LLMEngine.InitConfig(string(AModelPath), ANumGPULayers)
+  LLMEngine.InitConfig(string(AModelPath), ANumGPULayers, ANumThreads);
 end;
 
 function  LME_SaveConfig(const AFilename: PWideChar): Boolean;
@@ -500,6 +524,153 @@ end;
 procedure LME_GetInferenceStats(ATokenInputSpeed: PSingle; ATokenOutputSpeed: PSingle; AInputTokens: PInt32; AOutputTokens: PInt32; ATotalTokens: PInt32);
 begin
   LLMEngine.GetInferenceStats(ATokenInputSpeed, ATokenOutputSpeed, AInputTokens, AOutputTokens, ATotalTokens);
+end;
+
+//=== RAG ===================================================================
+function  LME_LocalDb_New(): TLocalDb;
+begin
+  Result := TLocalDb.Create();
+end;
+
+procedure LME_LocalDb_Free(var ALocalDb: TLocalDb);
+begin
+  if Assigned(ALocalDb) then
+  begin
+    ALocalDb.Free();
+    ALocalDb := nil;
+  end;
+end;
+
+function  LME_LocalDb_IsOpen(const ALocalDb: TLocalDb): Boolean;
+begin
+  Result := False;
+  if not Assigned(ALocalDb) then Exit;
+  Result := ALocalDb.IsOpen();
+end;
+
+function  LME_LocalDb_Open(const ALocalDb: TLocalDb; const AFilename: PWideChar): Boolean;
+begin
+  Result := False;
+  if not Assigned(ALocalDb) then Exit;
+  Result := ALocalDb.Open(string(AFilename));
+end;
+
+procedure LME_LocalDb_Close(const ALocalDb: TLocalDb);
+begin
+  if not Assigned(ALocalDb) then Exit;
+  ALocalDb.Close();
+end;
+
+procedure LME_LocalDb_ClearSQLText(const ALocalDb: TLocalDb);
+begin
+  if not Assigned(ALocalDb) then Exit;
+  ALocalDb.ClearSQLText();
+end;
+
+procedure LME_LocalDb_AddSQLText(const ALocalDb: TLocalDb; const AText: PWideChar);
+begin
+  if not Assigned(ALocalDb) then Exit;
+  ALocalDb.AddSQLText(string(AText));
+end;
+
+function  LME_LocalDb_GetSQLText(const ALocalDb: TLocalDb): PWideChar;
+begin
+  Result := nil;
+  if not Assigned(ALocalDb) then Exit;
+  Result := PWideChar(ALocalDb.GetSQLText());
+end;
+
+procedure LME_LocalDb_SetSQLText(const ALocalDb: TLocalDb; const AText: PWideChar);
+begin
+  if not Assigned(ALocalDb) then Exit;
+  ALocalDb.SetSQLText(string(AText));
+end;
+
+function  LME_LocalDb_GetPrepairedSQL(const ALocalDb: TLocalDb): PWideChar;
+begin
+  Result := nil;
+  if not Assigned(ALocalDb) then Exit;
+  Result := PWideChar(ALocalDb.GetPrepairedSQL());
+end;
+
+procedure LME_LocalDb_ClearMacros(const ALocalDb: TLocalDb);
+begin
+  if not Assigned(ALocalDb) then Exit;
+  ALocalDb.ClearMacros();
+end;
+
+function  LME_LocalDb_GetMacro(const ALocalDb: TLocalDb; const AName: PWideChar): PWideChar;
+begin
+  Result := nil;
+  if not Assigned(ALocalDb) then Exit;
+  Result := PWideChar(ALocalDb.GetMacro(string(AName)));
+end;
+
+procedure LME_LocalDb_SetMacro(const ALocalDb: TLocalDb; const AName, AValue: PWideChar);
+begin
+  if not Assigned(ALocalDb) then Exit;
+  ALocalDb.SetMacro(string(AName), string(AValue));
+end;
+
+procedure LME_LocalDb_ClearParams(const ALocalDb: TLocalDb);
+begin
+  if not Assigned(ALocalDb) then Exit;
+  ALocalDb.ClearParams();
+end;
+
+function  LME_LocalDb_GetParam(const ALocalDb: TLocalDb; const AName: PWideChar): PWideChar;
+begin
+  Result := nil;
+  if not Assigned(ALocalDb) then Exit;
+  Result := PWideChar(ALocalDb.GetParam(string(AName)));
+end;
+
+procedure LME_LocalDb_SetParam(const ALocalDb: TLocalDb; const AName, AValue: PWideChar);
+begin
+  if not Assigned(ALocalDb) then Exit;
+  ALocalDb.SetParam(string(AName), string(AValue));
+end;
+
+function  LME_LocalDb_GetRecordCount(const ALocalDb: TLocalDb): Integer;
+begin
+  Result := 0;
+  if not Assigned(ALocalDb) then Exit;
+  Result := ALocalDb.RecordCount();
+end;
+
+function  LME_LocalDb_GetField(const ALocalDb: TLocalDb; const AIndex: Cardinal; const AName: PWideChar): PWideChar;
+begin
+  Result := nil;
+  if not Assigned(ALocalDb) then Exit;
+  Result := PWideChar(ALocalDb.GetField(AIndex, string(AName)));
+end;
+
+function  LME_LocalDb_Execute(const ALocalDb: TLocalDb): Boolean;
+begin
+  Result := False;
+  if not Assigned(ALocalDb) then Exit;
+  Result := ALocalDb.Execute();
+end;
+
+function  LME_LocalDb_ExecuteSQL(const ALocalDb: TLocalDb; const ASQL: PWideChar): Boolean;
+begin
+  Result := False;
+  if not Assigned(ALocalDb) then Exit;
+  Result := ALocalDb.ExecuteSQL(string(ASQL));
+end;
+
+function  LME_LocalDb_GetLastError(const ALocalDb: TLocalDb): PWideChar;
+begin
+  Result := nil;
+  if not Assigned(ALocalDb) then Exit;
+  Result := PWideChar(ALocalDb.GetLastError());
+end;
+
+function  LME_LocalDb_GetResponseText(const ALocalDb: TLocalDb): PWideChar;
+begin
+  Result := nil;
+  if not Assigned(ALocalDb) then Exit;
+  Result := PWideChar(ALocalDb.GetResponseText());
 end;
 
 

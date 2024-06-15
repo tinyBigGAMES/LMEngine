@@ -158,6 +158,7 @@ type
     TConfig = record
       ModelPath: string;
       NumGPULayers: Int32;
+      NumThreads: Int32;
     end;
     TMessage = record
       Role: string;
@@ -204,7 +205,7 @@ type
     function MakeVersion(const AVersion: string; const AType: Byte): string;
     function Tokenize(const AContext: Pllama_context; const AText: string; const AAddSpecial: Boolean; const AParseSpecial: Boolean=False): TVector<llama_token>;
     function TokenToPiece(const AContext: Pllama_context; const AToken: llama_token; const ASpecial: Boolean=True): string;
-    function ShouldAddBOSToken(const AModel: Pllama_model): Boolean;
+    //function ShouldAddBOSToken(const AModel: Pllama_model): Boolean;
 
     function  OnInferenceCancel(): Boolean;
     procedure OnInferenceToken(const AToken: string);
@@ -285,7 +286,7 @@ type
     function  GetInferenceEndCallback(): TLMEngine.InferenceEndCallback;
     procedure SetInferenceEndCallback(const AHandler: TLMEngine.InferenceEndCallback; const AUserData: Pointer);
 
-    procedure InitConfig(const AModelPath: string; const ANumGPULayers: Int32);
+    procedure InitConfig(const AModelPath: string; const ANumGPULayers, ANumThreads: Int32);
     function  SaveConfig(const AFilename: string): Boolean;
     function  LoadConfig(const AFilename: string): Boolean;
 
@@ -450,6 +451,7 @@ begin
   end;
 end;
 
+(*
 function TLMEngine.ShouldAddBOSToken(const AModel: Pllama_model): Boolean;
 var
   LAddBOS: Integer;
@@ -460,6 +462,7 @@ begin
   else
     Result := llama_vocab_type(AModel) = LLAMA_VOCAB_TYPE_SPM;
 end;
+*)
 
 function TLMEngine.OnInferenceCancel(): Boolean;
 begin
@@ -860,17 +863,25 @@ begin
   FCallbacks.InferenceEnd.UserData := AUserData;
 end;
 
-procedure TLMEngine.InitConfig(const AModelPath: string; const ANumGPULayers: Int32);
+procedure TLMEngine.InitConfig(const AModelPath: string; const ANumGPULayers, ANumThreads: Int32);
 var
   LNumGPULayers: Int32;
+  LNumThreads: Int32;
 begin
   FConfig.ModelPath := AModelPath;
+
   if ANumGPULayers < 0 then
     LNumGPULayers := MaxInt
   else
     LNumGPULayers := ANumGPULayers;
 
+  if ANumThreads < 0 then
+    LNumThreads := MaxInt
+  else
+    LNumThreads := ANumThreads;
+
   FConfig.NumGPULayers := EnsureRange(LNumGPULayers, 0, MaxInt);
+  FConfig.NumThreads := EnsureRange(LNumThreads, 1, Utils.GetPhysicalProcessorCount());
 end;
 
 function  TLMEngine.SaveConfig(const AFilename: string): Boolean;
@@ -893,6 +904,7 @@ begin
     try
       LJson.S['model_path'] := FConfig.ModelPath;
       LJson.I['gpu_layers'] := FConfig.NumGPULayers;
+      LJson.I['threads'] := FConfig.NumThreads;
 
       TFile.WriteAllText(LFilename, LJson.Format(), TEncoding.UTF8);
 
@@ -949,7 +961,17 @@ begin
           Exit;
         end;
 
-      InitConfig(LConfig.ModelPath, LConfig.NumGPULayers);
+      if LJson.Contains('threads') then
+        begin
+          LConfig.NumGPULayers := LJson.I['threads'];
+        end
+      else
+        begin
+          SetError('[%s] "threads" field was not found', ['LoadConfig']);
+          Exit;
+        end;
+
+      InitConfig(LConfig.ModelPath, LConfig.NumGPULayers, LConfig.NumThreads);
 
       Result := True;
 
@@ -1275,7 +1297,8 @@ begin
     FContextParams.offload_kqv := true;
     FContextParams.seed  := 1234;
     FContextParams.n_ctx := LModel.MaxContext;
-    FContextParams.n_threads := Utils.GetPhysicalProcessorCount();
+    //FContextParams.n_threads := Utils.GetPhysicalProcessorCount();
+    FContextParams.n_threads := FConfig.NumThreads;
     FContextParams.n_threads_batch := FContextParams.n_threads;
     FContext := llama_new_context_with_model(FModel, FContextParams);
     if not Assigned(FContext) then

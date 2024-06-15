@@ -1,0 +1,9 @@
+>>> CHANGELOG <<<
+-----------------------------------------------------------------------------
+
+Version 0.5.0:
+- Added local SQLite database support 
+- Update llama.cpp to b3151.
+- Add a num of threads parameter to LME_InitConfig to control the number of
+  CPU threads.
+- Misc. fixes and enhancements

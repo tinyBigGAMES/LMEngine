@@ -92,3 +92,8 @@ bin/data02.txt
 bin/testbed_cpp.pdb
 bin/data.txt
 bin/log.txt
+bin/articles.db
+bin/game.db
+bin/LMEngine.pdb
+bin/LMEngine.upx
+src/LMEngine/cpp/sqlite/shell.c

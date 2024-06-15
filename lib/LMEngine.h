@@ -633,7 +633,10 @@ void LME_SetInferenceEndCallback(LME_InferenceEndCallback AHandler,
 /// <param name="ANumGPULayers">
 ///   The number of GPU layers.
 /// </param>
-void LME_InitConfig(const wchar_t* AModelPath, int ANumGPULayers);
+/// <param name="ANumThreads">
+///   The number of CPU threads.
+/// </param>
+void LME_InitConfig(const wchar_t* AModelPath, const int ANumGPULayers, const int ANumThreads);
 
 /// <summary>
 ///   Saves configuration settings to a JSON file on disk.
@@ -813,6 +816,257 @@ wchar_t* LME_GetInferenceResponse();
 /// </param>
 void LME_GetInferenceStats(float* ATokenInputSpeed, float* ATokenOutputSpeed,
   int* AInputTokens, int* AOutputTokens, int* ATotalTokens);
+
+
+typedef void* LME_LocalDb;
+
+/// <summary>
+///   Creates a new LocalDb object.
+/// </summary>
+/// <returns>
+///   A new instance of LME_LocalDb.
+/// </returns>
+LME_LocalDb LME_LocalDb_New();
+
+/// <summary>
+///   Destroys a LocalDb object.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to be destroyed.
+/// </param>
+void LME_LocalDb_Free(LME_LocalDb* ALocalDb);
+
+/// <summary>
+///   Checks if a LocalDb is open.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to check.
+/// </param>
+/// <returns>
+///   True if the LocalDb is open, otherwise False.
+/// </returns>
+bool LME_LocalDb_IsOpen(const LME_LocalDb ALocalDb);
+
+/// <summary>
+///   Opens a LocalDb database file.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to open.
+/// </param>
+/// <param name="AFilename">
+///   The filename of the database file to open.
+/// </param>
+/// <returns>
+///   True if the database file was opened successfully, otherwise False.
+/// </returns>
+bool LME_LocalDb_Open(const LME_LocalDb ALocalDb, const wchar_t* AFilename);
+
+/// <summary>
+///   Closes a LocalDb database file.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to close.
+/// </param>
+void LME_LocalDb_Close(const LME_LocalDb ALocalDb);
+
+/// <summary>
+///   Clears SQL text from a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to clear SQL text from.
+/// </param>
+void LME_LocalDb_ClearSQLText(const LME_LocalDb ALocalDb);
+
+/// <summary>
+///   Adds SQL text to a LocalDb for processing.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to add SQL text to.
+/// </param>
+/// <param name="AText">
+///   The SQL text to add.
+/// </param>
+void LME_LocalDb_AddSQLText(const LME_LocalDb ALocalDb, const wchar_t* AText);
+
+/// <summary>
+///   Gets SQL text from a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get SQL text from.
+/// </param>
+/// <returns>
+///   The SQL text as a string.
+/// </returns>
+const wchar_t* LME_LocalDb_GetSQLText(const LME_LocalDb ALocalDb);
+
+/// <summary>
+///   Sets SQL text in a LocalDb for processing. It will replace all existing text.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to set SQL text in.
+/// </param>
+/// <param name="AText">
+///   The SQL text to set.
+/// </param>
+void LME_LocalDb_SetSQLText(const LME_LocalDb ALocalDb, const wchar_t* AText);
+
+/// <summary>
+///   Gets the prepared SQL text in a LocalDb. It will have macros and params expanded and set.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get the prepared SQL text from.
+/// </param>
+/// <returns>
+///   The prepared SQL text as a string.
+/// </returns>
+const wchar_t* LME_LocalDb_GetPrepairedSQL(const LME_LocalDb ALocalDb);
+
+/// <summary>
+///   Clears all the macros defined in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to clear macros from.
+/// </param>
+void LME_LocalDb_ClearMacros(const LME_LocalDb ALocalDb);
+
+/// <summary>
+///   Gets a defined macro in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get the macro from.
+/// </param>
+/// <param name="AName">
+///   The name of the macro to get.
+/// </param>
+/// <returns>
+///   The macro value as a string.
+/// </returns>
+const wchar_t* LME_LocalDb_GetMacro(const LME_LocalDb ALocalDb, const wchar_t* AName);
+
+/// <summary>
+///   Defines a macro in a LocalDb. A macro is declared in SQL text as &my_macro.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to define the macro in.
+/// </param>
+/// <param name="AName">
+///   The name of the macro.
+/// </param>
+/// <param name="AValue">
+///   The value of the macro.
+/// </param>
+void LME_LocalDb_SetMacro(const LME_LocalDb ALocalDb, const wchar_t* AName, const wchar_t* AValue);
+
+/// <summary>
+///   Clears all params defined in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to clear params from.
+/// </param>
+void LME_LocalDb_ClearParams(const LME_LocalDb ALocalDb);
+
+/// <summary>
+///   Gets a defined param in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get the param from.
+/// </param>
+/// <param name="AName">
+///   The name of the param to get.
+/// </param>
+/// <returns>
+///   The param value as a string.
+/// </returns>
+const wchar_t* LME_LocalDb_GetParam(const LME_LocalDb ALocalDb, const wchar_t* AName);
+
+/// <summary>
+///   Defines a param in a LocalDb. A param is declared in SQL text as :my_param.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to define the param in.
+/// </param>
+/// <param name="AName">
+///   The name of the param.
+/// </param>
+/// <param name="AValue">
+///   The value of the param.
+/// </param>
+void LME_LocalDb_SetParam(const LME_LocalDb ALocalDb, const wchar_t* AName, const wchar_t* AValue);
+
+/// <summary>
+///   Returns the number of records in the last SQL operation in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get the record count from.
+/// </param>
+/// <returns>
+///   The number of records in the last SQL operation.
+/// </returns>
+int LME_LocalDb_GetRecordCount(const LME_LocalDb ALocalDb);
+
+/// <summary>
+///   Gets a field value from the data returned in the last SQL operation in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get the field value from.
+/// </param>
+/// <param name="AIndex">
+///   The index of the field.
+/// </param>
+/// <param name="AName">
+///   The name of the field.
+/// </param>
+/// <returns>
+///   The field value as a string.
+/// </returns>
+const wchar_t* LME_LocalDb_GetField(const LME_LocalDb ALocalDb, unsigned int AIndex, const wchar_t* AName);
+
+/// <summary>
+///   Executes the current SQL text added in a LocalDb. All macros and params will be processed first.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to execute the SQL text in.
+/// </param>
+/// <returns>
+///   True if the SQL text was executed successfully, otherwise False.
+/// </returns>
+bool LME_LocalDb_Execute(const LME_LocalDb ALocalDb);
+
+/// <summary>
+///   Directly executes the passed SQL text to a LocalDb. No macros and params will be processed.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to execute the SQL text in.
+/// </param>
+/// <param name="ASQL">
+///   The SQL text to execute.
+/// </param>
+/// <returns>
+///   True if the SQL text was executed successfully, otherwise False.
+/// </returns>
+bool LME_LocalDb_ExecuteSQL(const LME_LocalDb ALocalDb, const wchar_t* ASQL);
+
+/// <summary>
+///   Gets the last error generated in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get the last error from.
+/// </param>
+/// <returns>
+///   The last error message as a string.
+/// </returns>
+const wchar_t* LME_LocalDb_GetLastError(const LME_LocalDb ALocalDb);
+
+/// <summary>
+///   Gets the JSON response text of the last SQL operation in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get the response text from.
+/// </param>
+/// <returns>
+///   The JSON response text as a string.
+/// </returns>
+const wchar_t* LME_LocalDb_GetResponseText(const LME_LocalDb ALocalDb);
 
 #ifdef __cplusplus
 }

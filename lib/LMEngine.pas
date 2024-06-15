@@ -659,8 +659,12 @@ procedure LME_SetInferenceEndCallback(const AHandler: LME_InferenceEndCallback;
 /// <param name="ANumGPULayers">
 ///   The number of GPU layers.
 /// </param>
+/// <param name="ANumThreads">
+///   The number of CPU threads.
+/// </param>
+
 procedure LME_InitConfig(const AModelPath: PWideChar;
-  const ANumGPULayers: Int32); cdecl; external LMENGINE_DLL;
+  const ANumGPULayers, ANumThreads: Int32); cdecl; external LMENGINE_DLL;
 
 /// <summary>
 ///   Saves configuration settings to a JSON file on disk.
@@ -849,6 +853,258 @@ function LME_GetInferenceResponse(): PWideChar; cdecl; external LMENGINE_DLL;
 procedure LME_GetInferenceStats(ATokenInputSpeed: PSingle;
   ATokenOutputSpeed: PSingle; AInputTokens: PInt32; AOutputTokens: PInt32;
   ATotalTokens: PInt32); cdecl; external LMENGINE_DLL;
+
+type
+  LME_LocalDb = type Pointer;
+
+/// <summary>
+///   Creates a new LocalDb object.
+/// </summary>
+/// <returns>
+///   A new instance of LME_LocalDb.
+/// </returns>
+function  LME_LocalDb_New(): LME_LocalDb; cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Destroys a LocalDb object.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to be destroyed.
+/// </param>
+procedure LME_LocalDb_Free(var ALocalDb: LME_LocalDb); cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Checks if a LocalDb is open.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to check.
+/// </param>
+/// <returns>
+///   True if the LocalDb is open, otherwise False.
+/// </returns>
+function  LME_LocalDb_IsOpen(const ALocalDb: LME_LocalDb): Boolean; cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Opens a LocalDb database file.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to open.
+/// </param>
+/// <param name="AFilename">
+///   The filename of the database file to open.
+/// </param>
+/// <returns>
+///   True if the database file was opened successfully, otherwise False.
+/// </returns>
+function  LME_LocalDb_Open(const ALocalDb: LME_LocalDb; const AFilename: PWideChar): Boolean; cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Closes a LocalDb database file.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to close.
+/// </param>
+procedure LME_LocalDb_Close(const ALocalDb: LME_LocalDb); cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Clears SQL text from a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to clear SQL text from.
+/// </param>
+procedure LME_LocalDb_ClearSQLText(const ALocalDb: LME_LocalDb); cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Adds SQL text to a LocalDb for processing.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to add SQL text to.
+/// </param>
+/// <param name="AText">
+///   The SQL text to add.
+/// </param>
+procedure LME_LocalDb_AddSQLText(const ALocalDb: LME_LocalDb; const AText: PWideChar); cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Gets SQL text from a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get SQL text from.
+/// </param>
+/// <returns>
+///   The SQL text as a string.
+/// </returns>
+function  LME_LocalDb_GetSQLText(const ALocalDb: LME_LocalDb): PWideChar; cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Sets SQL text in a LocalDb for processing. It will replace all existing text.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to set SQL text in.
+/// </param>
+/// <param name="AText">
+///   The SQL text to set.
+/// </param>
+procedure LME_LocalDb_SetSQLText(const ALocalDb: LME_LocalDb; const AText: PWideChar); cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Gets the prepared SQL text in a LocalDb. It will have macros and params expanded and set.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get the prepared SQL text from.
+/// </param>
+/// <returns>
+///   The prepared SQL text as a string.
+/// </returns>
+function  LME_LocalDb_GetPrepairedSQL(const ALocalDb: LME_LocalDb): PWideChar; cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Clears all the macros defined in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to clear macros from.
+/// </param>
+procedure LME_LocalDb_ClearMacros(const ALocalDb: LME_LocalDb); cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Gets a defined macro in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get the macro from.
+/// </param>
+/// <param name="AName">
+///   The name of the macro to get.
+/// </param>
+/// <returns>
+///   The macro value as a string.
+/// </returns>
+function  LME_LocalDb_GetMacro(const ALocalDb: LME_LocalDb; const AName: PWideChar): PWideChar; cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Defines a macro in a LocalDb. A macro is declared in SQL text as &my_macro.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to define the macro in.
+/// </param>
+/// <param name="AName">
+///   The name of the macro.
+/// </param>
+/// <param name="AValue">
+///   The value of the macro.
+/// </param>
+procedure LME_LocalDb_SetMacro(const ALocalDb: LME_LocalDb; const AName, AValue: PWideChar); cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Clears all params defined in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to clear params from.
+/// </param>
+procedure LME_LocalDb_ClearParams(const ALocalDb: LME_LocalDb); cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Gets a defined param in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get the param from.
+/// </param>
+/// <param name="AName">
+///   The name of the param to get.
+/// </param>
+/// <returns>
+///   The param value as a string.
+/// </returns>
+function  LME_LocalDb_GetParam(const ALocalDb: LME_LocalDb; const AName: PWideChar): PWideChar; cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Defines a param in a LocalDb. A param is declared in SQL text as :my_param.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to define the param in.
+/// </param>
+/// <param name="AName">
+///   The name of the param.
+/// </param>
+/// <param name="AValue">
+///   The value of the param.
+/// </param>
+procedure LME_LocalDb_SetParam(const ALocalDb: LME_LocalDb; const AName, AValue: PWideChar); cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Returns the number of records in the last SQL operation in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get the record count from.
+/// </param>
+/// <returns>
+///   The number of records in the last SQL operation.
+/// </returns>
+function  LME_LocalDb_GetRecordCount(const ALocalDb: LME_LocalDb): Integer; cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Gets a field value from the data returned in the last SQL operation in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get the field value from.
+/// </param>
+/// <param name="AIndex">
+///   The index of the field.
+/// </param>
+/// <param name="AName">
+///   The name of the field.
+/// </param>
+/// <returns>
+///   The field value as a string.
+/// </returns>
+function  LME_LocalDb_GetField(const ALocalDb: LME_LocalDb; const AIndex: Cardinal; const AName: PWideChar): PWideChar; cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Executes the current SQL text added in a LocalDb. All macros and params will be processed first.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to execute the SQL text in.
+/// </param>
+/// <returns>
+///   True if the SQL text was executed successfully, otherwise False.
+/// </returns>
+function  LME_LocalDb_Execute(const ALocalDb: LME_LocalDb): Boolean; cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Directly executes the passed SQL text to a LocalDb. No macros and params will be processed.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to execute the SQL text in.
+/// </param>
+/// <param name="ASQL">
+///   The SQL text to execute.
+/// </param>
+/// <returns>
+///   True if the SQL text was executed successfully, otherwise False.
+/// </returns>
+function  LME_LocalDb_ExecuteSQL(const ALocalDb: LME_LocalDb; const ASQL: PWideChar): Boolean; cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Gets the last error generated in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get the last error from.
+/// </param>
+/// <returns>
+///   The last error message as a string.
+/// </returns>
+function  LME_LocalDb_GetLastError(const ALocalDb: LME_LocalDb): PWideChar; cdecl; external LMENGINE_DLL;
+
+/// <summary>
+///   Gets the JSON response text of the last SQL operation in a LocalDb.
+/// </summary>
+/// <param name="ALocalDb">
+///   The LocalDb object to get the response text from.
+/// </param>
+/// <returns>
+///   The JSON response text as a string.
+/// </returns>
+function  LME_LocalDb_GetResponseText(const ALocalDb: LME_LocalDb): PWideChar; cdecl; external LMENGINE_DLL;
+
 
 implementation
 

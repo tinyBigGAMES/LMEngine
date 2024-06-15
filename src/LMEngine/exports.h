@@ -113,7 +113,7 @@ LMENGINE_API void __cdecl LME_SetInferenceStartCallback(const Lmengine::Core::TL
 LMENGINE_API Lmengine::Core::TLMEngine::InferenceEndCallback __cdecl LME_GetInferenceEndCallback();
 LMENGINE_API void __cdecl LME_SetInferenceEndCallback(const Lmengine::Core::TLMEngine::InferenceEndCallback AHandler, const void * AUserData);
 
-LMENGINE_API void __cdecl LME_InitConfig(const System::WideChar * AModelPath, const System::Int32 ANumGPULayers);
+LMENGINE_API void __cdecl LME_InitConfig(const System::WideChar * AModelPath, const System::Int32 ANumGPULayers, const System::Int32 ANumThreads);
 LMENGINE_API bool __cdecl LME_SaveConfig(const System::WideChar * AFilename);
 LMENGINE_API bool __cdecl LME_LoadConfig(const System::WideChar * AFilename);
 LMENGINE_API void __cdecl LME_ClearAllMessages();
@@ -132,6 +132,30 @@ LMENGINE_API void __cdecl LME_UnloadModel();
 LMENGINE_API bool __cdecl LME_RunInference(const System::WideChar * AModelName, const System::UInt32 AMaxTokens);
 LMENGINE_API System::WideChar * __cdecl LME_GetInferenceResponse();
 LMENGINE_API void __cdecl LME_GetInferenceStats(System::PSingle ATokenInputSpeed, System::PSingle ATokenOutputSpeed, Lmengine::Deps::PInt32 AInputTokens, Lmengine::Deps::PInt32 AOutputTokens, Lmengine::Deps::PInt32 ATotalTokens);
+
+//=== RAG ===================================================================
+LMENGINE_API Lmengine::Rag::TLocalDb* __cdecl LME_LocalDb_New();
+LMENGINE_API void __cdecl LME_LocalDb_Free(Lmengine::Rag::TLocalDb* &ALocalDb);
+LMENGINE_API bool __cdecl LME_LocalDb_IsOpen(Lmengine::Rag::TLocalDb* const ALocalDb);
+LMENGINE_API bool __cdecl LME_LocalDb_Open(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * AFilename);
+LMENGINE_API void __cdecl LME_LocalDb_Close(Lmengine::Rag::TLocalDb* const ALocalDb);
+LMENGINE_API void __cdecl LME_LocalDb_ClearSQLText(Lmengine::Rag::TLocalDb* const ALocalDb);
+LMENGINE_API void __cdecl LME_LocalDb_AddSQLText(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * AText);
+LMENGINE_API System::WideChar * __cdecl LME_LocalDb_GetSQLText(Lmengine::Rag::TLocalDb* const ALocalDb);
+LMENGINE_API void __cdecl LME_LocalDb_SetSQLText(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * AText);
+LMENGINE_API System::WideChar * __cdecl LME_LocalDb_GetPrepairedSQL(Lmengine::Rag::TLocalDb* const ALocalDb);
+LMENGINE_API void __cdecl LME_LocalDb_ClearMacros(Lmengine::Rag::TLocalDb* const ALocalDb);
+LMENGINE_API System::WideChar * __cdecl LME_LocalDb_GetMacro(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * AName);
+LMENGINE_API void __cdecl LME_LocalDb_SetMacro(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * AName, const System::WideChar * AValue);
+LMENGINE_API void __cdecl LME_LocalDb_ClearParams(Lmengine::Rag::TLocalDb* const ALocalDb);
+LMENGINE_API System::WideChar * __cdecl LME_LocalDb_GetParam(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * AName);
+LMENGINE_API void __cdecl LME_LocalDb_SetParam(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * AName, const System::WideChar * AValue);
+LMENGINE_API int __cdecl LME_LocalDb_GetRecordCount(Lmengine::Rag::TLocalDb* const ALocalDb);
+LMENGINE_API System::WideChar * __cdecl LME_LocalDb_GetField(Lmengine::Rag::TLocalDb* const ALocalDb, const unsigned AIndex, const System::WideChar * AName);
+LMENGINE_API bool __cdecl LME_LocalDb_Execute(Lmengine::Rag::TLocalDb* const ALocalDb);
+LMENGINE_API bool __cdecl LME_LocalDb_ExecuteSQL(Lmengine::Rag::TLocalDb* const ALocalDb, const System::WideChar * ASQL);
+LMENGINE_API System::WideChar * __cdecl LME_LocalDb_GetLastError(Lmengine::Rag::TLocalDb* const ALocalDb);
+LMENGINE_API System::WideChar * __cdecl LME_LocalDb_GetResponseText(Lmengine::Rag::TLocalDb* const ALocalDb);
 
 
 

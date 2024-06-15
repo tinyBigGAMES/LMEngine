@@ -146,7 +146,10 @@ BSD-3-Clause license - Core developers:
 LMEngine couldn't have been built without the help of wonderful people and great software already available from the community. **Thank you!**
 
 Software
-- [llama.cpp](https://github.com/ggerganov/llama.cpp). 
+- [llama.cpp](https://github.com/ggerganov/llama.cpp)
+- [SQLite](https://github.com/sqlite/sqlite)
+- [sqlite-vec](https://github.com/asg017/sqlite-vec)
+- [sqlite-lembed](https://github.com/asg017/sqlite-lembed)
 
 People
 - John Claw

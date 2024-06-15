@@ -133,6 +133,7 @@ const
   CQuestion = 'what is AI?';
   //CQuestion = 'write a story about an AI system that became self-aware.';
   //CQuestion = 'who is bill gates?';
+  //CQuestion = 'does bill gates have children?';
   //CQuestion = 'what is KNO3?';
   //CQuestion = 'what is 2+2?';
   //CQuestion = 'Что такое KNO3';
@@ -148,7 +149,7 @@ var
   LOutputTokens: Int32;
   LTotalTokens: Int32;
 begin
-  LME_InitConfig('C:\LLM\gguf', -1);
+  LME_InitConfig('C:\LLM\gguf', -1, -1);
   LME_SaveConfig('config.json');
 
   LME_SetInferenceCancelCallback(OnInferenceCancel, nil);
@@ -191,13 +192,200 @@ begin
   end;
 end;
 
+procedure Test02();
+const
+  CDropTableSQL = 'DROP TABLE IF EXISTS articles';
+
+  CCreateTableSQL = 'CREATE TABLE IF NOT EXISTS articles (' +
+                    'headline TEXT' +
+                    ');';
+
+  CInsertArticlesSQL = 'INSERT INTO articles VALUES ' +
+    '(''Shohei Ohtani''''s ex-interpreter pleads guilty to charges related to gambling and theft''), ' +
+    '(''The jury has been selected in Hunter Biden''''s gun trial''), ' +
+    '(''Larry Allen, a Super Bowl champion and famed Dallas Cowboy, has died at age 52''), ' +
+    '(''After saying Charlotte, a lone stingray, was pregnant, aquarium now says she''''s sick''), ' +
+    '(''An Epoch Times executive is facing money laundering charge'');';
+
+  CListArticles = 'SELECT * FROM articles';
+
+var
+  LDb: LME_LocalDb;
+begin
+  LDb := LME_LocalDb_New();
+  if Assigned(LDb) then
+  begin
+    if LME_LocalDb_Open(LDb, 'articles.db') then
+    begin
+      // drop existing table
+      if LME_LocalDb_ExecuteSQL(LDb, CDropTableSQL) then
+        LME_PrintLn('Removing "articals" table if exists...', LME_FG_WHITE)
+      else
+        LME_PrintLn(LME_LocalDb_GetLastError(LDb), LME_FG_WHITE);
+
+      // create articles table
+      if LME_LocalDb_ExecuteSQL(LDb, CCreateTableSQL) then
+        LME_PrintLn('Created "articals" table..', LME_FG_WHITE)
+      else
+        LME_PrintLn(LME_LocalDb_GetLastError(LDb), LME_FG_WHITE);
+
+      // insert articles into table
+      if LME_LocalDb_ExecuteSQL(LDb, CInsertArticlesSQL) then
+        LME_PrintLn('Added articles into "articals" table..', LME_FG_WHITE)
+      else
+        LME_PrintLn(LME_LocalDb_GetLastError(LDb), LME_FG_WHITE);
+
+      // display articles table as JSON
+      if LME_LocalDb_ExecuteSQL(LDb, CListArticles) then
+      begin
+        LME_PrintLn('Display "articals" table..', LME_FG_WHITE);
+        LME_PrintLn(LME_LocalDb_GetResponseText(LDb), LME_FG_WHITE);
+      end
+      else
+        LME_PrintLn(LME_LocalDb_GetLastError(LDb), LME_FG_WHITE);
+
+      LME_LocalDb_Close(LDb);
+    end;
+    LME_LocalDb_Free(LDb);
+  end;
+end;
+
+procedure Test03();
+const
+  CCreateScoreTableSQL: PWideChar = 'CREATE TABLE IF NOT EXISTS &gameid (' +
+    'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+    'name TEXT NOT NULL, ' +
+    'level INTEGER, ' +
+    'score INTEGER, ' +
+    'skill TEXT, ' +
+    'duration INTEGER, ' +
+    'location TEXT, ' +
+    'UNIQUE(name))';
+
+  CAddScoreSQL: PWideChar =
+    'INSERT INTO &gameid (name, level, score, skill, duration, location) ' +
+    'VALUES (:name, :level, :score, :skill, :duration, :location) ' +
+    'ON CONFLICT(name) DO UPDATE SET ' +
+    'level    = CASE WHEN :score > score THEN :level ELSE level END, ' +
+    'skill    = CASE WHEN :score > score THEN :skill ELSE skill END, ' +
+    'location = CASE WHEN :score > score THEN :location ELSE location END, ' +
+    'duration = CASE WHEN :score > score THEN :duration ELSE duration END, ' +
+    'score    = CASE WHEN :score > score THEN :score ELSE score END;';
+
+  CListScoresSQL: PWideChar =
+    'SELECT * FROM &gameid WHERE level = :level AND skill = :skill ORDER by score DESC';
+
+
+  function AddScore(const ADb: LME_LocalDb; const AName, AScore, ALocation: string): Boolean;
+  begin
+    // set addscore SQL
+    LME_LocalDb_SetSQLText(ADb, CAddScoreSQL);
+    LME_LocalDb_SetMacro(ADb, 'gameid', 'my_game');
+    LME_LocalDb_SetParam(ADb, 'name', PWideChar(AName));
+    LME_LocalDb_SetParam(ADb, 'level', '1');
+    LME_LocalDb_SetParam(ADb, 'score', PWideChar(AScore));
+    LME_LocalDb_SetParam(ADb, 'skill', '1');
+    LME_LocalDb_SetParam(ADb, 'duration', '0');
+    LME_LocalDb_SetParam(ADb, 'location', PWideChar(ALocation));
+
+    // add score
+    Result := LME_LocalDb_Execute(ADb);
+
+    // show any errors
+    if not Result then
+    begin
+      LME_PrintLn(LME_LocalDb_GetLastError(ADb), LME_FG_RED);
+    end;
+  end;
+
+  procedure ListScores(const ADb: LME_LocalDb);
+  var
+    I: Integer;
+  begin
+    // set list scores SQL
+    LME_LocalDb_SetSQLText(ADb, CListScoresSQL);
+
+    // get score list
+    if not LME_LocalDb_Execute(ADb) then
+      begin
+        LME_PrintLn(LME_LocalDb_GetLastError(ADb), LME_FG_RED);
+      end
+    else
+      begin
+        // loop over returned scores
+        for I := 0 to LME_LocalDb_GetRecordCount(ADb)-1 do
+        begin
+          // print score information
+          LME_PrintLn('%ls, %ls, %ls', LME_FG_WHITE,
+            LME_LocalDb_GetField(ADb, I, 'name'),
+            LME_LocalDb_GetField(ADb, I, 'score'),
+            LME_LocalDb_GetField(ADb, I, 'location')
+          );
+
+        end;
+        LME_PrintLn('%s%ls', LME_FG_WHITE, LME_CRLF, LME_LocalDb_GetResponseText(ADb));
+      end;
+  end;
+
+var
+  LDb: LME_LocalDb;
+begin
+  // create new db instance
+  LDb := LME_LocalDb_New();
+
+  if Assigned(LDb) then
+  begin
+    // open db
+    if LME_LocalDb_Open(LDb, 'game.db') then
+    begin
+      // set create table SQL
+      LME_LocalDb_SetSQLText(LDb, CCreateScoreTableSQL);
+
+      // set gameid macro
+      LME_LocalDb_SetMacro(LDb, 'gameid', 'my_game');
+
+      // create table if does not exist
+      if not LME_LocalDb_Execute(LDb) then
+        begin
+          // display error message
+          LME_PrintLn(LME_LocalDb_GetLastError(LDb), LME_FG_RED);
+        end
+      else
+        begin
+          // add a few scores
+          AddScore(LDb, 'ShadowBladeX', '10', 'Alabama');
+          AddScore(LDb, 'NeonNinja', '413', 'Colorado');
+          AddScore(LDb, 'PixelPirate', '200', 'Georgia');
+          AddScore(LDb, 'QuantumKnight', '35', 'Illinois');
+          AddScore(LDb, 'TurboTornado', '987', 'Kansas');
+          AddScore(LDb, 'CyberSamurai', '670', 'Montana');
+          AddScore(LDb, 'GalacticGamer', '100', 'Ohio');
+          AddScore(LDb, 'MysticMage', '543', 'Texas');
+          AddScore(LDb, 'PhantomSniper', '250', 'Wisconsin');
+          AddScore(LDb, 'FrostFury', '30', 'Hawaii');
+
+          // display scores
+          ListScores(LDb);
+        end;
+
+      // close db
+      LME_LocalDb_Close(LDb);
+    end;
+    // free db instance
+    LME_LocalDb_Free(LDb);
+  end;
+end;
+
+
 procedure RunTests();
 begin
+
   LME_PrintLn('>>> LMEngine v%ls <<<'+LME_CRLF, LME_FG_MAGENTA, LME_GetVersion(LME_VERSION_FULL));
   LME_PrintLn('Running in Pascal'+LME_CRLF, LME_FG_WHITE);
 
-  Test01();
-  //LME_PrintLn('%3.2f', LME_FG_RED, 3.14);
+  //Test01();
+  Test02();
+  //Test03();
   LME_Pause();
 end;
 

@@ -138,7 +138,7 @@ void Test01() {
     int LOutputTokens;
     int LTotalTokens;
 
-    LME_InitConfig(L"C:\\LLM\\gguf", -1);
+    LME_InitConfig(L"C:\\LLM\\gguf", -1, -1);
     LME_SaveConfig(L"config.json");
 
     LME_SetInferenceCancelCallback(OnInferenceCancel, NULL);
@@ -175,12 +175,169 @@ void Test01() {
     LME_UnloadModel();
 }
 
+void Test02() {
+    const wchar_t *CDropTableSQL = L"DROP TABLE IF EXISTS articles";
+
+    const wchar_t *CCreateTableSQL = L"CREATE TABLE IF NOT EXISTS articles ("
+                                     L"headline TEXT"
+                                     L");";
+
+    const wchar_t *CInsertArticlesSQL = L"INSERT INTO articles VALUES "
+                                         L"('Shohei Ohtani''s ex-interpreter pleads guilty to charges related to gambling and theft'), "
+                                         L"('The jury has been selected in Hunter Biden''s gun trial'), "
+                                         L"('Larry Allen, a Super Bowl champion and famed Dallas Cowboy, has died at age 52'), "
+                                         L"('After saying Charlotte, a lone stingray, was pregnant, aquarium now says she''s sick'), "
+                                         L"('An Epoch Times executive is facing money laundering charge');";
+
+    const wchar_t *CListArticles = L"SELECT * FROM articles";
+
+    LME_LocalDb LDb = LME_LocalDb_New();
+    if (LDb) {
+        if (LME_LocalDb_Open(LDb, L"articles.db")) {
+            // drop existing table
+            if (LME_LocalDb_ExecuteSQL(LDb, CDropTableSQL)) {
+                LME_PrintLn(L"Removing \"articles\" table if exists...", LME_FG_WHITE);
+            } else {
+                LME_PrintLn(LME_LocalDb_GetLastError(LDb), LME_FG_WHITE);
+            }
+
+            // create articles table
+            if (LME_LocalDb_ExecuteSQL(LDb, CCreateTableSQL)) {
+                LME_PrintLn(L"Created \"articles\" table..", LME_FG_WHITE);
+            } else {
+                LME_PrintLn(LME_LocalDb_GetLastError(LDb), LME_FG_WHITE);
+            }
+
+            // insert articles into table
+            if (LME_LocalDb_ExecuteSQL(LDb, CInsertArticlesSQL)) {
+                LME_PrintLn(L"Added articles into \"articles\" table..", LME_FG_WHITE);
+            } else {
+                LME_PrintLn(LME_LocalDb_GetLastError(LDb), LME_FG_WHITE);
+            }
+
+            // display articles table as JSON
+            if (LME_LocalDb_ExecuteSQL(LDb, CListArticles)) {
+                LME_PrintLn(L"Display \"articles\" table..", LME_FG_WHITE);
+                LME_PrintLn(LME_LocalDb_GetResponseText(LDb), LME_FG_WHITE);
+            } else {
+                LME_PrintLn(LME_LocalDb_GetLastError(LDb), LME_FG_WHITE);
+            }
+
+            LME_LocalDb_Close(LDb);
+        }
+        LME_LocalDb_Free(&LDb);
+    }
+}
+
+void AddScore(LME_LocalDb ADb, const wchar_t *AName, const wchar_t *AScore, const wchar_t *ALocation) {
+    const wchar_t *CAddScoreSQL =
+        L"INSERT INTO &gameid (name, level, score, skill, duration, location) "
+        L"VALUES (:name, :level, :score, :skill, :duration, :location) "
+        L"ON CONFLICT(name) DO UPDATE SET "
+        L"level    = CASE WHEN :score > score THEN :level ELSE level END, "
+        L"skill    = CASE WHEN :score > score THEN :skill ELSE skill END, "
+        L"location = CASE WHEN :score > score THEN :location ELSE location END, "
+        L"duration = CASE WHEN :score > score THEN :duration ELSE duration END, "
+        L"score    = CASE WHEN :score > score THEN :score ELSE score END;";
+
+    // set addscore SQL
+    LME_LocalDb_SetSQLText(ADb, CAddScoreSQL);
+    LME_LocalDb_SetMacro(ADb, L"gameid", L"my_game");
+    LME_LocalDb_SetParam(ADb, L"name", AName);
+    LME_LocalDb_SetParam(ADb, L"level", L"1");
+    LME_LocalDb_SetParam(ADb, L"score", AScore);
+    LME_LocalDb_SetParam(ADb, L"skill", L"1");
+    LME_LocalDb_SetParam(ADb, L"duration", L"0");
+    LME_LocalDb_SetParam(ADb, L"location", ALocation);
+
+    // add score
+    if (!LME_LocalDb_Execute(ADb)) {
+        LME_PrintLn(LME_LocalDb_GetLastError(ADb), LME_FG_RED);
+    }
+}
+
+void ListScores(LME_LocalDb ADb) {
+	const wchar_t *CListScoresSQL =
+    	L"SELECT * FROM &gameid WHERE level = :level AND skill = :skill ORDER by score DESC";
+
+    // set list scores SQL
+    LME_LocalDb_SetSQLText(ADb, CListScoresSQL);
+
+    // get score list
+    if (!LME_LocalDb_Execute(ADb)) {
+        LME_PrintLn(LME_LocalDb_GetLastError(ADb), LME_FG_RED);
+    } else {
+        // loop over returned scores
+        int recordCount = LME_LocalDb_GetRecordCount(ADb);
+        for (int i = 0; i < recordCount; i++) {
+            // print score information
+            LME_PrintLn(L"%ls, %ls, %ls", LME_FG_WHITE,
+                        LME_LocalDb_GetField(ADb, i, L"name"),
+                        LME_LocalDb_GetField(ADb, i, L"score"),
+                        LME_LocalDb_GetField(ADb, i, L"location"));
+        }
+        LME_PrintLn(L"%s%ls", LME_FG_WHITE, LME_CRLF, LME_LocalDb_GetResponseText(ADb));
+    }
+}
+
+void Test03() {
+	const wchar_t *CCreateScoreTableSQL =
+        L"CREATE TABLE IF NOT EXISTS &gameid ("
+        L"id INTEGER PRIMARY KEY AUTOINCREMENT, "
+        L"name TEXT NOT NULL, "
+        L"level INTEGER, "
+        L"score INTEGER, "
+        L"skill TEXT, "
+        L"duration INTEGER, "
+        L"location TEXT, "
+        L"UNIQUE(name))";
+
+    LME_LocalDb LDb = LME_LocalDb_New();
+
+    if (LDb) {
+        if (LME_LocalDb_Open(LDb, L"game.db")) {
+            // set create table SQL
+            LME_LocalDb_SetSQLText(LDb, CCreateScoreTableSQL);
+
+            // set gameid macro
+            LME_LocalDb_SetMacro(LDb, L"gameid", L"my_game");
+
+            // create table if does not exist
+            if (!LME_LocalDb_Execute(LDb)) {
+                // display error message
+                LME_PrintLn(LME_LocalDb_GetLastError(LDb), LME_FG_RED);
+            } else {
+                // add a few scores
+                AddScore(LDb, L"ShadowBladeX", L"10", L"Alabama");
+                AddScore(LDb, L"NeonNinja", L"413", L"Colorado");
+                AddScore(LDb, L"PixelPirate", L"200", L"Georgia");
+                AddScore(LDb, L"QuantumKnight", L"35", L"Illinois");
+                AddScore(LDb, L"TurboTornado", L"987", L"Kansas");
+                AddScore(LDb, L"CyberSamurai", L"670", L"Montana");
+                AddScore(LDb, L"GalacticGamer", L"100", L"Ohio");
+                AddScore(LDb, L"MysticMage", L"543", L"Texas");
+                AddScore(LDb, L"PhantomSniper", L"250", L"Wisconsin");
+                AddScore(LDb, L"FrostFury", L"30", L"Hawaii");
+
+                // display scores
+                ListScores(LDb);
+            }
+
+            // close db
+            LME_LocalDb_Close(LDb);
+        }
+        // free db instance
+        LME_LocalDb_Free(&LDb);
+    }
+}
+
 void RunTests()
 {
-	//LME_PrintLn(L">>> LMEngine v%ls <<<%ls", LME_FG_MAGENTA, LME_GetVersion(LME_VERSION_FULL), LME_CRLF);
-  	//LME_PrintLn(L"Running in C/C++%ls", LME_FG_WHITE, LME_CRLF);
+	LME_PrintLn(L">>> LMEngine v%ls <<<%ls", LME_FG_MAGENTA, LME_GetVersion(LME_VERSION_FULL), LME_CRLF);
+  	LME_PrintLn(L"Running in C/C++%ls", LME_FG_WHITE, LME_CRLF);
 
-    Test01();
-    //LME_PrintLn(L"%3.2f", LME_FG_RED, 3.14);
+    //Test01();
+    Test02();
+    //Test03();
     LME_Pause();
 }
