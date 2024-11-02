@@ -1,3 +1,5 @@
+This project is no longer activity maintained. Development has now moved to https://github.com/tinyBigGAMES/Lumina
+
 ![LMEngine](media/LMEngine.jpg)
 
 [![Chat on Discord](https://img.shields.io/discord/754884471324672040.svg?logo=discord)](https://discord.gg/tPWjMwK) [![Twitter Follow](https://img.shields.io/twitter/follow/tinyBigGAMES?style=social)](https://twitter.com/tinyBigGAMES)
